@@ -1,0 +1,1275 @@
+{
+    "__elements": {},
+    "__inputs": [
+        {
+            "label": "BMC Helix API",
+            "name": "DS_BMC_HELIX_API",
+            "pluginId": "json-datasource",
+            "pluginName": "BMC Helix API",
+            "type": "datasource"
+        },
+        {
+            "description": "",
+            "label": "api_ver",
+            "name": "VAR_API_VER",
+            "type": "constant",
+            "value": "v1.13"
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations \u0026 Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 581568,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "links": [],
+                    "mappings": [],
+                    "noValue": "Clear",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 15,
+                "x": 0,
+                "y": 0
+            },
+            "id": 123,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [],
+                    "fields": "",
+                    "values": true
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "sizing": "auto"
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.results[*]",
+                            "language": "jsonata",
+                            "name": "Node"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search FLAGS(no_segment) in 'Default' * where source SHOW source PROCESSWITH countUnique(0)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Primary",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Imported records",
+            "transformations": [
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "kvp",
+                        "keepTime": false,
+                        "replace": true,
+                        "source": "Node"
+                    }
+                },
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "0": {
+                                "aggregations": [
+                                    "distinctCount"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "1": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "2": {
+                                "aggregations": []
+                            },
+                            "Count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": []
+                            },
+                            "Node": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "OS": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "OS class": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "OS type": {
+                                "aggregations": []
+                            },
+                            "Primary HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Primary OS": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Primary OS class": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Serial": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Source": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "noValue": "Clear",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 9,
+                "x": 15,
+                "y": 0
+            },
+            "id": 108,
+            "options": {
+                "displayMode": "gradient",
+                "maxVizHeight": 300,
+                "minVizHeight": 10,
+                "minVizWidth": 0,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "kind",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "count",
+                            "type": "number"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Host,NetworkDevice,Printer,SNMPManagedDevice,StorageDevice SHOW kind(#) PROCESS WITH countUnique(0)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Primary",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Root node counts",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": []
+                            },
+                            "OS": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "OS class": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "OS type": {
+                                "aggregations": []
+                            },
+                            "Primary HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Primary OS": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Primary OS class": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Serial": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Source": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "count": {
+                                "aggregations": [
+                                    "last"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "kind": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 0,
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 0
+                                },
+                                "to": 10
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 11,
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                },
+                                "to": 50
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 51,
+                                "result": {
+                                    "color": "red",
+                                    "index": 2
+                                },
+                                "to": 5000
+                            },
+                            "type": "range"
+                        }
+                    ]
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 5,
+                "x": 0,
+                "y": 9
+            },
+            "id": 126,
+            "options": {
+                "legend": {
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": true
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.5.3",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "type"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "count",
+                            "type": "number"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH Host traverse InferredElement:Inference:Associate:DiscoveryAccess  traverse DiscoveryAccess:DiscoveryAccessResult:DiscoveryResult:NetworkConnectionList  traverse List:List:Member:DiscoveredNetworkConnection WHERE NOT remote_ip_addr = '0.0.0.0' AND NOT remote_ip_addr matches '^169'  PROCESSWITH connectionsToUnseen [destroyed,include_destroyed]  SHOW  #Member:List:List:NetworkConnectionList.#DiscoveryResult:DiscoveryAccessResult:DiscoveryAccess:DiscoveryAccess.#Associate:Inference:InferredElement:Host.scope PROCESSWITH countUnique(0)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "sourceQuery": {
+                        "alias": "",
+                        "bucketAggs": [
+                            {
+                                "field": "creation_time",
+                                "id": "2",
+                                "settings": {
+                                    "interval": "auto"
+                                },
+                                "type": "date_histogram"
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "id": "1",
+                                "type": "count"
+                            }
+                        ],
+                        "query": "",
+                        "timeField": "creation_time"
+                    },
+                    "sourceType": "event",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Scopes with unscanned IPs",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Current Access": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Discovered OS Class": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Guest OS": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Host": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Host Name": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Hostname": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "count": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "type": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 0,
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 0
+                                },
+                                "to": 10
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 11,
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                },
+                                "to": 50
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 51,
+                                "result": {
+                                    "color": "red",
+                                    "index": 2
+                                },
+                                "to": 5000
+                            },
+                            "type": "range"
+                        }
+                    ]
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 5,
+                "x": 5,
+                "y": 9
+            },
+            "id": 127,
+            "options": {
+                "legend": {
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": true
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.5.3",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "type"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "count",
+                            "type": "number"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH VirtualMachine WHERE NOT #HostContainer:HostContainment:ContainedHost:.name defined show vm_type PROCESSWITH countUnique(0)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "sourceQuery": {
+                        "alias": "",
+                        "bucketAggs": [
+                            {
+                                "field": "creation_time",
+                                "id": "2",
+                                "settings": {
+                                    "interval": "auto"
+                                },
+                                "type": "date_histogram"
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "id": "1",
+                                "type": "count"
+                            }
+                        ],
+                        "query": "",
+                        "timeField": "creation_time"
+                    },
+                    "sourceType": "event",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Unscanned virtual machines",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Current Access": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Discovered OS Class": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Guest OS": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Host": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Host Name": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Hostname": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "count": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "type": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "Subnet with no Location by IP count",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 0,
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 0
+                                },
+                                "to": 1
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 2,
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                },
+                                "to": 50
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 51,
+                                "result": {
+                                    "color": "red",
+                                    "index": 2
+                                },
+                                "to": 5000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "Clear"
+                },
+                "overrides": [
+                    {
+                        "__systemRef": "hideSeriesFrom",
+                        "matcher": {
+                            "id": "byNames",
+                            "options": {
+                                "mode": "exclude",
+                                "names": [
+                                    "IPs (lastNotNull)"
+                                ],
+                                "prefix": "All except:",
+                                "readOnly": true
+                            }
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.hideFrom",
+                                "value": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": true
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 5,
+                "x": 10,
+                "y": 9
+            },
+            "id": 128,
+            "options": {
+                "displayLabels": [],
+                "legend": {
+                    "displayMode": "table",
+                    "placement": "right",
+                    "showLegend": true,
+                    "values": [
+                        "percent"
+                    ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Subnet",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "Scope",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "IPs",
+                            "type": "number"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Subnet where type = 'IPv4Subnet' and nodecount(traverse Subnet:DeviceSubnet:DeviceOnSubnet:IPAddress) \u003e 0 and nodecount(traverse ElementInLocation:Location:Location:Location) = 0 show ip_address_range, scope, nodecount(traverse Subnet:DeviceSubnet:DeviceOnSubnet:IPAddress)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Subnet with no Location",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "IPs": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": []
+                            },
+                            "OS": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "Scope": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Serial": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "fixed"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 0
+                                },
+                                "to": 10
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 11,
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                },
+                                "to": 50
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 51,
+                                "result": {
+                                    "color": "red",
+                                    "index": 2
+                                },
+                                "to": 5000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 9,
+                "x": 15,
+                "y": 9
+            },
+            "id": 125,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [],
+                    "fields": "",
+                    "values": true
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "sizing": "auto"
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Node",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "Type",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Last scan",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Failed scans"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][4]",
+                            "language": "jsonpath",
+                            "name": "Eligibility"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search [no_segment] Host,NetworkDevice,StorageDevice,Printer,SNMPManagedDevice with value(getOption('MIN_FAILED_ACCESSES_BEFORE_DESTROY') + age_count) as scans, value(abs(last_update_success) / 10000000) as lus, value(currentTime() / 10000000 - getOption('MIN_SECONDS_SINCE_ACCESS_SUCCESS_BEFORE_DESTROY') + 2 * 24 * 3600) as time_threshold, value((getOption('MIN_SECONDS_SINCE_ACCESS_SUCCESS_BEFORE_DESTROY') + abs(last_update_success) / 10000000 - currentTime() / 10000000) / 3600) as time_to_doom where @scans \u003c 3 show kind(#) as 'Node', type, last_update_success, age_count * -1 as 'Consecutive Scan Failures', (@scans \u003e 0 and @time_to_doom \u003e 0 and #'%d scans, %d hours'(@scans,@time_to_doom) or @scans \u003e 0 and #'%d scans'(@scans) or @time_to_doom \u003e 0 and #'%d hours'(@time_to_doom) or 'Next unsuccessful scan') as 'Removal Eligibility'"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Primary",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Nearing removal",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": []
+                            },
+                            "Node": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "OS": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "OS class": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "OS type": {
+                                "aggregations": []
+                            },
+                            "Primary HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Primary OS": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Primary OS class": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Serial": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Source": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "gauge"
+        }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [
+        "demo"
+    ],
+    "templating": {
+        "list": [
+            {
+                "hide": 2,
+                "name": "api_ver",
+                "query": "${VAR_API_VER}",
+                "queryvalue": "v1.11",
+                "skipUrlSync": false,
+                "type": "constant"
+            }
+        ]
+    },
+    "time": {
+        "from": "2023-10-27T23:00:00.000Z",
+        "to": "2025-02-26T00:00:00.000Z"
+    },
+    "timepicker": {
+        "hidden": true,
+        "refresh_intervals": [
+            "1h",
+            "3h",
+            "6h",
+            "12h",
+            "1d"
+        ]
+    },
+    "timezone": "",
+    "title": "Coverage",
+    "uid": "aen5uwow9skjka",
+    "version": 3,
+    "weekStart": ""
+}

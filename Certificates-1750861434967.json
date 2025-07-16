@@ -1,0 +1,920 @@
+{
+    "__elements": {},
+    "__inputs": [
+        {
+            "label": "BMC Helix API",
+            "name": "DS_BMC_HELIX_API",
+            "pluginId": "json-datasource",
+            "pluginName": "BMC Helix API",
+            "type": "datasource"
+        },
+        {
+            "description": "",
+            "label": "api_ver",
+            "name": "VAR_API_VER",
+            "type": "constant",
+            "value": "v1.13"
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations \u0026 Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 581567,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "links": [],
+                    "mappings": []
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 7,
+                "x": 0,
+                "y": 0
+            },
+            "id": 128,
+            "options": {
+                "displayLabels": [],
+                "legend": {
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": true,
+                    "values": [
+                        "value"
+                    ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.3.0-beta.1",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Type"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "CN"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Issuer"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Expiry",
+                            "type": "time"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Detail where type has substring 'Certificate' and expiry_date \u003c currentTime() show type, common_name, issuer, expiry_date"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Certificates expired",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "first"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Issuer": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Subnet": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnets": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "ip count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "ip type": {
+                                "aggregations": []
+                            },
+                            "location": {
+                                "aggregations": []
+                            },
+                            "subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "orange",
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 0
+                                },
+                                "to": 10
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 11,
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                },
+                                "to": 50
+                            },
+                            "type": "range"
+                        },
+                        {
+                            "options": {
+                                "from": 51,
+                                "result": {
+                                    "color": "red",
+                                    "index": 2
+                                },
+                                "to": 5000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "Clear"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 7,
+                "x": 7,
+                "y": 0
+            },
+            "id": 129,
+            "options": {
+                "displayLabels": [],
+                "legend": {
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": true,
+                    "values": [
+                        "value"
+                    ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.3.0-beta.1",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Type"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "CN"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Issuer"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Expiry",
+                            "type": "time"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Detail where type has substring 'Certificate' and expiry_date \u003c (currentTime() + $days*24*3600*10000000) and expiry_date \u003e currentTime() show type, common_name, issuer, expiry_date"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Certificates expiring in $days days",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "first"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Issuer": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Subnet": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnets": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "ip count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "ip type": {
+                                "aggregations": []
+                            },
+                            "location": {
+                                "aggregations": []
+                            },
+                            "subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                }
+            ],
+            "type": "piechart"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "noValue": "Clear",
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "red",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 0
+                            },
+                            {
+                                "color": "orange",
+                                "value": 33
+                            },
+                            {
+                                "color": "red",
+                                "value": 66
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 10,
+                "x": 14,
+                "y": 0
+            },
+            "id": 133,
+            "options": {
+                "displayMode": "basic",
+                "maxVizHeight": 300,
+                "minVizHeight": 10,
+                "minVizWidth": 0,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "/^Self Signed \\(count\\)$/",
+                    "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "text": {
+                    "titleSize": 15
+                },
+                "valueMode": "color"
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.results[*]",
+                            "language": "jsonata",
+                            "name": "result"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Detail where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) and self_signed and not ca_version SHOW short_name, subject_alternative_names, self_signed, expiry_date"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Self Signed Certificates",
+            "transformations": [
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "kvp",
+                        "source": "result"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "0": false,
+                            "1": false,
+                            "result": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                            "0": "Name",
+                            "1": "SANs",
+                            "2": "Self Signed",
+                            "3": "Expiry"
+                        }
+                    }
+                },
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Issuer": {
+                                "aggregations": []
+                            },
+                            "Name": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "Self Signed": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Type": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "desc": true,
+                                "field": "Self Signed (count)"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "pattern": ".*ago",
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.*minute[s]?",
+                                "result": {
+                                    "color": "orange",
+                                    "index": 1
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.*hour[s]?",
+                                "result": {
+                                    "color": "orange",
+                                    "index": 2
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.a.day",
+                                "result": {
+                                    "color": "orange",
+                                    "index": 3
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.*days[s]?",
+                                "result": {
+                                    "color": "orange",
+                                    "index": 4
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.a.month",
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 5
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.*week[s]?",
+                                "result": {
+                                    "color": "yellow",
+                                    "index": 6
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.[1-3]?.month[s]?",
+                                "result": {
+                                    "color": "green",
+                                    "index": 7
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.[4-7]?.month[s]?",
+                                "result": {
+                                    "color": "green",
+                                    "index": 8
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.[8-9]?.month[s]?",
+                                "result": {
+                                    "color": "green",
+                                    "index": 9
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.a.year",
+                                "result": {
+                                    "color": "green",
+                                    "index": 10
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "in.*years[s]?",
+                                "result": {
+                                    "color": "green",
+                                    "index": 11
+                                }
+                            },
+                            "type": "regex"
+                        },
+                        {
+                            "options": {
+                                "pattern": "invalid time",
+                                "result": {
+                                    "color": "#000000",
+                                    "index": 12
+                                }
+                            },
+                            "type": "regex"
+                        }
+                    ],
+                    "noValue": "Clear",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "dateTimeAsSystem"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 13,
+                "w": 24,
+                "x": 0,
+                "y": 10
+            },
+            "id": 130,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "allValues"
+                    ],
+                    "fields": "/^Function whenWasThat$/",
+                    "values": true
+                },
+                "showPercentChange": false,
+                "text": {
+                    "titleSize": 20,
+                    "valueSize": 14
+                },
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.results[*]",
+                            "language": "jsonata",
+                            "name": "result"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "search Detail where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) order by expiry_date show type, common_name, whenWasThat(expiry_date), expiry"
+                        ],
+                        [
+                            "limit",
+                            "10000"
+                        ],
+                        [
+                            "format",
+                            "object"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Certificate expiry for next year",
+            "transformations": [
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "kvp",
+                        "keepTime": false,
+                        "replace": false,
+                        "source": "result"
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "expiry": true,
+                            "expiry_date": true,
+                            "issuer": true,
+                            "result": true,
+                            "type": false
+                        },
+                        "indexByName": {
+                            "Function whenWasThat": 3,
+                            "common_name": 2,
+                            "result": 0,
+                            "type": 1
+                        },
+                        "renameByName": {}
+                    }
+                }
+            ],
+            "type": "stat"
+        }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [
+        "demo"
+    ],
+    "templating": {
+        "list": [
+            {
+                "hide": 2,
+                "name": "api_ver",
+                "query": "${VAR_API_VER}",
+                "queryvalue": "v1.13",
+                "skipUrlSync": false,
+                "type": "constant"
+            },
+            {
+                "auto": false,
+                "auto_count": 30,
+                "auto_min": "10s",
+                "current": {
+                    "selected": false,
+                    "text": "30",
+                    "value": "30"
+                },
+                "hide": 0,
+                "label": "Days",
+                "name": "days",
+                "options": [
+                    {
+                        "selected": false,
+                        "text": "1",
+                        "value": "1"
+                    },
+                    {
+                        "selected": false,
+                        "text": "7",
+                        "value": "7"
+                    },
+                    {
+                        "selected": true,
+                        "text": "30",
+                        "value": "30"
+                    },
+                    {
+                        "selected": false,
+                        "text": "90",
+                        "value": "90"
+                    },
+                    {
+                        "selected": false,
+                        "text": "180",
+                        "value": "180"
+                    }
+                ],
+                "query": "1,7,30,90,180",
+                "queryValue": "",
+                "refresh": 2,
+                "skipUrlSync": false,
+                "type": "interval"
+            }
+        ]
+    },
+    "time": {
+        "from": "2023-10-27T23:00:00.000Z",
+        "to": "2025-02-26T00:00:00.000Z"
+    },
+    "timepicker": {
+        "hidden": true,
+        "refresh_intervals": [
+            "1h",
+            "3h",
+            "6h",
+            "12h",
+            "1d"
+        ]
+    },
+    "timezone": "",
+    "title": "Certificates",
+    "uid": "den5uvcd0bh8gb",
+    "version": 5,
+    "weekStart": ""
+}

@@ -1,0 +1,3417 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_BMC_HELIX API",
+      "label": "BMC Helix API",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "json-datasource",
+      "pluginName": "BMC Helix JSON API"
+    },
+    {
+      "name": "DS_BMC_HELIX",
+      "label": "BMC Helix",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "bmchelix-ade-datasource",
+      "pluginName": "BMC Helix"
+    },
+    {
+      "name": "VAR_API_VER",
+      "type": "constant",
+      "label": "api_ver",
+      "value": "v1.13",
+      "description": ""
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "bmchelix-ade-datasource",
+      "name": "BMC Helix",
+      "version": "3.0.1"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.2.2"
+    },
+    {
+      "type": "datasource",
+      "id": "json-datasource",
+      "name": "BMC Helix JSON API",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 113,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "name": "Host",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "Software",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "When",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "attribute",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][4]",
+              "language": "jsonpath",
+              "name": "Before"
+            },
+            {
+              "jsonPath": "$.[0].results[*][5]",
+              "language": "jsonpath",
+              "name": "After"
+            }
+          ],
+          "headers": [],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) SoftwareInstance, RuntimeEnvironment where age_count > 1 and (version defined and not version = \"\") SHOW split(name, \" on \")[1], type, version PROCESSWITH displayHistory((currentTime() - $days*24*3600*10000000), currentTime(), 2)"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "dc1d22ba-b28f-a16e-7181-f03ea4b01ccf",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT DISTINCT \r\n          BT_CHG_ASSOCIATIONS.`Request Description01` AS `Host`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` AS `ChangeID`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled Start Date` AS `Scheduled Start`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled End Date` AS `Scheduled End`\r\n         ,BT_CHG_ASSOCIATIONS.`Request Type01` AS `RequestType`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Submitter AS `Submitter`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.ASCHG AS `Assignee`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status` AS `ChangeRequestStatus`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Description AS `Description`\r\n\r\nFROM `AR System Schema`.`CHG:Infrastructure Change` BT_CHG_INFRASTRUCTURE_CHANGE LEFT OUTER JOIN `AR System Schema`.`CHG:Associations` BT_CHG_ASSOCIATIONS\r\n     ON ( BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` = BT_CHG_ASSOCIATIONS.`Request ID02` )\r\n        (\r\n          (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Implementation In Progress'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Request For Authorization'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Completed'\r\n          )\r\n        )\r\n",
+            "view": {
+              "filters": [],
+              "selectedFields": [],
+              "selectedView": {
+                "viewId": 3,
+                "viewName": "Change Management"
+              }
+            }
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "Software changes in past $days days",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "Before"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeRequestStatus": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Count": {
+                "aggregations": [
+                  "count"
+                ]
+              },
+              "Description": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Entry": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Kind": {
+                "aggregations": []
+              },
+              "Location": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "groupby"
+              },
+              "ScheduledEnd": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ScheduledStart": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Software": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Submitter": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Subnet": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Subnets": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "When": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ip count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ip type": {
+                "aggregations": []
+              },
+              "location": {
+                "aggregations": []
+              },
+              "subnet": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "After": 4,
+              "Assignee": 10,
+              "Before": 3,
+              "ChangeID": 6,
+              "ChangeRequestStatus": 11,
+              "Host": 0,
+              "ScheduledEnd": 8,
+              "ScheduledStart": 7,
+              "Software": 1,
+              "Submitter": 9,
+              "When (lastNotNull)": 5,
+              "attribute": 2
+            },
+            "renameByName": {
+              "When": "When",
+              "When (lastNotNull)": "When"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "allocated storage???",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "transparent",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "After"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "attribute"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Before"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 62,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "name": "Host"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "When",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "attribute",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "Before"
+            },
+            {
+              "jsonPath": "$.[0].results[*][4]",
+              "language": "jsonpath",
+              "name": "After"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) Host,NetworkDevice,StorageDevice WHERE age_count > 1 AND (logical_ram defined OR num_logical_processors defined)  SHOW local_fqdn, logical_ram, num_logical_processors PROCESS WITH displayHistory((currentTime() - $days*24*3600*10000000), currentTime(), 1)"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "ITSM",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "d4670390-2ac6-fb41-c5c3-4e525f8f31f0",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT DISTINCT \r\n          BT_CHG_ASSOCIATIONS.`Request Description01` AS `Host`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` AS `ChangeID`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled Start Date` AS `Scheduled Start`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled End Date` AS `Scheduled End`\r\n         ,BT_CHG_ASSOCIATIONS.`Request Type01` AS `RequestType`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Submitter AS `Submitter`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.ASCHG AS `Assignee`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status` AS `ChangeRequestStatus`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Description AS `Description`\r\n\r\nFROM `AR System Schema`.`CHG:Infrastructure Change` BT_CHG_INFRASTRUCTURE_CHANGE LEFT OUTER JOIN `AR System Schema`.`CHG:Associations` BT_CHG_ASSOCIATIONS\r\n     ON ( BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` = BT_CHG_ASSOCIATIONS.`Request ID02` )\r\n        (\r\n          (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Implementation In Progress'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Request For Authorization'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Completed'\r\n          )\r\n        )\r\n",
+            "view": {
+              "filters": [
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_ASSOCIATIONS_REQUEST_DESCRIPTION01",
+                  "columnName": "Request Description",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "filterVal": "vw-aus-rem-dv2r",
+                  "logicalTableName": "CHG:Associations",
+                  "operand": "AND",
+                  "relationalOperator": "CONTAINS",
+                  "target_column": "Request Description",
+                  "target_column_name": "Request Description01",
+                  "target_column_type": "COLUMN_NAME"
+                }
+              ],
+              "selectedFields": [
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_ASSOCIATIONS_REQUEST_DESCRIPTION01",
+                  "columnName": "Request Description",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Associations",
+                  "target_column": "Request Description",
+                  "target_column_name": "Request Description01",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_CHANGE_ID",
+                  "columnName": "Infrastructure Change ID",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Infrastructure Change ID",
+                  "target_column_name": "Infrastructure Change ID",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_SCHEDULED_START_DATE",
+                  "columnName": "Scheduled Start Date",
+                  "datatype": "DATE",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Scheduled Start Date",
+                  "target_column_name": "Scheduled Start Date",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_SCHEDULED_END_DATE",
+                  "columnName": "Scheduled End Date",
+                  "datatype": "DATE",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Scheduled End Date",
+                  "target_column_name": "Scheduled End Date",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_ASSOCIATIONS_REQUEST_TYPE01",
+                  "columnName": "Request Type",
+                  "datatype": "STRING",
+                  "fieldtype": "OTHER",
+                  "logicalTableName": "CHG:Associations",
+                  "target_column": "Request Type",
+                  "target_column_name": "Request Type01",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_SUBMITTER",
+                  "columnName": "Submitter",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Submitter",
+                  "target_column_name": "Submitter",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_ASCHG",
+                  "columnName": "Assignee",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Assignee",
+                  "target_column_name": "ASCHG",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_CHANGE_REQUEST_STATUS",
+                  "columnName": "Change Request Status",
+                  "datatype": "STRING",
+                  "fieldtype": "OTHER",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Change Request Status",
+                  "target_column_name": "Change Request Status",
+                  "target_column_type": "COLUMN_NAME"
+                }
+              ],
+              "selectedView": {
+                "viewId": 3,
+                "viewName": "Change Management"
+              }
+            }
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "Hardware changes in past $days days",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "A After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A RequestDescription": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeRequestStatus": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Count": {
+                "aggregations": [
+                  "count"
+                ]
+              },
+              "Description": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "InfrastructureChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Kind": {
+                "aggregations": []
+              },
+              "Location": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "groupby"
+              },
+              "RequestDescription": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "RequestType": {
+                "aggregations": []
+              },
+              "ScheduledEnd": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ScheduledStart": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Submitter": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Subnet": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Subnets": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "When": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ip count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ip type": {
+                "aggregations": []
+              },
+              "location": {
+                "aggregations": []
+              },
+              "subnet": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "Before"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "RequestType": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "After": 3,
+              "Assignee": 10,
+              "Before": 2,
+              "ChangeID": 5,
+              "ChangeRequestStatus": 11,
+              "Host": 0,
+              "RequestType": 8,
+              "ScheduledEnd": 7,
+              "ScheduledStart": 6,
+              "Submitter": 9,
+              "When (lastNotNull)": 4,
+              "attribute": 1
+            },
+            "renameByName": {
+              "When (lastNotNull)": "When"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 102,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "name": "Host"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "When",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "attribute",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "Before"
+            },
+            {
+              "jsonPath": "$.[0].results[*][4]",
+              "language": "jsonpath",
+              "name": "After"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) Host,NetworkDevice,StorageDevice WHERE age_count > 1 AND (os_version defined OR os_build defined) SHOW name, os_version, os_build PROCESS WITH displayHistory((currentTime() - $days*24*3600*10000000), currentTime(), 1)"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "e72456c4-f30d-8f76-5973-809a215dfb16",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT DISTINCT \r\n          BT_CHG_ASSOCIATIONS.`Request Description01` AS `Host`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` AS `ChangeID`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled Start Date` AS `Scheduled Start`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled End Date` AS `Scheduled End`\r\n         ,BT_CHG_ASSOCIATIONS.`Request Type01` AS `RequestType`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Submitter AS `Submitter`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.ASCHG AS `Assignee`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status` AS `ChangeRequestStatus`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Description AS `Description`\r\n\r\nFROM `AR System Schema`.`CHG:Infrastructure Change` BT_CHG_INFRASTRUCTURE_CHANGE LEFT OUTER JOIN `AR System Schema`.`CHG:Associations` BT_CHG_ASSOCIATIONS\r\n     ON ( BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` = BT_CHG_ASSOCIATIONS.`Request ID02` )\r\n        (\r\n          (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Implementation In Progress'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Request For Authorization'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Completed'\r\n          )\r\n        )\r\n"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "OS changes in past $days days",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "A After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "A attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeRequestStatus": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Count": {
+                "aggregations": [
+                  "count"
+                ]
+              },
+              "Description": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Kind": {
+                "aggregations": []
+              },
+              "Location": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "groupby"
+              },
+              "ScheduledEnd": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ScheduledStart": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Submitter": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Subnet": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Subnets": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "When": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ip count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ip type": {
+                "aggregations": []
+              },
+              "location": {
+                "aggregations": []
+              },
+              "subnet": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "Before"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "After": 3,
+              "Assignee": 9,
+              "Before": 2,
+              "ChangeID": 5,
+              "ChangeRequestStatus": 10,
+              "Host": 0,
+              "ScheduledEnd": 7,
+              "ScheduledStart": 6,
+              "Submitter": 8,
+              "When (lastNotNull)": 4,
+              "attribute": 1
+            },
+            "renameByName": {
+              "When (lastNotNull)": "When"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 64,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "name": "Host"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "When",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "attribute",
+              "type": "string"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "Before"
+            },
+            {
+              "jsonPath": "$.[0].results[*][4]",
+              "language": "jsonpath",
+              "name": "After"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH VirtualMachine where age_count > 1 SHOW vm_name, ram, num_processors, cores_per_socket, vm_uuid, vm_tools_version PROCESS WITH displayHistory((currentTime() - $days*24*3600*10000000), currentTime(), 1)"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "fef434de-fe74-55d1-6c33-8ed98e7e6a38",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT DISTINCT \r\n          BT_CHG_ASSOCIATIONS.`Request Description01` AS `Host`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` AS `ChangeID`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled Start Date` AS `Scheduled Start`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled End Date` AS `Scheduled End`\r\n         ,BT_CHG_ASSOCIATIONS.`Request Type01` AS `RequestType`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Submitter AS `Submitter`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.ASCHG AS `Assignee`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status` AS `ChangeRequestStatus`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Description AS `Description`\r\n\r\nFROM `AR System Schema`.`CHG:Infrastructure Change` BT_CHG_INFRASTRUCTURE_CHANGE LEFT OUTER JOIN `AR System Schema`.`CHG:Associations` BT_CHG_ASSOCIATIONS\r\n     ON ( BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` = BT_CHG_ASSOCIATIONS.`Request ID02` )\r\n        (\r\n          (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Implementation In Progress'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Request For Authorization'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Completed'\r\n          )\r\n        )\r\n"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "Virtual Machine changes in past $days days",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeRequestStatus": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Count": {
+                "aggregations": [
+                  "count"
+                ]
+              },
+              "Description": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Kind": {
+                "aggregations": []
+              },
+              "Location": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "groupby"
+              },
+              "ScheduledEnd": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ScheduledStart": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Submitter": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Subnet": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Subnets": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "When": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ip count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ip type": {
+                "aggregations": []
+              },
+              "location": {
+                "aggregations": []
+              },
+              "subnet": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "Before"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "After": 3,
+              "Assignee": 9,
+              "Before": 2,
+              "ChangeID": 5,
+              "ChangeRequestStatus": 10,
+              "Host": 0,
+              "ScheduledEnd": 7,
+              "ScheduledStart": 6,
+              "Submitter": 8,
+              "When (lastNotNull)": 4,
+              "attribute": 1
+            },
+            "renameByName": {
+              "When (lastNotNull)": "When"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 516
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CI"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Submitter"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 107,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "dc1d22ba-b28f-a16e-7181-f03ea4b01ccf",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT DISTINCT \r\n          BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` AS `ChangeID`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled Start Date` AS `Scheduled Start`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Scheduled End Date` AS `Scheduled End`\r\n         ,BT_CHG_ASSOCIATIONS.`Request Type01` AS `RequestType`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Submitter AS `Submitter`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.ASCHG AS `Assignee`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status` AS `ChangeRequestStatus`\r\n         ,BT_CHG_INFRASTRUCTURE_CHANGE.Description AS `Description`\r\n\r\nFROM `AR System Schema`.`CHG:Infrastructure Change` BT_CHG_INFRASTRUCTURE_CHANGE LEFT OUTER JOIN `AR System Schema`.`CHG:Associations` BT_CHG_ASSOCIATIONS\r\n     ON ( BT_CHG_INFRASTRUCTURE_CHANGE.`Infrastructure Change ID` = BT_CHG_ASSOCIATIONS.`Request ID02` )\r\nWHERE \r\n        (\r\n          (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Implementation In Progress'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Request For Authorization'\r\n          )\r\n      OR (\r\n              BT_CHG_INFRASTRUCTURE_CHANGE.`Change Request Status`  = 'Completed'\r\n          )\r\n        )\r\n",
+            "view": {
+              "filters": [
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_CHANGE_REQUEST_STATUS",
+                  "columnName": "Change Request Status",
+                  "datatype": "STRING",
+                  "fieldtype": "OTHER",
+                  "filterVal": "Completed",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "operand": "AND",
+                  "relationalOperator": "EQUAL",
+                  "target_column": "Change Request Status",
+                  "target_column_name": "Change Request Status",
+                  "target_column_type": "COLUMN_NAME"
+                }
+              ],
+              "selectedFields": [
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_CHANGE_ID",
+                  "columnName": "Infrastructure Change ID",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Infrastructure Change ID",
+                  "target_column_name": "Infrastructure Change ID",
+                  "target_column_type": "COLUMN_NAME"
+                },
+                {
+                  "aggregation": "NONE",
+                  "columnId": "CHG_DESCRIPTION",
+                  "columnName": "Description",
+                  "datatype": "STRING",
+                  "fieldtype": "DIMENSION",
+                  "logicalTableName": "CHG:Infrastructure Change",
+                  "target_column": "Description",
+                  "target_column_name": "Description",
+                  "target_column_type": "COLUMN_NAME"
+                }
+              ],
+              "selectedView": {
+                "viewId": 3,
+                "viewName": "Change Management"
+              }
+            }
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "Change records",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "After": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Before": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ChangeRequestStatus": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Count": {
+                "aggregations": [
+                  "count"
+                ]
+              },
+              "Description": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Entry": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Host": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Kind": {
+                "aggregations": []
+              },
+              "Location": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "groupby"
+              },
+              "ScheduledEnd": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ScheduledStart": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Software": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Submitter": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Subnet": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Subnets": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "When": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "attribute": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ip count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ip type": {
+                "aggregations": []
+              },
+              "location": {
+                "aggregations": []
+              },
+              "subnet": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ScheduledEnd": true,
+              "ScheduledStart": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "After": 4,
+              "Assignee": 10,
+              "Before": 3,
+              "ChangeID": 6,
+              "ChangeRequestStatus": 11,
+              "Host": 0,
+              "ScheduledEnd": 8,
+              "ScheduledStart": 7,
+              "Software": 1,
+              "Submitter": 9,
+              "When (lastNotNull)": 5,
+              "attribute": 2
+            },
+            "renameByName": {
+              "Host": "CI",
+              "When": "When",
+              "When (lastNotNull)": "When"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "ChangeID"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "to": 1
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 2,
+                "result": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "to": 10
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 11,
+                "result": {
+                  "color": "red",
+                  "index": 3
+                },
+                "to": 10000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 8
+      },
+      "id": 116,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 113,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Unverified Software changes in past $days days",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "ChangeID"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "to": 1
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 2,
+                "result": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "to": 10
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 11,
+                "result": {
+                  "color": "red",
+                  "index": 3
+                },
+                "to": 10000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 8
+      },
+      "id": 104,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 62,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Unverified Hardware changes in past $days days",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "ChangeID"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "to": 1
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 2,
+                "result": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "to": 10
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 11,
+                "result": {
+                  "color": "red",
+                  "index": 3
+                },
+                "to": 10000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 8
+      },
+      "id": 109,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 102,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Unverified OS changes in past $days days",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "ChangeID"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "to": 1
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 2,
+                "result": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "to": 10
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 11,
+                "result": {
+                  "color": "red",
+                  "index": 3
+                },
+                "to": 10000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 8
+      },
+      "id": 110,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^attribute$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 64,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Unverified VM changes in past $days days",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "ChangeID"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 111,
+      "panels": [],
+      "title": "Detail",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 516
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 115,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "ChangeID"
+          }
+        ]
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 113,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Software changes in past $days days",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 516
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 118,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 62,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Hardware changes in past $days days",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 516
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 119,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 102,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Operating System changes in past $days days",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entry"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 516
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 65
+      },
+      "id": 120,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 64,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Virtual Machine changes in past $days days",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [
+    "demo"
+  ],
+  "templating": {
+    "list": [
+      {
+        "hide": 2,
+        "name": "api_ver",
+        "query": "${VAR_API_VER}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_API_VER}",
+          "text": "${VAR_API_VER}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_API_VER}",
+            "text": "${VAR_API_VER}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "auto": false,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "selected": false,
+          "text": "30",
+          "value": "30"
+        },
+        "hide": 0,
+        "label": "Days",
+        "name": "days",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "7",
+            "value": "7"
+          },
+          {
+            "selected": true,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "90",
+            "value": "90"
+          },
+          {
+            "selected": false,
+            "text": "180",
+            "value": "180"
+          }
+        ],
+        "query": "1,7,30,90,180",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2d",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "1h",
+      "3h",
+      "6h",
+      "12h",
+      "1d"
+    ]
+  },
+  "timezone": "Asia/Ho_Chi_Minh",
+  "title": "Drift Management",
+  "uid": "cen5uxfgrpr0gd",
+  "version": 15,
+  "weekStart": ""
+}

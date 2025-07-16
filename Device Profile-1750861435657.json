@@ -1,0 +1,3881 @@
+{
+    "__elements": {},
+    "__inputs": [
+        {
+            "label": "BMC Helix API",
+            "name": "DS_BMC_HELIX_API",
+            "pluginId": "json-datasource",
+            "pluginName": "BMC Helix API",
+            "type": "datasource"
+        },
+        {
+            "label": "BMC Helix",
+            "name": "DS_BMC_HELIX",
+            "pluginId": "bmchelix-ade-datasource",
+            "pluginName": "BMC Helix",
+            "type": "datasource"
+        },
+        {
+            "description": "",
+            "label": "api_ver",
+            "name": "VAR_API_VER",
+            "type": "constant",
+            "value": "v1.13"
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations \u0026 Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 581570,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "default": false,
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Name"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 245
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Location"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 111
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Last scanned during"
+                        },
+                        "properties": []
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Company"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 156
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Scope"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 103
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 132,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "language": "jsonpath",
+                            "name": "Name"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "Scope"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Last Updated",
+                            "type": "time"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Operating System"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][4]",
+                            "language": "jsonpath",
+                            "name": "Kernel"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][5]",
+                            "language": "jsonpath",
+                            "name": "OS Vendor"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][6]",
+                            "language": "jsonpath",
+                            "name": "Supported Until"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][7]",
+                            "language": "jsonpath",
+                            "name": "Packages",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][8]",
+                            "language": "jsonpath",
+                            "name": "Vendor"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][9]",
+                            "language": "jsonpath",
+                            "name": "Model"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][10]",
+                            "language": "jsonpath",
+                            "name": "Ram",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][11]",
+                            "language": "jsonpath",
+                            "name": "Serial"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][12]",
+                            "language": "jsonpath",
+                            "name": "CPU"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][13]",
+                            "language": "jsonpath",
+                            "name": "Sockets",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][14]",
+                            "language": "jsonpath",
+                            "name": "Cores per socket",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][15]",
+                            "language": "jsonpath",
+                            "name": "Logical Processors",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][16]",
+                            "language": "jsonpath",
+                            "name": "all_fqdn"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][17]",
+                            "language": "jsonpath",
+                            "name": "FullyQualified"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][18]",
+                            "language": "jsonpath",
+                            "name": "IP Address"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][19]",
+                            "language": "jsonpath",
+                            "name": "MAC Address"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][20]",
+                            "language": "jsonpath",
+                            "name": "Interface Name"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][21]",
+                            "language": "jsonpath",
+                            "name": "Company"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][22]",
+                            "language": "jsonpath",
+                            "name": "Location"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][23]",
+                            "language": "jsonpath",
+                            "name": "Scan"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][24]",
+                            "language": "jsonpath",
+                            "name": "Boot time"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][25]",
+                            "language": "jsonpath",
+                            "name": "Patches"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][26]",
+                            "language": "jsonpath",
+                            "name": "Firmware Version"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][27]",
+                            "language": "jsonpath",
+                            "name": "Firmware Date"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind WHERE name = '$dev_list' SHOW  (name or sysname),  scope,  friendlyTime(last_update_success),  (os OR os_class OR #ManagedElement:Management:Manager:.os_class),  (kernel OR os_type + ' ' + os_version OR firmware_version OR #ManagedElement:Management:Manager:.firmware_version),  (os_vendor OR #ManagedElement:Management:Manager:.os_vendor),  formatTime(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date, \"%B %Y\"),  package_count,  vendor,  model,  (ram/1024),  serial,  processor_type,  num_processors,  cores_per_processor, num_logical_processors, __all_dns_names[0],  local_fqdn,  explode(#DeviceWithAddress:DeviceAddress::IPAddress.ip_addr), #DeviceWithAddress:DeviceAddress::IPAddress.#:InterfaceAddress:InterfaceWithAddress:NetworkInterface.mac_addr,  #DeviceWithAddress:DeviceAddress::IPAddress.#:InterfaceAddress:InterfaceWithAddress:NetworkInterface.interface_name,  #InferredElement:Inference:Associate:DiscoveryAccess.#Member:List:List:DiscoveryRun.cdm_company,  #ElementInLocation:Location:Location:Location.name,  #InferredElement:Inference:Associate:DiscoveryAccess.#Member:List:List:DiscoveryRun.label,  friendlyTime(boot_time),  patch_count,  firmware_version,  firmware_date"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Disco",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "FullyQualified"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "BHOM ID"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Tenant ID"
+                        }
+                    ],
+                    "headers": [],
+                    "hide": false,
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH MonitoredDevice WHERE device_dns_name = '$fqdn' SHOW device_dns_name, entity_id, tenant_id"
+                        ],
+                        [
+                            "limit",
+                            "10"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "BHOM",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                {
+                    "datasource": {
+                        "type": "bmchelix-ade-datasource",
+                        "uid": "${DS_BMC_HELIX}"
+                    },
+                    "hide": false,
+                    "refId": "ITSM",
+                    "sourceQuery": {
+                        "dstType": "SERVER",
+                        "form": {
+                            "calculatedFieldList": [
+                                {
+                                    "hideCalculatedField": true,
+                                    "selectionAggregation": false,
+                                    "selectionAlias": "CF1",
+                                    "selectionCalculatedFieldName": "",
+                                    "selectionCalculatedFields": "Select Calculated Field",
+                                    "selectionQuery": "Select Column Name"
+                                }
+                            ],
+                            "dstType": "SERVER",
+                            "groupByField": [
+                                {
+                                    "selectionAlias": "",
+                                    "selectionColumnName": "Select Column Name",
+                                    "selectionSrcAlias": "",
+                                    "selectionType": "Field"
+                                }
+                            ],
+                            "havingQualification": [
+                                {
+                                    "collapseGroup": true,
+                                    "groupCounter": 1,
+                                    "groupHierarchy": "G1",
+                                    "leftOperand": {
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Field",
+                                        "isCalcField": false
+                                    },
+                                    "logicalOperator": "",
+                                    "qualificationType": "Relational",
+                                    "relationalOperator": "Equal",
+                                    "rightOperand": {
+                                        "fieldDataType": "CHAR",
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Value",
+                                        "fieldValue": ""
+                                    },
+                                    "showGroup": false,
+                                    "splitGroup": false
+                                }
+                            ],
+                            "hideGroupBy": true,
+                            "hideHaving": true,
+                            "hideQual": true,
+                            "hideSort": true,
+                            "maxEntries": 100,
+                            "meta": {
+                                "hideJson": false,
+                                "hideSql": false,
+                                "metaCalculatedFields": [],
+                                "metaColumnNames": [],
+                                "metaFullFormNames": [],
+                                "metaGroupNames": [],
+                                "rawJson": "",
+                                "rawSql": "",
+                                "syncToSql": false
+                            },
+                            "outputNumMatches": true,
+                            "qualification": [
+                                {
+                                    "collapseGroup": true,
+                                    "groupCounter": 1,
+                                    "groupHierarchy": "G1",
+                                    "leftOperand": {
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Field",
+                                        "isCalcField": false
+                                    },
+                                    "logicalOperator": "",
+                                    "qualificationType": "Relational",
+                                    "relationalOperator": "Equal",
+                                    "rightOperand": {
+                                        "fieldDataType": "CHAR",
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Value",
+                                        "fieldValue": ""
+                                    },
+                                    "showGroup": false,
+                                    "splitGroup": false
+                                }
+                            ],
+                            "selectionList": [
+                                {
+                                    "selectionAlias": "C1",
+                                    "selectionColumnName": "Select Column Name",
+                                    "selectionSrcAlias": "",
+                                    "selectionType": "Field"
+                                }
+                            ],
+                            "sortField": [
+                                {
+                                    "sortOperand": {
+                                        "selectionAlias": "",
+                                        "selectionColumnName": "Select Column Name",
+                                        "selectionSrcAlias": "",
+                                        "selectionType": "Field"
+                                    },
+                                    "sortOrder": "ASC"
+                                }
+                            ],
+                            "sourceList": [
+                                {
+                                    "sourceAlias": "",
+                                    "sourceFormName": "Select Form Name",
+                                    "sourceHideClause": false,
+                                    "sourceJoinClause": [
+                                        {
+                                            "collapseGroup": true,
+                                            "groupCounter": 1,
+                                            "groupHierarchy": "G1",
+                                            "leftOperand": {
+                                                "fieldName": "Select Column Name",
+                                                "fieldSourceAlias": "",
+                                                "fieldType": "Field",
+                                                "isCalcField": false
+                                            },
+                                            "logicalOperator": "",
+                                            "qualificationType": "Relational",
+                                            "relationalOperator": "Equal",
+                                            "rightOperand": {
+                                                "fieldDataType": "CHAR",
+                                                "fieldName": "Select Column Name",
+                                                "fieldSourceAlias": "",
+                                                "fieldType": "Field",
+                                                "fieldValue": ""
+                                            },
+                                            "showGroup": false,
+                                            "splitGroup": false
+                                        }
+                                    ],
+                                    "sourceType": "Form"
+                                }
+                            ],
+                            "startEntry": 0,
+                            "useAlias": true,
+                            "useDistinct": true,
+                            "useLocale": true,
+                            "useOneEqualOne": false
+                        },
+                        "formatAs": "Table",
+                        "guid": "3c1f8aa2-78fa-1575-e8a4-c158d0d6ac81",
+                        "header": {
+                            "headerList": [
+                                {
+                                    "arKey": "date_format",
+                                    "arType": "body",
+                                    "collapseHeader": false,
+                                    "dataType": "string",
+                                    "text": "Date Format",
+                                    "value": "DD/MM/YYYY"
+                                }
+                            ],
+                            "hideHeader": true
+                        },
+                        "queryType": "SQL",
+                        "rawQuery": "SELECT DISTINCT \r\n          BT_AST_COMPUTERSYSTEM.Name AS `FullyQualified`\r\n         ,BT_AST_BASEELEMENT.`Cost Center` AS `CostCenter`\r\n         ,BT_AST_COMPUTERSYSTEM.Owner_name AS `Owner`\r\n         ,BT_AST_BASEELEMENT.`Purchase Date` AS `Purchased`\r\n         ,BT_AST_BASEELEMENT.AssetLifecycleStatus AS `Status`\r\n\r\n\r\nFROM `AR System Schema`.`AST:BaseElement` BT_AST_BASEELEMENT LEFT OUTER JOIN `AR System Schema`.`AST:ComputerSystem` BT_AST_COMPUTERSYSTEM\r\n     ON ( ( BT_AST_BASEELEMENT.`Reconciliation Identity`  =  BT_AST_COMPUTERSYSTEM.`Reconciliation Identity` ) AND ( BT_AST_BASEELEMENT.`Data Set Id`  =  BT_AST_COMPUTERSYSTEM.`Data Set Id` ) )\r\n\r\nWHERE \r\n  (\r\n    (\r\n      BT_AST_BASEELEMENT.`Data Set Id`  = 'BMC.ASSET'\r\n    )\r\n    AND\r\n    (\r\n      BT_AST_COMPUTERSYSTEM.`DNS Host Name` = $dev_list\r\n    )\r\n  )\r\n",
+                        "view": {
+                            "selectedFields": [
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "BC_AST_BASEELEMENT_PURCHASE_DATE",
+                                    "columnName": "Purchase Date",
+                                    "datatype": "DATE",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "AST:BaseElement",
+                                    "target_column": "Purchase Date",
+                                    "target_column_name": "Purchase Date",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "BC_AST_BASEELEMENT_ASSETLIFECYCLESTATUS",
+                                    "columnName": "Asset Lifecycle Status",
+                                    "datatype": "STRING",
+                                    "fieldtype": "OTHER",
+                                    "logicalTableName": "AST:BaseElement",
+                                    "target_column": "Asset Lifecycle Status",
+                                    "target_column_name": "AssetLifecycleStatus",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "BC_AST_COMPUTERSYSTEM_DNS_HOST_NAME",
+                                    "columnName": "DNS Host Name",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "AST:ComputerSystem",
+                                    "target_column": "DNS Host Name",
+                                    "target_column_name": "DNS Host Name",
+                                    "target_column_type": "COLUMN_NAME"
+                                }
+                            ],
+                            "selectedView": {
+                                "viewId": 9,
+                                "viewName": "Asset Management"
+                            }
+                        }
+                    },
+                    "sourceType": "remedy"
+                },
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "FullyQualified"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "BCO_ID",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "Benchmark"
+                        }
+                    ],
+                    "headers": [],
+                    "hide": false,
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH OptimizeSystem WHERE (entity_name = '$dev_list' OR HOSTNAME = '$dev_list') AND BYBENCHMARK_VALUE SHOW HOSTNAME, entity_id, BYBENCHMARK_VALUE"
+                        ],
+                        [
+                            "limit",
+                            "10"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Capacity",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Identity",
+            "transformations": [
+                {
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "joinByField",
+                    "options": {
+                        "byField": "FullyQualified",
+                        "mode": "outer"
+                    }
+                },
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "kvp",
+                        "keepTime": false,
+                        "replace": false,
+                        "source": "Benchmark"
+                    }
+                },
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "BHOM BHOM ID": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "BHOM ID": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "BHOM Tenant ID": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Benchmark": {
+                                "aggregations": []
+                            },
+                            "Boot time": {
+                                "aggregations": []
+                            },
+                            "Company": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "CostCenter": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Company": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Fully Qualified": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Operating System": {
+                                "aggregations": []
+                            },
+                            "Disco Scan": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Disco Scope": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "FQDN": {
+                                "aggregations": []
+                            },
+                            "Full Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Fully Qualified": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "FullyQualified": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Kernel": {
+                                "aggregations": []
+                            },
+                            "Last Updated": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "OS Vendor": {
+                                "aggregations": []
+                            },
+                            "Operating System": {
+                                "aggregations": []
+                            },
+                            "Owner": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Ownername": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Packages": {
+                                "aggregations": []
+                            },
+                            "Patches": {
+                                "aggregations": []
+                            },
+                            "Purchased": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "SPECINTRATE2000": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Scan": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Scope": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Status": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Supported Until": {
+                                "aggregations": []
+                            },
+                            "Tenant ID": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "kind": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "local_fqdn": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "BHOM ID": true,
+                            "Fully Qualified": false,
+                            "FullyQualified": true,
+                            "Kernel": true,
+                            "OS Vendor": true,
+                            "Operating System": true,
+                            "Packages": true,
+                            "Supported Until": true,
+                            "Tenant ID": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                            "BHOM ID": 7,
+                            "Company": 4,
+                            "CostCenter": 10,
+                            "FullyQualified": 1,
+                            "Last Updated": 3,
+                            "Location": 5,
+                            "Name": 0,
+                            "Owner": 9,
+                            "Purchased": 11,
+                            "Scan": 6,
+                            "Scope": 2,
+                            "Status": 12,
+                            "Tenant ID": 8
+                        },
+                        "renameByName": {
+                            "Ownername": "Owner",
+                            "SPECINTRATE2000": "SPEC Benchmark",
+                            "Scan": "Last scanned during",
+                            "local_fqdn": "FullyQualified"
+                        }
+                    }
+                },
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "number",
+                                "targetField": "SPEC Benchmark"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "-": {
+                                    "color": "transparent",
+                                    "index": 1
+                                }
+                            },
+                            "type": "value"
+                        },
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "green",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "-",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byValue",
+                            "options": {
+                                "op": "gt",
+                                "reducer": "logmin",
+                                "value": 0
+                            }
+                        },
+                        "properties": []
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 0,
+                "y": 4
+            },
+            "id": 159,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "/^kind$/",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 156,
+                    "refId": "A"
+                }
+            ],
+            "title": "Services",
+            "transformations": [
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "desc": false,
+                                "field": "name"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byValue",
+                            "options": {
+                                "op": "gt",
+                                "reducer": "logmin",
+                                "value": 0
+                            }
+                        },
+                        "properties": []
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 2,
+                "y": 4
+            },
+            "id": 162,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "/^Software$/",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 147,
+                    "refId": "A",
+                    "withTransforms": true
+                }
+            ],
+            "title": "End of Life Software",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 4,
+                "y": 4
+            },
+            "id": 167,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "/^Software$/",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 153,
+                    "refId": "A",
+                    "withTransforms": true
+                }
+            ],
+            "title": "Software changes",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 6,
+                "y": 4
+            },
+            "id": 168,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "/^attribute$/",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 154,
+                    "refId": "A",
+                    "withTransforms": true
+                }
+            ],
+            "title": "Hardware changes",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byValue",
+                            "options": {
+                                "op": "gt",
+                                "reducer": "logmin",
+                                "value": 0
+                            }
+                        },
+                        "properties": []
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 8,
+                "y": 4
+            },
+            "id": 165,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "bmchelix-ade-datasource",
+                        "uid": "${DS_BMC_HELIX}"
+                    },
+                    "hide": false,
+                    "refId": "A",
+                    "sourceQuery": {
+                        "alias": "",
+                        "bucketAggs": [
+                            {
+                                "field": "source_hostname.keyword",
+                                "id": "2",
+                                "settings": {
+                                    "min_doc_count": "1",
+                                    "order": "desc",
+                                    "orderBy": "_term",
+                                    "size": "10"
+                                },
+                                "type": "terms"
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "id": "1",
+                                "type": "count"
+                            }
+                        ],
+                        "query": "(!status:CLOSED AND !status:BLACKOUT) AND (severity:CRITICAL OR severity:MAJOR) AND (source_hostname.keyword:$dev_list OR source_hostname.keyword:$fqdn)",
+                        "timeField": "creation_time"
+                    },
+                    "sourceType": "event"
+                },
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "source_hostname.keyword"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "ent_id"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "ten_id"
+                        }
+                    ],
+                    "headers": [],
+                    "hide": false,
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH MonitoredDevice WHERE device_dns_name matches '$fqdn' SHOW (split(device_dns_name ,'.')[0] OR device_dns_name), entity_id, tenant_id"
+                        ],
+                        [
+                            "limit",
+                            "10"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "B",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Events",
+            "transformations": [
+                {
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "After": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Before": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Host": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Software": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Subnet": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnets": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Version": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "When": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "attribute": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "ent_id": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "ip count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "ip type": {
+                                "aggregations": []
+                            },
+                            "location": {
+                                "aggregations": []
+                            },
+                            "source_hostname.keyword": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "ten_id": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "ent_id": false,
+                            "ten_id": false
+                        },
+                        "includeByName": {},
+                        "indexByName": {},
+                        "renameByName": {
+                            "Count (lastNotNull)": "count",
+                            "When (lastNotNull)": "When",
+                            "source_hostname.keyword": ""
+                        }
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "field": "source_hostname.keyword"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "default": false,
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "red",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 10,
+                "y": 4
+            },
+            "id": 171,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "count"
+                    ],
+                    "fields": "/^IncidentNumber$/",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "bmchelix-ade-datasource",
+                        "uid": "${DS_BMC_HELIX}"
+                    },
+                    "hide": false,
+                    "refId": "INC",
+                    "sourceQuery": {
+                        "dstType": "SERVER",
+                        "form": {
+                            "calculatedFieldList": [
+                                {
+                                    "hideCalculatedField": true,
+                                    "selectionAggregation": false,
+                                    "selectionAlias": "CF1",
+                                    "selectionCalculatedFieldName": "",
+                                    "selectionCalculatedFields": "Select Calculated Field",
+                                    "selectionQuery": "Select Column Name"
+                                }
+                            ],
+                            "dstType": "SERVER",
+                            "groupByField": [
+                                {
+                                    "selectionAlias": "",
+                                    "selectionColumnName": "Select Column Name",
+                                    "selectionSrcAlias": "",
+                                    "selectionType": "Field"
+                                }
+                            ],
+                            "havingQualification": [
+                                {
+                                    "collapseGroup": true,
+                                    "groupCounter": 1,
+                                    "groupHierarchy": "G1",
+                                    "leftOperand": {
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Field",
+                                        "isCalcField": false
+                                    },
+                                    "logicalOperator": "",
+                                    "qualificationType": "Relational",
+                                    "relationalOperator": "Equal",
+                                    "rightOperand": {
+                                        "fieldDataType": "CHAR",
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Value",
+                                        "fieldValue": ""
+                                    },
+                                    "showGroup": false,
+                                    "splitGroup": false
+                                }
+                            ],
+                            "hideGroupBy": true,
+                            "hideHaving": true,
+                            "hideQual": true,
+                            "hideSort": true,
+                            "maxEntries": 100,
+                            "meta": {
+                                "hideJson": false,
+                                "hideSql": false,
+                                "metaCalculatedFields": [],
+                                "metaColumnNames": [],
+                                "metaFullFormNames": [],
+                                "metaGroupNames": [],
+                                "rawJson": "",
+                                "rawSql": "",
+                                "syncToSql": false
+                            },
+                            "outputNumMatches": true,
+                            "qualification": [
+                                {
+                                    "collapseGroup": true,
+                                    "groupCounter": 1,
+                                    "groupHierarchy": "G1",
+                                    "leftOperand": {
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Field",
+                                        "isCalcField": false
+                                    },
+                                    "logicalOperator": "",
+                                    "qualificationType": "Relational",
+                                    "relationalOperator": "Equal",
+                                    "rightOperand": {
+                                        "fieldDataType": "CHAR",
+                                        "fieldName": "Select Column Name",
+                                        "fieldSourceAlias": "",
+                                        "fieldType": "Value",
+                                        "fieldValue": ""
+                                    },
+                                    "showGroup": false,
+                                    "splitGroup": false
+                                }
+                            ],
+                            "selectionList": [
+                                {
+                                    "selectionAlias": "C1",
+                                    "selectionColumnName": "Select Column Name",
+                                    "selectionSrcAlias": "",
+                                    "selectionType": "Field"
+                                }
+                            ],
+                            "sortField": [
+                                {
+                                    "sortOperand": {
+                                        "selectionAlias": "",
+                                        "selectionColumnName": "Select Column Name",
+                                        "selectionSrcAlias": "",
+                                        "selectionType": "Field"
+                                    },
+                                    "sortOrder": "ASC"
+                                }
+                            ],
+                            "sourceList": [
+                                {
+                                    "sourceAlias": "",
+                                    "sourceFormName": "Select Form Name",
+                                    "sourceHideClause": false,
+                                    "sourceJoinClause": [
+                                        {
+                                            "collapseGroup": true,
+                                            "groupCounter": 1,
+                                            "groupHierarchy": "G1",
+                                            "leftOperand": {
+                                                "fieldName": "Select Column Name",
+                                                "fieldSourceAlias": "",
+                                                "fieldType": "Field",
+                                                "isCalcField": false
+                                            },
+                                            "logicalOperator": "",
+                                            "qualificationType": "Relational",
+                                            "relationalOperator": "Equal",
+                                            "rightOperand": {
+                                                "fieldDataType": "CHAR",
+                                                "fieldName": "Select Column Name",
+                                                "fieldSourceAlias": "",
+                                                "fieldType": "Field",
+                                                "fieldValue": ""
+                                            },
+                                            "showGroup": false,
+                                            "splitGroup": false
+                                        }
+                                    ],
+                                    "sourceType": "Form"
+                                }
+                            ],
+                            "startEntry": 0,
+                            "useAlias": true,
+                            "useDistinct": true,
+                            "useLocale": true,
+                            "useOneEqualOne": false
+                        },
+                        "formatAs": "Table",
+                        "guid": "b51d4557-744d-2539-86bf-d28f3a71e991",
+                        "header": {
+                            "headerList": [
+                                {
+                                    "arKey": "date_format",
+                                    "arType": "body",
+                                    "collapseHeader": false,
+                                    "dataType": "string",
+                                    "text": "Date Format",
+                                    "value": "DD/MM/YYYY"
+                                }
+                            ],
+                            "hideHeader": true
+                        },
+                        "queryType": "SQL",
+                        "rawQuery": "SELECT DISTINCT \r\n          HPD_HELP_DESK.Status AS `Status`\r\n         ,HPD_HELP_DESK.`Incident Number` AS `IncidentNumber`\r\n         ,AST_BASEELEMENT.Name AS `CIName`\r\n        --  ,HPD_HELP_DESK.Description AS `Summary`\r\n\r\nFROM `AR System Schema`.`AST:BaseElement` AST_BASEELEMENT RIGHT OUTER JOIN \r\n     ( \r\n      `AR System Schema`.`HPD:Help Desk` HPD_HELP_DESK LEFT OUTER JOIN `AR System Schema`.`HPD:Associations` HPD_ASSOCIATIONS\r\n      ON ( HPD_HELP_DESK.`Incident Number` = HPD_ASSOCIATIONS.`Request ID02` )\r\n     ) \r\n     ON ( AST_BASEELEMENT.`Reconciliation Identity` = HPD_ASSOCIATIONS.`Request ID01` )\r\n\r\nWHERE \r\n        (\r\n          (\r\n              HPD_HELP_DESK.Status  \u003c\u003e 'Resolved'\r\n          )\r\n      AND (\r\n              HPD_HELP_DESK.Status  \u003c\u003e 'Closed'\r\n          )\r\n      AND (\r\n              AST_BASEELEMENT.Name  LIKE $dev_list\r\n          )\r\n        )\r\n",
+                        "view": {
+                            "filters": [
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "HPD_STATUS",
+                                    "columnName": "Status",
+                                    "datatype": "STRING",
+                                    "fieldtype": "OTHER",
+                                    "filterVal": "Resolved",
+                                    "logicalTableName": "HPD:Help Desk",
+                                    "operand": "AND",
+                                    "relationalOperator": "NOT_EQUAL",
+                                    "target_column": "Status",
+                                    "target_column_name": "Status",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "HPD_STATUS",
+                                    "columnName": "Status",
+                                    "datatype": "STRING",
+                                    "fieldtype": "OTHER",
+                                    "filterVal": "Closed",
+                                    "logicalTableName": "HPD:Help Desk",
+                                    "operand": "AND",
+                                    "relationalOperator": "NOT_EQUAL",
+                                    "target_column": "Status",
+                                    "target_column_name": "Status",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "AST_BASEELEMENT_NAME",
+                                    "columnName": "CI Name",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "filterVal": "ip-172",
+                                    "logicalTableName": "AST:BaseElement",
+                                    "operand": "AND",
+                                    "relationalOperator": "CONTAINS",
+                                    "target_column": "CI Name",
+                                    "target_column_name": "Name",
+                                    "target_column_type": "COLUMN_NAME"
+                                }
+                            ],
+                            "selectedFields": [
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "HPD_STATUS",
+                                    "columnName": "Status",
+                                    "datatype": "STRING",
+                                    "fieldtype": "OTHER",
+                                    "logicalTableName": "HPD:Help Desk",
+                                    "target_column": "Status",
+                                    "target_column_name": "Status",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "HPD_INCIDENT_NUMBER",
+                                    "columnName": "Incident Number",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "HPD:Help Desk",
+                                    "target_column": "Incident Number",
+                                    "target_column_name": "Incident Number",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "AST_BASEELEMENT_NAME",
+                                    "columnName": "CI Name",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "AST:BaseElement",
+                                    "target_column": "CI Name",
+                                    "target_column_name": "Name",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "BC_HPD_HELP_DESK_SUMMARY",
+                                    "columnName": "Summary",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "HPD:Help Desk",
+                                    "target_column": "Summary",
+                                    "target_column_name": "Description",
+                                    "target_column_type": "COLUMN_NAME"
+                                },
+                                {
+                                    "aggregation": "NONE",
+                                    "columnId": "AST_BASEELEMENT_SHORT_DESCRIPTION",
+                                    "columnName": "Short Description",
+                                    "datatype": "STRING",
+                                    "fieldtype": "DIMENSION",
+                                    "logicalTableName": "AST:BaseElement",
+                                    "target_column": "Short Description",
+                                    "target_column_name": "Short Description",
+                                    "target_column_type": "COLUMN_NAME"
+                                }
+                            ],
+                            "selectedView": {
+                                "viewId": 1,
+                                "viewName": "Incident Management"
+                            }
+                        }
+                    },
+                    "sourceType": "remedy"
+                }
+            ],
+            "title": "Incidents",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "fixed"
+                    },
+                    "links": [],
+                    "mappings": [
+                        {
+                            "options": {
+                                "-": {
+                                    "color": "transparent",
+                                    "index": 1
+                                }
+                            },
+                            "type": "value"
+                        },
+                        {
+                            "options": {
+                                "from": 1,
+                                "result": {
+                                    "color": "green",
+                                    "index": 0
+                                },
+                                "to": 1000
+                            },
+                            "type": "range"
+                        }
+                    ],
+                    "noValue": "-",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 2,
+                "x": 12,
+                "y": 4
+            },
+            "id": 170,
+            "options": {
+                "colorMode": "background_solid",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "language": "jsonpath",
+                            "name": "benchmark"
+                        }
+                    ],
+                    "headers": [],
+                    "hide": false,
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH OptimizeSystem WHERE (entity_name = '$dev_list' OR HOSTNAME = '$dev_list') AND BYBENCHMARK_VALUE SHOW BYBENCHMARK_VALUE"
+                        ],
+                        [
+                            "limit",
+                            "10"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "Capacity",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Capacity Benchmark",
+            "transformations": [
+                {
+                    "id": "extractFields",
+                    "options": {
+                        "format": "kvp",
+                        "keepTime": false,
+                        "replace": true,
+                        "source": "benchmark"
+                    }
+                },
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "number",
+                                "targetField": "SPECINTRATE2000"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 10,
+                "x": 14,
+                "y": 4
+            },
+            "id": 148,
+            "options": {
+                "basemap": {
+                    "config": {},
+                    "name": "Layer 0",
+                    "type": "xyz"
+                },
+                "controls": {
+                    "mouseWheelZoom": true,
+                    "showAttribution": false,
+                    "showDebug": false,
+                    "showMeasure": false,
+                    "showScale": false,
+                    "showZoom": true
+                },
+                "layers": [
+                    {
+                        "config": {
+                            "showLegend": false,
+                            "style": {
+                                "color": {
+                                    "fixed": "semi-dark-green"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 25,
+                                    "min": 1
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "text": {
+                                    "field": "Location",
+                                    "fixed": "",
+                                    "mode": "field"
+                                },
+                                "textConfig": {
+                                    "fontSize": 15,
+                                    "offsetX": 25,
+                                    "offsetY": 15,
+                                    "textAlign": "left",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "location": {
+                            "latitude": "latitude",
+                            "longitude": "longitude",
+                            "mode": "coords"
+                        },
+                        "name": "Layer 1",
+                        "tooltip": false,
+                        "type": "markers"
+                    }
+                ],
+                "tooltip": {
+                    "mode": "details"
+                },
+                "view": {
+                    "allLayers": true,
+                    "id": "fit",
+                    "lastOnly": false,
+                    "lat": 30.26715,
+                    "layer": "Layer 1",
+                    "lon": -97.74306,
+                    "padding": 9,
+                    "shared": true,
+                    "zoom": 3
+                }
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "name": "source_hostname.keyword"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "latitude",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "longitude",
+                            "type": "number"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "language": "jsonpath",
+                            "name": "Location"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind WHERE name = '$dev_list' show #ElementInLocation:Location:Location:Location.name, #ElementInLocation:Location:Location:Location.latitude, #ElementInLocation:Location:Location:Location.longitude, name"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                {
+                    "datasource": {
+                        "type": "bmchelix-ade-datasource",
+                        "uid": "${DS_BMC_HELIX}"
+                    },
+                    "hide": true,
+                    "refId": "B",
+                    "sourceQuery": {
+                        "alias": "",
+                        "bucketAggs": [
+                            {
+                                "field": "source_host.keyword",
+                                "id": "2",
+                                "settings": {
+                                    "min_doc_count": "1",
+                                    "order": "desc",
+                                    "orderBy": "_term",
+                                    "size": "10"
+                                },
+                                "type": "terms"
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "id": "1",
+                                "type": "count"
+                            }
+                        ],
+                        "query": "(!status:CLOSED AND !status:BLACKOUT) AND (severity:CRITICAL OR severity:MAJOR) AND (source_hostname.keyword:$dev_list OR source_hostname.keyword:$fqdn)",
+                        "timeField": "creation_time"
+                    },
+                    "sourceType": "event"
+                }
+            ],
+            "transformations": [
+                {
+                    "disabled": true,
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "joinByField",
+                    "options": {
+                        "byField": "source_hostname.keyword",
+                        "mode": "outer"
+                    }
+                },
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Count": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Devices": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "HostName": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": []
+                            },
+                            "OS": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Serial": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "code": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "latitude": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "longitude": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "source_hostname.keyword": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "spatial",
+                    "options": {
+                        "action": "prepare",
+                        "source": {
+                            "latitude": "latitude",
+                            "longitude": "longitude",
+                            "lookup": "latitude",
+                            "mode": "coords"
+                        }
+                    }
+                }
+            ],
+            "transparent": true,
+            "type": "geomap"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": []
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 7,
+                "x": 0,
+                "y": 9
+            },
+            "id": 142,
+            "options": {
+                "bgColor": "text",
+                "columnStyles": {
+                    "styles": []
+                },
+                "isBgColorDefault": false,
+                "isDataPositioningStyleDefault": true,
+                "labelColor": "text",
+                "recordSection": {
+                    "entry": {},
+                    "sections": [
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Vendor",
+                                    "label": "Vendor",
+                                    "value": "Vendor"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Model",
+                                    "label": "Model",
+                                    "value": "Model"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Ram",
+                                    "label": "Memory in GB",
+                                    "value": "Memory in GB"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Serial",
+                                    "label": "Serial",
+                                    "value": "Serial"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "CPU",
+                                    "label": "CPU",
+                                    "value": "CPU"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Sockets",
+                                    "label": "Sockets",
+                                    "value": "Sockets"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Cores per socket",
+                                    "label": "Cores per socket",
+                                    "value": "Cores per socket"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Logical Processors",
+                                    "label": "Logical Processors",
+                                    "value": "Logical Processors"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Boot time",
+                                    "label": "Boot time",
+                                    "value": "Boot time"
+                                }
+                            ],
+                            "title": ""
+                        }
+                    ]
+                },
+                "repeatCount": 25,
+                "showMultipleRecords": false,
+                "widthPercent": 25
+            },
+            "pluginVersion": "9.5.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 132,
+                    "refId": "A"
+                }
+            ],
+            "title": "Hardware",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Boot time": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "CPU": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Cores per socket": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Full Name": {
+                                "aggregations": []
+                            },
+                            "Kernel": {
+                                "aggregations": []
+                            },
+                            "Last Updated": {
+                                "aggregations": []
+                            },
+                            "Logical": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Logical Processors": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Model": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "OS Vendor": {
+                                "aggregations": []
+                            },
+                            "Operating System": {
+                                "aggregations": []
+                            },
+                            "Packages": {
+                                "aggregations": []
+                            },
+                            "Ram": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Scope": {
+                                "aggregations": []
+                            },
+                            "Serial": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Sockets": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Supported Until": {
+                                "aggregations": []
+                            },
+                            "Vendor": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Full Name": true,
+                            "Kernel": false,
+                            "Last Updated": true,
+                            "Operating System": false,
+                            "Scope": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                            "Ram": "Memory in GB"
+                        }
+                    }
+                }
+            ],
+            "type": "bmc-record-details"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 7,
+                "x": 7,
+                "y": 9
+            },
+            "id": 156,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": false
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "body": " {\r\n  \"search_query\": \"SEARCH $root_kind WHERE name = '$dev_list'\"\r\n}",
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$..included[*].name",
+                            "language": "jsonpath",
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$..included[*].kind",
+                            "language": "jsonpath",
+                            "name": "kind"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "POST",
+                    "params": [],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/topology/services"
+                }
+            ],
+            "title": "Related Services",
+            "transformations": [
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "desc": false,
+                                "field": "name"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "mode": "basic",
+                            "type": "color-background"
+                        },
+                        "inspect": false
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "noValue": "No expired software",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 10,
+                "x": 14,
+                "y": 11
+            },
+            "id": 147,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "language": "jsonpath",
+                            "name": "Software"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "Version"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "End of Support"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Kind"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH FLAGS(no_segment) $root_kind WHERE name = '$dev_list' traverse :HostedSoftware:RunningSoftware: WHERE #ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date AND (time(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date) \u003c time(currentTime())) SHOW  type,  version,  formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date, \"%B %Y\"), kind(#) PROCESSWITH unique(0)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "End of Life Software",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Kernel": true,
+                            "Kind": true,
+                            "OS Vendor": true,
+                            "Operating System": true,
+                            "Packages": true,
+                            "Supported Until": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {},
+                        "renameByName": {}
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "field": "Software"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": []
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 7,
+                "x": 0,
+                "y": 18
+            },
+            "id": 141,
+            "options": {
+                "columnStyles": {
+                    "styles": []
+                },
+                "isBgColorDefault": true,
+                "isDataPositioningStyleDefault": true,
+                "recordSection": {
+                    "entry": {},
+                    "sections": [
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Operating System",
+                                    "label": "Operating System",
+                                    "value": "Operating System"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Kernel",
+                                    "label": "Kernel",
+                                    "value": "Kernel"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "OS Vendor",
+                                    "label": "OS Vendor",
+                                    "value": "OS Vendor"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Supported Until",
+                                    "label": "Supported Until",
+                                    "value": "Supported Until"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Packages",
+                                    "label": "Packages",
+                                    "value": "Packages"
+                                }
+                            ],
+                            "title": ""
+                        }
+                    ]
+                },
+                "repeatCount": 25,
+                "showMultipleRecords": false,
+                "widthPercent": 25
+            },
+            "pluginVersion": "9.5.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 132,
+                    "refId": "A"
+                }
+            ],
+            "title": "Operating System",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "Full Name": {
+                                "aggregations": []
+                            },
+                            "Kernel": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Last Updated": {
+                                "aggregations": []
+                            },
+                            "OS Vendor": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Operating System": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Packages": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Scope": {
+                                "aggregations": []
+                            },
+                            "Supported Until": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Full Name": true,
+                            "Kernel": false,
+                            "Last Updated": true,
+                            "Operating System": false,
+                            "Scope": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {}
+                    }
+                }
+            ],
+            "type": "bmc-record-details"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": true,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 20,
+                "w": 7,
+                "x": 7,
+                "y": 18
+            },
+            "id": 158,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Type"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "Version"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "End of Support"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind WHERE name = '$dev_list' traverse :HostedSoftware:RunningSoftware:SoftwareInstance SHOW type, version, formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date, \"%B %Y\")"
+                        ],
+                        [
+                            "limit",
+                            "10000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Software",
+            "transformations": [
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "field": "Type"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "add runtime as well",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "mode": "basic",
+                            "type": "color-background"
+                        },
+                        "filterable": true,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "noValue": "No changes",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 10,
+                "x": 14,
+                "y": 20
+            },
+            "id": 153,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Software"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][1]",
+                            "language": "jsonpath",
+                            "name": "When",
+                            "type": "time"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][2]",
+                            "language": "jsonpath",
+                            "name": "attribute",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Before"
+                        },
+                        {
+                            "jsonPath": "$.[0].results[*][4]",
+                            "language": "jsonpath",
+                            "name": "After"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH FLAGS(no_segment) $root_kind WHERE name = '$dev_list' traverse :HostedSoftware:RunningSoftware: where age_count \u003e 1 and ((version defined and not version = \"\") or (build defined and not build = \"\"))  SHOW type, version PROCESSWITH displayHistory((currentTime() - 90*24*3600*10000000), currentTime(), 1)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Software changes in past 90 days",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "After": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Before": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Count": {
+                                "aggregations": [
+                                    "count"
+                                ]
+                            },
+                            "Host": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Kind": {
+                                "aggregations": []
+                            },
+                            "Location": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "groupby"
+                            },
+                            "Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Software": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Subnet": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Subnets": {
+                                "aggregations": [
+                                    "count"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "Version": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "When": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "attribute": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "ip count": {
+                                "aggregations": [
+                                    "lastNotNull"
+                                ],
+                                "operation": "aggregate"
+                            },
+                            "ip type": {
+                                "aggregations": []
+                            },
+                            "location": {
+                                "aggregations": []
+                            },
+                            "subnet": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {},
+                        "indexByName": {},
+                        "renameByName": {
+                            "When (lastNotNull)": "When"
+                        }
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "field": "Software"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "mappings": []
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 14,
+                "w": 7,
+                "x": 0,
+                "y": 24
+            },
+            "id": 150,
+            "options": {
+                "columnStyles": {
+                    "styles": []
+                },
+                "isBgColorDefault": true,
+                "isDataPositioningStyleDefault": true,
+                "labelColor": "green",
+                "recordSection": {
+                    "entry": {},
+                    "sections": [
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "FQDN",
+                                    "label": "FQDN",
+                                    "value": "FQDN"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "IP Address",
+                                    "label": "IP Address",
+                                    "value": "IP Address"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "MAC Address",
+                                    "label": "MAC Address",
+                                    "value": "MAC Address"
+                                }
+                            ],
+                            "title": ""
+                        },
+                        {
+                            "sectionFields": [
+                                {
+                                    "fieldName": "Interface Name",
+                                    "label": "Interface Name",
+                                    "value": "Interface Name"
+                                }
+                            ],
+                            "title": ""
+                        }
+                    ]
+                },
+                "repeatCount": 25,
+                "showMultipleRecords": true,
+                "widthPercent": 25
+            },
+            "pluginVersion": "9.5.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "datasource",
+                        "uid": "-- Dashboard --"
+                    },
+                    "panelId": 132,
+                    "refId": "A"
+                }
+            ],
+            "title": "Network Interfaces",
+            "transformations": [
+                {
+                    "id": "groupBy",
+                    "options": {
+                        "fields": {
+                            "CPU": {
+                                "aggregations": []
+                            },
+                            "Cores per socket": {
+                                "aggregations": []
+                            },
+                            "FQDN": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Full Name": {
+                                "aggregations": []
+                            },
+                            "Fully Qualified Domain Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "IP Address": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Interface Name": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Kernel": {
+                                "aggregations": []
+                            },
+                            "Last Updated": {
+                                "aggregations": []
+                            },
+                            "Logical": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Logical Processors": {
+                                "aggregations": []
+                            },
+                            "MAC Address": {
+                                "aggregations": [],
+                                "operation": "groupby"
+                            },
+                            "Model": {
+                                "aggregations": []
+                            },
+                            "OS Vendor": {
+                                "aggregations": []
+                            },
+                            "Operating System": {
+                                "aggregations": []
+                            },
+                            "Packages": {
+                                "aggregations": []
+                            },
+                            "Ram": {
+                                "aggregations": []
+                            },
+                            "Scope": {
+                                "aggregations": []
+                            },
+                            "Serial": {
+                                "aggregations": []
+                            },
+                            "Sockets": {
+                                "aggregations": []
+                            },
+                            "Supported Until": {
+                                "aggregations": []
+                            },
+                            "Vendor": {
+                                "aggregations": []
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Full Name": true,
+                            "Kernel": false,
+                            "Last Updated": true,
+                            "Operating System": false,
+                            "Scope": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {}
+                    }
+                }
+            ],
+            "type": "bmc-record-details"
+        },
+        {
+            "datasource": {
+                "type": "json-datasource",
+                "uid": "${DS_BMC_HELIX_API}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "mode": "basic",
+                            "type": "color-background"
+                        },
+                        "filterable": true,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "noValue": "No changes",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 10,
+                "x": 14,
+                "y": 27
+            },
+            "id": 154,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$.0.results[*][0]",
+                            "language": "jsonpath",
+                            "name": "Name"
+                        },
+                        {
+                            "jsonPath": "$.0.results[*][1]",
+                            "language": "jsonpath",
+                            "name": "When",
+                            "type": "time"
+                        },
+                        {
+                            "jsonPath": "$.0.results[*][2]",
+                            "language": "jsonpath",
+                            "name": "attribute"
+                        },
+                        {
+                            "jsonPath": "$.0.results[*][3]",
+                            "language": "jsonpath",
+                            "name": "Before"
+                        },
+                        {
+                            "jsonPath": "$.0.results[*][4]",
+                            "language": "jsonpath",
+                            "name": "After"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind WHERE name = '$dev_list'  SHOW name, logical_ram, num_logical_processors, os_version PROCESSWITH displayHistory((currentTime() - 90*24*3600*10000000), currentTime(), 1)"
+                        ],
+                        [
+                            "limit",
+                            "1000000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                }
+            ],
+            "title": "Hardware changes in past 90 days",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Name": true,
+                            "node": true
+                        },
+                        "indexByName": {
+                            "After": 3,
+                            "Before": 2,
+                            "Name": 0,
+                            "When": 4,
+                            "attribute": 1
+                        },
+                        "renameByName": {}
+                    }
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "isNull",
+                                    "options": {}
+                                },
+                                "fieldName": "Before"
+                            }
+                        ],
+                        "match": "any",
+                        "type": "exclude"
+                    }
+                },
+                {
+                    "id": "sortBy",
+                    "options": {
+                        "fields": {},
+                        "sort": [
+                            {
+                                "field": "When"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "datasource",
+                "uid": "-- Mixed --"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 15,
+                "w": 10,
+                "x": 14,
+                "y": 35
+            },
+            "id": 155,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.2.2",
+            "targets": [
+                {
+                    "body": " {\r\n  \"search_query\": \"SEARCH $root_kind WHERE name = '$dev_list'\",\r\n  \"show_rules\": false,\r\n  \"grouping\": \"normal\",\r\n  \"max_depth\": 0,\r\n  \"expanding_group\": false,\r\n  \"show_suppressed\": false,\r\n  \"annotate_cycles\": false,\r\n  \"direction\": \"inout\",\r\n  \"consider_shared\": true,\r\n  \"get_related_models\": true,\r\n  \"set_locations\": true\r\n}",
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$..nodes[*].id",
+                            "language": "jsonpath",
+                            "name": "node_id",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$..nodes[*].name",
+                            "language": "jsonpath",
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$..nodes[*].kind",
+                            "language": "jsonpath",
+                            "name": "node_kind",
+                            "type": "string"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "POST",
+                    "params": [],
+                    "queryParams": "",
+                    "refId": "A",
+                    "urlPath": "/smart-graph-api/api/$api_ver/topology/nodes"
+                },
+                {
+                    "body": " {\r\n  \"search_query\": \"SEARCH $root_kind WHERE name = '$dev_list'\",\r\n  \"show_rules\": false,\r\n  \"grouping\": \"normal\",\r\n  \"max_depth\": 0,\r\n  \"expanding_group\": false,\r\n  \"show_suppressed\": false,\r\n  \"annotate_cycles\": false,\r\n  \"direction\": \"inout\",\r\n  \"consider_shared\": true,\r\n  \"get_related_models\": true,\r\n  \"set_locations\": true\r\n}",
+                    "cacheDurationSeconds": 0,
+                    "datasource": {
+                        "type": "json-datasource",
+                        "uid": "${DS_BMC_HELIX_API}"
+                    },
+                    "fields": [
+                        {
+                            "jsonPath": "$..links[*].src_id",
+                            "language": "jsonpath",
+                            "name": "node_id",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$..links[*].tgt_id",
+                            "language": "jsonpath",
+                            "name": "target",
+                            "type": "string"
+                        },
+                        {
+                            "jsonPath": "$..links[*].kind",
+                            "language": "jsonpath",
+                            "name": "rel_kind",
+                            "type": "string"
+                        }
+                    ],
+                    "headers": [],
+                    "hide": false,
+                    "method": "POST",
+                    "params": [],
+                    "queryParams": "",
+                    "refId": "B",
+                    "urlPath": "/smart-graph-api/api/$api_ver/topology/nodes"
+                }
+            ],
+            "title": "Related nodes",
+            "transformations": [
+                {
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "node_id": true,
+                            "rel_kind": false,
+                            "target": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                            "name": "Name",
+                            "node_kind": "Node",
+                            "rel_kind": "Relationship"
+                        }
+                    }
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "isNull",
+                                    "options": {}
+                                },
+                                "fieldName": "Name"
+                            }
+                        ],
+                        "match": "all",
+                        "type": "exclude"
+                    }
+                }
+            ],
+            "type": "table"
+        }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [
+        "demo"
+    ],
+    "templating": {
+        "list": [
+            {
+                "hide": 2,
+                "name": "api_ver",
+                "query": "${VAR_API_VER}",
+                "queryvalue": "v1.13",
+                "skipUrlSync": false,
+                "type": "constant"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Host",
+                    "value": "Host"
+                },
+                "datasource": {
+                    "type": "json-datasource",
+                    "uid": "${DS_BMC_HELIX_API}"
+                },
+                "definition": "$.[0].results[*][0]",
+                "description": "Choose device type for review",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Device kind",
+                "multi": false,
+                "name": "root_kind",
+                "options": [],
+                "query": {
+                    "cacheDurationSeconds": 0,
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH FLAGS(no_segment) in 'Default' Host,NetworkDevice,SNMPManagedDevice, StorageSystem,Mainframe, Printer ORDER BY kind(#) SHOW kind(#) PROCESSWITH unique(0)"
+                        ],
+                        [
+                            "limit",
+                            "100000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "type": "query",
+                "useDefaultValues": false
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "mwwweblogic",
+                    "value": "mwwweblogic"
+                },
+                "datasource": {
+                    "type": "json-datasource",
+                    "uid": "${DS_BMC_HELIX_API}"
+                },
+                "definition": "$.[0].results[*][0]",
+                "description": "Choose device for review",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Device matches",
+                "multi": false,
+                "name": "dev_list",
+                "options": [],
+                "query": {
+                    "cacheDurationSeconds": 0,
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "Device"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind SHOW name"
+                        ],
+                        [
+                            "limit",
+                            "100000"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "type": "query",
+                "useDefaultValues": false
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "mwwweblogic.bmc.com",
+                    "value": "mwwweblogic.bmc.com"
+                },
+                "datasource": {
+                    "type": "json-datasource",
+                    "uid": "${DS_BMC_HELIX_API}"
+                },
+                "definition": "$.[0].results[*][0]",
+                "description": "",
+                "hide": 2,
+                "includeAll": false,
+                "label": "",
+                "multi": false,
+                "name": "fqdn",
+                "options": [],
+                "query": {
+                    "cacheDurationSeconds": 0,
+                    "fields": [
+                        {
+                            "jsonPath": "$.[0].results[*][0]",
+                            "name": "domain"
+                        }
+                    ],
+                    "headers": [],
+                    "method": "GET",
+                    "params": [
+                        [
+                            "query",
+                            "SEARCH $root_kind WHERE name = '$dev_list' SHOW (local_fqdn or hostname)"
+                        ],
+                        [
+                            "limit",
+                            "10"
+                        ]
+                    ],
+                    "queryParams": "",
+                    "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "type": "query",
+                "useDefaultValues": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now/y",
+        "to": "now/y"
+    },
+    "timepicker": {
+        "hidden": true,
+        "refresh_intervals": [
+            "1h",
+            "3h",
+            "6h",
+            "12h",
+            "1d",
+            "90d"
+        ]
+    },
+    "timezone": "",
+    "title": "Device Profile",
+    "uid": "een5uyetu5vcwe",
+    "version": 6,
+    "weekStart": ""
+}
