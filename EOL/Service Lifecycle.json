@@ -1,0 +1,1199 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_BMC_HELIX API",
+      "label": "BMC Helix API",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "json-datasource",
+      "pluginName": "BMC Helix JSON API"
+    },
+    {
+      "name": "VAR_API_VER",
+      "type": "constant",
+      "label": "api_ver",
+      "value": "v1.11",
+      "description": ""
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.6.2"
+    },
+    {
+      "type": "datasource",
+      "id": "json-datasource",
+      "name": "BMC Helix JSON API",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "${DS_BMC_HELIX API}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 215,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "distinctCount"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "existing"
+            }
+          ],
+          "headers": [],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH ModelDefinition WHERE state = 'published' SHOW name"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        },
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "affected"
+            }
+          ],
+          "headers": [],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH ModelDefinition WHERE state = 'published' AND nodecount(traverse ::: WHERE nodecount(traverse :::SupportDetail WHERE end_support_date AND (time(end_support_date) < time(currentTime())) )) SHOW name"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        }
+      ],
+      "title": "Services - Total vs affected",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "${DS_BMC_HELIX API}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "links": [],
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 223,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Version \\(count\\)$/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "Type"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "Version"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) ModelDefinition WHERE state = 'published' AND name = '$service' traverse :::  WHERE nodecount(traverse ElementWithDetail:SupportDetail::SupportDetail WHERE end_support_date AND (time(end_support_date) < time(currentTime())) )  SHOW    (os_type or type) as 'Type',    (version or os_version) as 'Version'"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        }
+      ],
+      "title": "Obsolete components within $service",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Type": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Version": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Version (count)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "${DS_BMC_HELIX API}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "links": [
+            {
+              "title": "",
+              "url": "/d/ceg8s9kl678cgd/lifecycle?orgId=$__org&var-service=${__data.fields.Service}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "yellow",
+                  "index": 0
+                },
+                "to": 10
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 11,
+                "result": {
+                  "color": "orange",
+                  "index": 1
+                },
+                "to": 100
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 101,
+                "result": {
+                  "color": "red",
+                  "index": 2
+                },
+                "to": 1000
+              },
+              "type": "range"
+            }
+          ],
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 214,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^kind \\(count\\)$/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "kind"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "Type"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "Version"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "End of Support"
+            },
+            {
+              "jsonPath": "$.[0].results[*][4]",
+              "language": "jsonpath",
+              "name": "Service"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "search [no_segment] ModelDefinition traverse ::: where nodecount(traverse ElementWithDetail:SupportDetail::SupportDetail where end_support_date and time(currentTime()) > time(end_support_date)) > 0 and nodecount(traverse :::ModelDefinition where state = 'published') > 0  order by #kind, (os_type or type) desc  show    #kind,    (os_type or type) as 'Type',    (version or os_version) as 'Version',   formatTime(#ElementWithDetail:SupportDetail::SupportDetail.end_support_date, '%B %Y') as 'End of Life',    explode #:::ModelDefinition.name as 'Service'"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        }
+      ],
+      "title": "Services with End of Support components",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Version": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Component": 1,
+              "End of Support": 4,
+              "Host": 3,
+              "Service": 0,
+              "Version": 2
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Component": {
+                "aggregations": [
+                  "distinctCount"
+                ],
+                "operation": "aggregate"
+              },
+              "Service": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Type": {
+                "aggregations": []
+              },
+              "kind": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "kind (count)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 218,
+      "panels": [],
+      "title": "Component breakdown of $service",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "links": [],
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 9,
+        "x": 0,
+        "y": 22
+      },
+      "id": 219,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 220,
+          "refId": "A"
+        }
+      ],
+      "title": "Obsolete Software",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Component": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "End of Support": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Version": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "End of Support (count)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "${DS_BMC_HELIX API}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 75
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "End of Support"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 347
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 590
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 213
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 15,
+        "x": 9,
+        "y": 22
+      },
+      "id": 220,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Component"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "Component"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "Version"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "Host"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "End of Support"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) ModelDefinition WHERE state = 'published' AND name = '$service' traverse :::  WHERE nodecount(traverse ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail WHERE end_support_date AND (time(end_support_date) < time(currentTime())) )  SHOW    (os_type or type) as 'Type',    (version or os_version) as 'Version',   (#:::Host.name or name) as 'Name',   formatTime(#ElementWithDetail:SupportDetail:SoftwareDetail:SupportDetail.end_support_date, \"%B %Y\")"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        }
+      ],
+      "title": "Expired Software",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Component"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "links": [],
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 9,
+        "x": 0,
+        "y": 33
+      },
+      "id": 222,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 221,
+          "refId": "A"
+        }
+      ],
+      "title": "Obsolete Operating Systems",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Component": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "End of Support": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Version": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "End of Support (count)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "${DS_BMC_HELIX API}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 75
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 343
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "End of Support"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 590
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Version"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 213
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 15,
+        "x": 9,
+        "y": 33
+      },
+      "id": 221,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Component"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "${DS_BMC_HELIX API}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[0].results[*][0]",
+              "language": "jsonpath",
+              "name": "Component"
+            },
+            {
+              "jsonPath": "$.[0].results[*][1]",
+              "language": "jsonpath",
+              "name": "Version"
+            },
+            {
+              "jsonPath": "$.[0].results[*][2]",
+              "language": "jsonpath",
+              "name": "Host"
+            },
+            {
+              "jsonPath": "$.[0].results[*][3]",
+              "language": "jsonpath",
+              "name": "End of Support"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "params": [
+            [
+              "query",
+              "SEARCH FLAGS(no_segment) ModelDefinition WHERE state = 'published' AND name = '$service' traverse :::  WHERE nodecount(traverse ElementWithDetail:SupportDetail:OSDetail:SupportDetail WHERE end_support_date AND (time(end_support_date) < time(currentTime())) )  SHOW    (os_type or type) as 'Type',    (version or os_version) as 'Version',   (#:::Host.name or name) as 'Name',   formatTime(#ElementWithDetail:SupportDetail:OSDetail:SupportDetail.end_support_date, \"%B %Y\")"
+            ],
+            [
+              "limit",
+              "1000000"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/smart-graph-api/api/$api_ver/data/search"
+        }
+      ],
+      "title": "Expired Operating Systems",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Component"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "discovery",
+    "asset"
+  ],
+  "templating": {
+    "list": [
+      {
+        "hide": 2,
+        "name": "api_ver",
+        "query": "${VAR_API_VER}",
+        "queryvalue": "v1.11",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_API_VER}",
+          "text": "${VAR_API_VER}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_API_VER}",
+            "text": "${VAR_API_VER}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "GFS Payroll",
+          "value": "GFS Payroll"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/y",
+    "to": "now/y"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "1h",
+      "3h",
+      "6h",
+      "12h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Service Lifecycle",
+  "uid": "ceg8s9kl678cgd",
+  "version": 17,
+  "weekStart": ""
+}
