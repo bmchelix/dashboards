@@ -135,7 +135,7 @@
                     "params": [
                         [
                             "query",
-                            "search Detail where type has substring 'Certificate' and expiry_date \u003c currentTime() show type, common_name, issuer, expiry_date"
+                            "search Certificate where type has substring 'Certificate' and expiry_date \u003c currentTime() show type, common_name, issuer, expiry_date"
                         ],
                         [
                             "limit",
@@ -336,7 +336,7 @@
                     "params": [
                         [
                             "query",
-                            "search Detail where type has substring 'Certificate' and expiry_date \u003c (currentTime() + $days*24*3600*10000000) and expiry_date \u003e currentTime() show type, common_name, issuer, expiry_date"
+                            "search Certificate where type has substring 'Certificate' and expiry_date \u003c (currentTime() + $days*24*3600*10000000) and expiry_date \u003e currentTime() show type, common_name, issuer, expiry_date"
                         ],
                         [
                             "limit",
@@ -499,7 +499,7 @@
                     "params": [
                         [
                             "query",
-                            "search Detail where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) and self_signed and not ca_version SHOW short_name, subject_alternative_names, self_signed, expiry_date"
+                            "search Certificate where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) and self_signed and not ca_version SHOW short_name, subject_alternative_names, self_signed, expiry_date"
                         ],
                         [
                             "limit",
@@ -786,7 +786,7 @@
                     "params": [
                         [
                             "query",
-                            "search Detail where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) order by expiry_date show type, common_name, whenWasThat(expiry_date), expiry"
+                            "search Certificate where type has substring 'Certificate' and not expiry_date \u003e (currentTime() + 365*24*3600*10000000) and not expiry_date \u003c (currentTime() - 30*24*3600*10000000) order by expiry_date show type, common_name, whenWasThat(expiry_date), expiry"
                         ],
                         [
                             "limit",
