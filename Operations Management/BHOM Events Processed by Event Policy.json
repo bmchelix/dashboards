@@ -7,10 +7,24 @@
       "type": "datasource",
       "pluginId": "bmchelix-ade-datasource",
       "pluginName": "BMC Helix"
+    },
+    {
+      "name": "DS_BMC_HELIX API",
+      "label": "BMC Helix API",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "json-datasource",
+      "pluginName": "BMC Helix JSON API"
     }
   ],
   "__elements": {},
   "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
     {
       "type": "datasource",
       "id": "bmchelix-ade-datasource",
@@ -22,6 +36,12 @@
       "id": "grafana",
       "name": "Grafana",
       "version": "11.6.2"
+    },
+    {
+      "type": "datasource",
+      "id": "json-datasource",
+      "name": "BMC Helix JSON API",
+      "version": "1.0.0"
     },
     {
       "type": "panel",
@@ -64,6 +84,7 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -77,19 +98,19 @@
       },
       "description": "",
       "gridPos": {
-        "h": 18,
-        "w": 6,
+        "h": 7,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 6,
+      "id": 10,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# BHOM Events Processed by Policy\n\n## How this dashboard works\nThis dashboard searches for **PolicyName** as a string inside the full array, doing partial matching, and counts the number of matching events.\n\nSo searching for \"Predefined\" will match any event that has that string somewhere inside the `_operations` parameter (slot) inside events.\n\nThis also means that it may match unrelated output strings.\n\nTo avoid that, search by the complete name of the desired policy with a \",\" at the end so that the search finds an exact match.\n\nExample: `Predefined Policy for Incident,`\n\n## Explaining the `_operations` slot\n\nWhenever events are processed by BHOM event policies, blackout policies, HIA PSR integration with ITSM, or even by AIOps for situation creation (among other reasons), the array stored in the event parameter (slot) `_operations` is updated.\n\nFor example, whenever the event policy \"Predefined Policy for Incident\" processes an event, it appends to `_operations` the values:\n`<hexidecimal timestamp>,<username>,<policy or process name>,<output>,''`\n\nExample:\n`[0x19ae46132c6,,Predefined Policy for Incident,NOTIFICATION Configuration 1 The event qualifies for incident consolidation. Incident creation is delayed.,'']`\n\nIt can actually get quite long, like this:\n```\n[0x19ae46155e7,admin,,Situation created based on ML Based algorithm and involves event(s) with multiple nodes; however only the first node is utilized.,''\n,0x19ae4615643,,E2EWatches,ADVANCED_ENRICHMENT Configuration 1,''\n,0x19ae4615645,admin,'',Event qualify for incident consolidation.,''\n,0x19ae46a7e89,admin,,Situation is stabilized and no new events will be added now.,''\n,0x19ae46a982c,ims_service_account,'',Event Updated Successfully. Updated slots: situation_relation_type,''\n,0x19ae487f502,ims_service_account,'',Event Updated Successfully. Updated slots: fingerprint,''\n,0x19ae498a7a1,FE62JXCY0E1JWGTEG88J0H8X9Q2EH7,'', Event Updated Successfully. Updated slots: status,''\n]\n```\n(line breaks added for legibility)",
+        "content": "# BHOM Events Processed by Event Policy\n\n## How this dashboard works\nThis dashboard automatically loads all the configured event policies names from BHOM, via API, so the user can pick All or any combination of event policies to search for events that have been processed by them.\n\nIt works by searching for the Policy's name as a string that exists in the `_operations` parameter (slot) inside events.\n\n## Explaining the `_operations` slot\n\nWhenever events are processed by BHOM event policies, blackout policies, HIA PSR integration with ITSM, or even by AIOps for situation creation (among other reasons), the array stored in the event parameter (slot) `_operations` is updated.\n\nFor example, whenever the event policy \"Predefined Policy for Incident\" processes an event, it appends to `_operations` the values:\n`<hexidecimal timestamp>,<username>,<policy or process name>,<output>,''`\n\nExample:\n`[0x19ae46132c6,,Predefined Policy for Incident,NOTIFICATION Configuration 1 The event qualifies for incident consolidation. Incident creation is delayed.,'']`\n\nIt can actually get quite long, like this:\n```\n[0x19ae46155e7,admin,,Situation created based on ML Based algorithm and involves event(s) with multiple nodes; however only the first node is utilized.,''\n,0x19ae4615643,,E2EWatches,ADVANCED_ENRICHMENT Configuration 1,''\n,0x19ae4615645,admin,'',Event qualify for incident consolidation.,''\n,0x19ae46a7e89,admin,,Situation is stabilized and no new events will be added now.,''\n,0x19ae46a982c,ims_service_account,'',Event Updated Successfully. Updated slots: situation_relation_type,''\n,0x19ae487f502,ims_service_account,'',Event Updated Successfully. Updated slots: fingerprint,''\n,0x19ae498a7a1,FE62JXCY0E1JWGTEG88J0H8X9Q2EH7,'', Event Updated Successfully. Updated slots: status,''\n]\n```\n(line breaks added for legibility)",
         "mode": "markdown"
       },
       "pluginVersion": "11.6.2",
@@ -127,6 +148,19 @@
       "type": "text"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 5,
+      "panels": [],
+      "title": "Events processed by searched policies",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "bmchelix-ade-datasource",
         "uid": "${DS_BMC_HELIX}"
@@ -142,10 +176,6 @@
             "steps": [
               {
                 "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -153,12 +183,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 4,
-        "x": 6,
-        "y": 0
+        "x": 0,
+        "y": 8
       },
-      "id": 3,
+      "id": 6,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -205,13 +235,13 @@
                 "type": "count"
               }
             ],
-            "query": "NOT(_operations:\\[\\]) AND _operations:\",$PolicyName\"",
+            "query": "NOT(_operations:\\[\\]) AND _operations:$EventPolicies,",
             "timeField": "creation_time"
           },
           "sourceType": "event"
         }
       ],
-      "title": "# of events",
+      "title": "# of events processed by $EventPolicies",
       "type": "stat"
     },
     {
@@ -224,16 +254,33 @@
           "color": {
             "mode": "thresholds"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -241,28 +288,33 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 14,
-        "x": 10,
-        "y": 0
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 8
       },
-      "id": 4,
+      "id": 8,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": true
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.6.2",
       "targets": [
@@ -281,8 +333,8 @@
                 "settings": {
                   "min_doc_count": "1",
                   "order": "desc",
-                  "orderBy": "_term",
-                  "size": "10"
+                  "orderBy": "1",
+                  "size": "20"
                 },
                 "type": "terms"
               }
@@ -293,14 +345,14 @@
                 "type": "count"
               }
             ],
-            "query": "NOT(_operations:\\[\\]) AND _operations:\",$PolicyName\"",
+            "query": "NOT(_operations:\\[\\]) AND _operations:$EventPolicies",
             "timeField": "creation_time"
           },
           "sourceType": "event"
         }
       ],
-      "title": "by Class",
-      "type": "stat"
+      "title": "# of Events by Class processed by $EventPolicies",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -351,10 +403,6 @@
             "steps": [
               {
                 "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -362,12 +410,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 18,
-        "x": 6,
-        "y": 9
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
       },
-      "id": 2,
+      "id": 9,
       "options": {
         "legend": {
           "calcs": [],
@@ -407,27 +455,14 @@
                 "type": "count"
               }
             ],
-            "query": "NOT(_operations:\\[\\]) AND _operations:\",$PolicyName\"",
+            "query": "NOT(_operations:\\[\\]) AND _operations:$EventPolicies",
             "timeField": "creation_time"
           },
           "sourceType": "event"
         }
       ],
-      "title": "Number of Events Processed",
+      "title": "Number of Events Processed by $EventPolicies",
       "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 5,
-      "panels": [],
-      "title": "Events processed by searched policy",
-      "type": "row"
     },
     {
       "datasource": {
@@ -460,13 +495,26 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "_operations"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 717
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 24
       },
       "id": 1,
       "options": {
@@ -479,7 +527,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "11.6.2",
       "targets": [
@@ -501,13 +550,13 @@
                 "type": "raw_data"
               }
             ],
-            "query": "NOT(_operations:\\[\\]) AND _operations:\",$PolicyName\"",
+            "query": "NOT(_operations:\\[\\]) AND _operations:$EventPolicies",
             "timeField": "creation_time"
           },
           "sourceType": "event"
         }
       ],
-      "title": "Events Processed",
+      "title": "Events Processed by $EventPolicies",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -534,36 +583,48 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Predefined Policy for Incident,",
-          "value": "Predefined Policy for Incident,"
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "json-datasource",
+          "uid": "${DS_BMC_HELIX API}"
         },
-        "description": "Add a \",\" at the end of the name for an exact match",
+        "definition": "$.policies[*].name",
         "hide": 0,
-        "label": "PolicyName",
-        "name": "PolicyName",
-        "options": [
-          {
-            "selected": true,
-            "text": "Predefined Policy for Incident,",
-            "value": "Predefined Policy for Incident,"
-          }
-        ],
-        "query": "Predefined Policy for Incident,",
+        "includeAll": true,
+        "multi": true,
+        "name": "EventPolicies",
+        "options": [],
+        "query": {
+          "body": "{\n    \"recordsPerPage\": 100,\n    \"pageIndex\": 1,\n    \"query\": \"\",\n    \"sortCriteria\": \"modificationTime DESC\"\n}\n",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.policies[*].name",
+              "language": "jsonpath"
+            }
+          ],
+          "headers": [],
+          "method": "POST",
+          "queryParams": "",
+          "urlPath": "/events-service/api/v1.0/event_policies/search"
+        },
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
-        "type": "textbox"
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "BHOM Events Processed by Policy",
-  "uid": "bf62v6tvznsowf",
-  "version": 7,
+  "title": "BHOM Events Processed by Event Policy",
+  "uid": "ff639x5y1qwhsb",
+  "version": 6,
   "weekStart": ""
 }
