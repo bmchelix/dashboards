@@ -1,0 +1,5979 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_BMC_HELIX",
+      "label": "BMC Helix",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "bmchelix-ade-datasource",
+      "pluginName": "BMC Helix"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "bmchelix-ade-datasource",
+      "name": "BMC Helix",
+      "version": "3.0.1"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.3.4"
+    },
+    {
+      "type": "panel",
+      "id": "histogram",
+      "name": "Histogram",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Gain insight into the energy usage and costs as well as the carbon emissions of your data center (a site) and its monitored hosts with MetricsHub. Optimize the ambient temperature of your data center based on data-driven recommendations and reduce your cooling costs.\r\n\r\nMetricsHubs collects metrics from servers (Cisco, Dell, HPE, Huawei, IBM Lenovo, SuperMicro, etc.), storage systems (NetApp, Dell EMC, Hitachi, HPE, IBM, Pure, Huawei, etc.), network devices (Cisco, Aruba, Dell, HP, F5, Juniper, Oracle) and other equipment like PDUs, UPS from APC, Raritan, Eaton, etc.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "hw_main"
+      ],
+      "targetBlank": false,
+      "title": "",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": [
+        "hw_host"
+      ],
+      "targetBlank": false,
+      "title": "Host",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 120,
+      "panels": [],
+      "title": "Overall Information",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 44,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style=\"\">\r\n  <center>$site</center>\r\n</h1>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.4",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The number of hosts currently configured to be monitored.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 3
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(count by (host_name) (present_over_time(metricshub_host_configured{site=~\"$site\"}[1h])))",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Hosts",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count(count by (host.name) (present_over_time(metricshub.host.configured{site=~\"$site\"}[1h])))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Hosts",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Hosts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The percentage of monitored hosts.\n\nA monitored host is a host with at least one responding connector.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red",
+                "value": 0
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 0.5
+              },
+              {
+                "color": "super-light-green",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 3
+      },
+      "id": 127,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(max by (host_name, site) (metricshub_connector_status{state=\"ok\", site=~\"$site\"} == 1)) / sum(max by (host_name, site) (present_over_time(metricshub_host_configured{site=~\"$site\"}[1h])))",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Coverage",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count(max by (host.name, site) (metricshub.connector.status.ok{site=~\"$site\"} == 1)) / sum(max by (host.name, site) (present_over_time(metricshub.host.configured{site=~\"$site\"}[1h])))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Coverage",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Coverage",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The total number of hosts per type: compute (server), storage and network.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 6,
+        "y": 3
+      },
+      "id": 59,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (host_type) (metricshub_host_configured{site=~\"$site\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{host_type}}",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum by (host.type) (metricshub.host.configured{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host_type}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Host Types",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The hosts distribution per manufacturer.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 5,
+        "x": 11,
+        "y": 3
+      },
+      "id": 87,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "exemplar": false,
+          "expr": "count by (vendor) (label_replace(hw_status{hw_type=\"enclosure\", site=~\"$site\", state=\"present\"}, \"vendor\", \"Unknown\", \"vendor\", \"^$\"))",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{vendor}}",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count by (vendor) (label_replace(hw.status.enclosure.present{site=~\"$site\"}, \"vendor\", \"Unknown\", \"vendor\", \"^$\"))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{vendor}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Hosts Vendors",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The average of the Power Usage Effectiveness over 2 hours.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "mappings": [],
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "#EAB839",
+                "value": 1.4
+              },
+              {
+                "color": "orange",
+                "value": 1.8
+              },
+              {
+                "color": "red",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 16,
+        "y": 3
+      },
+      "id": 129,
+      "interval": "1h",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[2h]))",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "PUE",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg(avg_over_time(hw.site.pue{site=~\"$site\"}[2h]))",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "PUE",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "PUE",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The average of the Power Usage Effectiveness over 24 hours.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 2.5,
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 3
+      },
+      "id": 132,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[1d]))",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "PUE (24 hrs)",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg(avg_over_time(hw.site.pue{site=~\"$site\"}[1d]))",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "PUE (24 hrs)",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "PUE (24 hrs)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The total number of CPUs currently monitored.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "transparent",
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 7
+      },
+      "id": 68,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(hw_status{site=~\"$site\", hw_type=\"cpu\", state=\"present\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "CPUs",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.status.cpu.present{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "CPUs",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CPUs",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The total number of connected network cards.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "transparent",
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 2,
+        "y": 7
+      },
+      "id": 70,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(hw_network_up{site=~\"$site\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Connected NICs",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.network.up{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Connected NICs",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Connected NICs",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The total disk space in the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "transparent",
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 4,
+        "y": 7
+      },
+      "id": 69,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(hw_physical_disk_size_bytes{site=~\"$site\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Disk Space",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.physical_disk.size{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Disk Space",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Disk Space",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The CO₂ electricity emissions, as provided in the configuration file.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 500,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "massg"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 7
+      },
+      "id": 56,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg(hw_site_carbon_intensity_grams{site=~\"$site\"})",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "CO₂ Intensity",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg(hw.site.carbon_intensity{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "CO₂ Intensity",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CO₂ Intensity",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Electricity cost, as provided in the configuration file.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 0.4,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 7
+      },
+      "id": 55,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 32
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg(hw_site_electricity_cost{site=~\"$site\"})",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Electricity Cost",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg(hw.site.electricity_cost{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Electricity Cost",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Electricity Cost",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 164,
+      "panels": [],
+      "title": "Events",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 11
+      },
+      "id": 162,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "Cr",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:CRITICAL AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:hw.* AND entity_identifier:site=$site",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Critical Events",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "basic",
+              "type": "color-background"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Show Host",
+              "url": "d/c2K8skm4k2/hardware-host-metricshub?var-site=${site}&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event Severity"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "CRITICAL": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "MAJOR": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "MINOR": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "WARNING": {
+                        "index": 3
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "creation_time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 208
+              },
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Event Severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 166
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Message"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 21,
+        "x": 3,
+        "y": 11
+      },
+      "id": 163,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [],
+            "metrics": [
+              {
+                "id": "1",
+                "settings": {
+                  "size": "5000"
+                },
+                "type": "raw_data"
+              }
+            ],
+            "query": "!status:BLACKOUT status:OPEN AND metric_name.keyword:hw.* AND entity_identifier:site=$site",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Open  Events ",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "keepTime": false,
+            "replace": false,
+            "source": "entity_identifier"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "VictoriaMetrics_AccountID": true,
+              "_arrival_time": true,
+              "_ci_id": true,
+              "_entropy": true,
+              "_errors": true,
+              "_id": true,
+              "_identifier": true,
+              "_impacted_service_key": true,
+              "_impacted_service_name": true,
+              "_index": true,
+              "_lifecycle_time": true,
+              "_model": true,
+              "_modified_time": true,
+              "_node_id": true,
+              "_node_impacted_service_key_mapping": true,
+              "_node_key": true,
+              "_node_service_key_mapping": true,
+              "_node_service_mapping": true,
+              "_notes": true,
+              "_operations": true,
+              "_relationships.mlsituation": true,
+              "_relationships.rstat": true,
+              "_repeat_count": true,
+              "_service_id": true,
+              "_service_key": true,
+              "_service_name": true,
+              "_signature": true,
+              "_tenant_id": true,
+              "_tenant_name": true,
+              "_type": true,
+              "_unmapped_data": true,
+              "_unmapped_data.al_baseline_type": true,
+              "_upsert_timestamp": true,
+              "address": true,
+              "agent.host.name": true,
+              "agent_address": true,
+              "agent_name": true,
+              "agent_port": true,
+              "al_agent_name": true,
+              "al_agent_os": true,
+              "al_agent_port": true,
+              "al_agent_tags": true,
+              "al_alarm_id": true,
+              "al_algorithm_name": true,
+              "al_avg_value": true,
+              "al_baseline_daily_high": true,
+              "al_baseline_daily_low": true,
+              "al_baseline_high": true,
+              "al_baseline_hourly_high": true,
+              "al_baseline_hourly_low": true,
+              "al_baseline_low": true,
+              "al_baseline_monthly_high": true,
+              "al_baseline_monthly_low": true,
+              "al_baseline_weekly_high": true,
+              "al_baseline_weekly_low": true,
+              "al_device_ipaddress": true,
+              "al_end_time": true,
+              "al_event_score": true,
+              "al_extremeness": true,
+              "al_highest_severity": true,
+              "al_highest_severity_ordinal": true,
+              "al_is_predicted": true,
+              "al_is_predicted_ordinal": true,
+              "al_last_time": true,
+              "al_old_severity": true,
+              "al_old_severity_ordinal": true,
+              "al_parameter_name": true,
+              "al_parameter_threshold": true,
+              "al_parameter_unit": true,
+              "al_parameter_value": true,
+              "al_predict_to_occur_time": true,
+              "al_prediction_creation_time": true,
+              "al_prediction_id": true,
+              "al_prediction_severity": true,
+              "al_pts_exceeded": true,
+              "al_pts_total": true,
+              "al_thresh_above": true,
+              "al_thresh_above_ordinal": true,
+              "al_thresh_duration": true,
+              "al_thresh_id": true,
+              "al_thresh_type": true,
+              "alias": true,
+              "bandwidth": true,
+              "blade_name": true,
+              "category": true,
+              "category_ordinal": true,
+              "cdmclass": true,
+              "change_id": true,
+              "class": true,
+              "componentalias": true,
+              "connector_id": true,
+              "controller_number": true,
+              "creation_time": false,
+              "cross_launch_uri": true,
+              "details": true,
+              "device_type": true,
+              "driver_version": true,
+              "entityId": true,
+              "entityName": true,
+              "entityTypeId": true,
+              "entity_identifier": true,
+              "event_internal_tags": true,
+              "external_id": true,
+              "firmware_version": true,
+              "highlight": true,
+              "host.name": true,
+              "host.type": true,
+              "hostType": true,
+              "hostname": true,
+              "hw.network.alias": true,
+              "hw.network.name": true,
+              "hw.parent.id": true,
+              "hw.parent.type": true,
+              "id": true,
+              "incident_category": true,
+              "incident_company": true,
+              "incident_id": true,
+              "incident_item": true,
+              "incident_operational_category1": true,
+              "incident_operational_category2": true,
+              "incident_operational_category3": true,
+              "incident_sysid": true,
+              "incident_type": true,
+              "instanceName": true,
+              "instancename": true,
+              "isDeviceMappingEnabled": true,
+              "is_updated": true,
+              "location": true,
+              "logical_address": true,
+              "logical_address_type": true,
+              "metric_name": true,
+              "metric_unit": true,
+              "metric_value": true,
+              "model": true,
+              "modelname": true,
+              "msg": true,
+              "network_type": true,
+              "notificationService": true,
+              "object": true,
+              "object_class": true,
+              "object_id": true,
+              "os.type": true,
+              "parentEntityName": true,
+              "parentEntityTypeId": true,
+              "physical_address": true,
+              "physical_address_type": true,
+              "pr_algorithm_name": true,
+              "pr_analysis_type": true,
+              "pr_attribution_metrics": true,
+              "pr_attribution_scores": true,
+              "pr_forecast_data_duration": true,
+              "pr_number_of_violations": true,
+              "pr_parameter_threshold": true,
+              "pr_prediction_id": true,
+              "pr_score": true,
+              "pr_service_name": true,
+              "pr_severity": true,
+              "pr_severity_ordinal": true,
+              "pr_timestamp": true,
+              "priority": true,
+              "priority_ordinal": true,
+              "raid_level": true,
+              "role": true,
+              "sensor_location": true,
+              "serial_number": true,
+              "severity": false,
+              "severity_ordinal": true,
+              "significance": true,
+              "site": true,
+              "sort": true,
+              "source": true,
+              "sourceEntityType": true,
+              "source_address": true,
+              "source_hostname": false,
+              "source_identifier": true,
+              "source_port": true,
+              "speed": true,
+              "status": true,
+              "status_ordinal": true,
+              "storage.role": true,
+              "sub_category": true,
+              "sub_category_ordinal": true,
+              "tags": true,
+              "type": true,
+              "unit": true,
+              "user_assigned": true,
+              "vendor": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "VictoriaMetrics_AccountID": 140,
+              "_arrival_time": 12,
+              "_ci_id": 13,
+              "_entropy": 14,
+              "_errors": 15,
+              "_id": 16,
+              "_identifier": 17,
+              "_impacted_service_key": 114,
+              "_impacted_service_name": 115,
+              "_index": 18,
+              "_lifecycle_time": 19,
+              "_model": 20,
+              "_modified_time": 21,
+              "_node_id": 22,
+              "_node_impacted_service_key_mapping": 116,
+              "_node_key": 117,
+              "_node_service_key_mapping": 23,
+              "_node_service_mapping": 25,
+              "_notes": 26,
+              "_operations": 27,
+              "_relationships.mlsituation": 118,
+              "_relationships.rstat": 28,
+              "_repeat_count": 29,
+              "_service_id": 30,
+              "_service_key": 119,
+              "_service_name": 31,
+              "_signature": 32,
+              "_tenant_id": 34,
+              "_tenant_name": 35,
+              "_type": 36,
+              "_unmapped_data.al_baseline_type": 37,
+              "_upsert_timestamp": 120,
+              "address": 160,
+              "agent.host.name": 150,
+              "agent_address": 38,
+              "agent_name": 39,
+              "agent_port": 40,
+              "al_agent_name": 41,
+              "al_agent_os": 42,
+              "al_agent_port": 43,
+              "al_agent_tags": 121,
+              "al_alarm_id": 44,
+              "al_algorithm_name": 45,
+              "al_avg_value": 46,
+              "al_baseline_daily_high": 47,
+              "al_baseline_daily_low": 48,
+              "al_baseline_high": 122,
+              "al_baseline_hourly_high": 49,
+              "al_baseline_hourly_low": 50,
+              "al_baseline_low": 123,
+              "al_baseline_monthly_high": 124,
+              "al_baseline_monthly_low": 125,
+              "al_baseline_weekly_high": 51,
+              "al_baseline_weekly_low": 52,
+              "al_device_ipaddress": 53,
+              "al_end_time": 54,
+              "al_event_score": 55,
+              "al_extremeness": 56,
+              "al_highest_severity": 57,
+              "al_highest_severity_ordinal": 58,
+              "al_is_predicted": 59,
+              "al_is_predicted_ordinal": 60,
+              "al_last_time": 61,
+              "al_old_severity": 62,
+              "al_old_severity_ordinal": 63,
+              "al_parameter_name": 64,
+              "al_parameter_threshold": 65,
+              "al_parameter_unit": 66,
+              "al_parameter_value": 67,
+              "al_predict_to_occur_time": 68,
+              "al_prediction_creation_time": 126,
+              "al_prediction_id": 127,
+              "al_prediction_severity": 69,
+              "al_pts_exceeded": 70,
+              "al_pts_total": 71,
+              "al_thresh_above": 72,
+              "al_thresh_above_ordinal": 73,
+              "al_thresh_duration": 74,
+              "al_thresh_id": 75,
+              "al_thresh_type": 76,
+              "alias": 77,
+              "bandwidth": 165,
+              "blade_name": 170,
+              "category": 78,
+              "category_ordinal": 79,
+              "cdmclass": 80,
+              "change_id": 128,
+              "class": 81,
+              "componentalias": 82,
+              "connector_id": 154,
+              "controller_number": 157,
+              "creation_time": 0,
+              "cross_launch_uri": 83,
+              "details": 84,
+              "device_type": 163,
+              "driver_version": 158,
+              "entityId": 148,
+              "entityName": 141,
+              "entityTypeId": 155,
+              "entity_identifier": 8,
+              "event_internal_tags": 129,
+              "external_id": 85,
+              "firmware_version": 133,
+              "highlight": 86,
+              "host.name": 144,
+              "host.type": 136,
+              "hostType": 143,
+              "hostname": 138,
+              "hw.network.alias": 167,
+              "hw.network.name": 164,
+              "hw.parent.id": 139,
+              "hw.parent.type": 147,
+              "hw.type": 3,
+              "id": 145,
+              "incident_category": 87,
+              "incident_company": 88,
+              "incident_id": 9,
+              "incident_item": 89,
+              "incident_operational_category1": 90,
+              "incident_operational_category2": 91,
+              "incident_operational_category3": 92,
+              "incident_sysid": 130,
+              "incident_type": 93,
+              "info": 6,
+              "instanceName": 132,
+              "instancename": 94,
+              "isDeviceMappingEnabled": 146,
+              "location": 95,
+              "metric_name": 96,
+              "metric_unit": 97,
+              "metric_value": 98,
+              "model": 156,
+              "modelname": 99,
+              "msg": 7,
+              "name": 4,
+              "network_type": 161,
+              "object": 100,
+              "object_class": 101,
+              "object_id": 102,
+              "os.type": 134,
+              "parentEntityName": 137,
+              "parentEntityTypeId": 151,
+              "physical_address": 162,
+              "physical_address_type": 166,
+              "priority": 10,
+              "priority_ordinal": 103,
+              "raid_level": 169,
+              "role": 159,
+              "sensor_location": 168,
+              "serial_number": 149,
+              "severity": 1,
+              "severity_ordinal": 104,
+              "significance": 105,
+              "site": 152,
+              "sort": 106,
+              "source": 135,
+              "sourceEntityType": 131,
+              "source_address": 33,
+              "source_hostname": 2,
+              "source_identifier": 107,
+              "source_port": 108,
+              "speed": 172,
+              "state": 5,
+              "status": 11,
+              "status_ordinal": 109,
+              "storage.role": 171,
+              "sub_category": 110,
+              "sub_category_ordinal": 111,
+              "tags": 112,
+              "type": 24,
+              "unit": 153,
+              "user_assigned": 113,
+              "vendor": 142
+            },
+            "renameByName": {
+              "creation_time": "Time",
+              "entityTypeId": "",
+              "hw.type": "Device Type",
+              "incident_id": "",
+              "info": "Device Information",
+              "msg": "Message",
+              "name": "Device Name",
+              "severity": "Severity",
+              "source_hostname": "Hostname",
+              "state": "Device State",
+              "type": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 14
+      },
+      "id": 160,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:MAJOR AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:hw.* AND entity_identifier:site=$site",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Major Events",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 17
+      },
+      "id": 161,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "Cr",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:MINOR AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:hw.* AND entity_identifier:site=$site",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Minor Events",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 118,
+      "panels": [],
+      "title": "Power, Costs and CO₂ Emissions",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The site's current power usage multiplied by the site's PUE.\n\nThis number represents the site's actual power usage. It takes into account the cooling and other overhead that supports the equipment.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 21
+      },
+      "id": 38,
+      "interval": "1h",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(hw_host_power_watts{site=~\"$site\"}) * scalar(avg(hw_site_pue_ratio{site=~\"$site\"}))",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Power * PUE",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.host.power{site=~\"$site\"}) * scalar(avg(hw.site.pue{site=~\"$site\"}))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Total Power * PUE",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Total Power * PUE",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The site's current power usage multiplied by the site's PUE, displayed as a graph.\n\nThis number represents the actual power usage of a data center. It takes into account the cooling and other overhead that supports the equipment.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 51,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 4,
+        "y": 21
+      },
+      "id": 130,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(hw_host_power_watts{site=~\"$site\"}) * scalar(avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[2h])))",
+          "hide": false,
+          "legendFormat": "Total Power * PUE",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.host.power{site=~\"$site\"}) * scalar(avg(avg_over_time(hw.site.pue{site=~\"$site\"}[2h])))",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Total Power * PUE",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Total Power * PUE",
+      "type": "timeseries"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 12,
+        "y": 21
+      },
+      "id": 112,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h3 style=\"background-color:Grey\"><center>Live Data</center></h3>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.4",
+      "type": "text"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 9,
+        "x": 15,
+        "y": 21
+      },
+      "id": 114,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h3 style=\"background-color:Grey\"><center>Cumulative Data</center></h3>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.4",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Today's power consumption for the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 23
+      },
+      "hideTimeOverride": true,
+      "id": 91,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(hw_host_energy_joules_total{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[$__range:5m]) / 3600 ",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Today's Live Consumption",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(increase(hw.host.energy{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[$__range:5m]) / 3600 ",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Today's Live Consumption",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "timeFrom": "now/d",
+      "title": "Today's Live Consumption",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall power consumption reported for the site in the last 24 hours.\n\nIf less than 24 hours of data is available, this value is estimated based on the past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 23
+      },
+      "id": 154,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1d:5m])) * 24",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Daily Consumption",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1d:5m])) * 24",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Daily Consumption",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Daily Consumption",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall energy cost reported for the site during the last 24 hours.\n\nIf less than 24 hours of data is available, this value is estimated based on the past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 18,
+        "y": 23
+      },
+      "id": 151,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_electricity_cost{site=~\"$site\"})[1d:5m])) * 24 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Daily Cost",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.electricity_cost{site=~\"$site\"})[1d:5m])) * 24 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Daily Cost",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Daily Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall volume of CO₂ emitted by the site during the last 24 hours.\n\nIf less than 24 hours of data is available, this value is estimated based on the past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "masskg"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 23
+      },
+      "id": 152,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_carbon_intensity_grams{site=~\"$site\"})[1d:5m])) * 24 / 1000 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Daily CO₂ Emissions",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.carbon_intensity{site=~\"$site\"})[1d:5m])) * 24 / 1000 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Daily CO₂ Emissions",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Daily CO₂ Emissions",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The total current power consumption of all the hosts in the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 25
+      },
+      "id": 19,
+      "interval": "1h",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(hw_host_power_watts{site=~\"$site\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Total Power",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(hw.host.power{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Total Power",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Total Power",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Today's power cost for the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 26
+      },
+      "hideTimeOverride": true,
+      "id": 92,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(hw_host_energy_joules_total{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[$__range:5m]) * avg_over_time(avg(hw_site_electricity_cost{site=~\"$site\"})[$__range:5m]) / 3600 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Today's Live Cost",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(increase(hw.host.energy{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[$__range:5m]) * avg_over_time(avg(hw.site.electricity_cost{site=~\"$site\"})[$__range:5m]) / 3600 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Today's Live Cost",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "timeFrom": "now/d",
+      "title": "Today's Live Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall power consumption reported for the site during the last 30 days.\n\nIf less than 30 days of data is available, this value is estimated based on past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 26
+      },
+      "id": 155,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[30d:1h])) * 30.437 * 24",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Monthly Consumption",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[30d:1h])) * 30.437 * 24",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Monthly Consumption",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Monthly Consumption",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall energy cost reported for the site during the last 30 days.\n\nIf less than 30 days of data is available, this value is estimated based on past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 18,
+        "y": 26
+      },
+      "id": 148,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw_site_electricity_cost{site=~\"$site\"})[30d:1h])) * 30.437 * 24 /1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Monthly Cost",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw.site.electricity_cost{site=~\"$site\"})[30d:1h])) * 30.437 * 24 /1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Monthly Cost",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Monthly Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall volume of CO₂ emitted by the site during the last 30 days.\n\nIf less than 30 days of data is available, this value is estimated based on the past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#525252",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "masst"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 26
+      },
+      "id": 149,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw_site_carbon_intensity_grams{site=~\"$site\"})[30d:1h])) * 30.437 * 24 / 1000 / 1000 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Monthly CO₂ Emissions",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[30d:1h]) * avg_over_time(avg(hw.site.carbon_intensity{site=~\"$site\"})[30d:1h])) * 30.437 * 24 / 1000 / 1000 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Monthly CO₂ Emissions",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Monthly CO₂ Emissions",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The percentage of possible deviation from an exact power consumption value.\n\nThis value is based on the collected data of monitored hosts reporting power consumption and estimated values for hosts not reporting their power consumption.\n\nWhen the power consumed by a host cannot be read, Hardware Sentry estimates this value based on the typical consumption of a host's components (CPUs, disks, network interfaces, etc.).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "noValue": "25%",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-yellow",
+                "value": 0
+              },
+              {
+                "color": "super-light-green",
+                "value": 10
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 11
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 29
+      },
+      "id": 125,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(sum(hw_host_power_watts{quality=\"estimated\", site=\"$site\"} * 15) + sum(hw_host_power_watts{quality=\"measured\", site=\"$site\"} * 5) + 10000 * (sum(present_over_time(metricshub_host_configured{site=\"$site\"}[1h])) - (count(max by (host_name) (metricshub_connector_status{state=\"ok\", site=\"$site\"} == 1))))) / (sum(hw_host_power_watts{site=\"$site\"}) + 100 * (sum(present_over_time(metricshub_host_configured{site=\"$site\"}[1h])) - (count(max by (host_name) (metricshub_connector_status{state=\"ok\", site=\"$site\"} == 1)))))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Margin of Error",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "(sum(hw.host.power{quality=\"estimated\", site=\"$site\"} * 15) + sum(hw.host.power{quality=\"measured\", site=\"$site\"} * 5) + 10000 * (sum(present_over_time(metricshub.host.configured{site=\"$site\"}[1h])) - (count(max by (host.name) (metricshub.connector.status.ok{site=\"$site\"} == 1))))) / (sum(hw.host.power{site=\"$site\"}) + 100 * (sum(present_over_time(metricshub.host.configured{site=\"$site\"}[1h])) - (count(max by (host.name) (metricshub.connector.status.ok{site=\"$site\"} == 1)))))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Margin of Error",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Margin of Error",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Today's volume of CO₂ emissions for the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "masskg"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 29
+      },
+      "hideTimeOverride": true,
+      "id": 48,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(hw_host_energy_joules_total{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[$__range:5m]) * avg_over_time(avg(hw_site_carbon_intensity_grams{site=~\"$site\"})[$__range:5m]) / 3600 / 1000 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Today's Live CO₂ Emissions",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(increase(hw.host.energy{site=~\"$site\"}[$__range])) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[$__range:5m]) * avg_over_time(avg(hw.site.carbon_intensity{site=~\"$site\"})[$__range:5m]) / 3600 / 1000 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Today's Live CO₂ Emissions",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "timeFrom": "now/d",
+      "title": "Today's Live CO₂ Emissions",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall power consumption reported for the site during the last year.\n\nIf less than 365 days of data is available, this value is estimated based on past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 29
+      },
+      "id": 153,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1y:1d])) * 365 * 24",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Yearly Consumption",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1y:1d])) * 365 * 24",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Yearly Consumption",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Yearly Consumption",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall energy cost reported for the site in the past year.\n\nIf less than 365 days of data is available, this value is estimated based on past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 18,
+        "y": 29
+      },
+      "id": 145,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw_site_electricity_cost{site=~\"$site\"})[1y:1d])) * 365 * 24 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Yearly Cost",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw.site.electricity_cost{site=~\"$site\"})[1y:1d])) * 365 * 24 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Yearly Cost",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Yearly Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The overall volume of CO₂ emitted by the site during the past year.\n\nIf less than 365 days of data is available, this value is estimated based on past collected data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#414141",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "masst"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 29
+      },
+      "id": 146,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw_site_carbon_intensity_grams{site=~\"$site\"})[1y:1d])) * 365 * 24 / 1000 / 1000 / 1000",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Yearly CO₂ Emissions",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1y:1d]) * avg_over_time(avg(hw.site.carbon_intensity{site=~\"$site\"})[1y:1d])) * 365 * 24 / 1000 / 1000 / 1000",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Yearly CO₂ Emissions",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Yearly CO₂ Emissions",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 67,
+      "panels": [],
+      "title": "Site Temperature Optimization",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The number of degrees Celsius (°C) remaining before the temperature of a host in the site reaches its closest warning temperature threshold.\n\nIt is advised to keep the heating margin above 5°C.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "max": 20,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 5
+              },
+              {
+                "color": "orange",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 33
+      },
+      "id": 2,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min(min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d]))",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Heating Margin",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "min(min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d]))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Heating Margin",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Heating Margin",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The percentage of hosts for which temperature readings are reported.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "links": [
+            {
+              "title": "",
+              "url": "/d/F_gu_3d7z/site_temperatures?orgId=1&${site:queryparam} "
+            }
+          ],
+          "mappings": [],
+          "max": -1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 4,
+        "y": 33
+      },
+      "id": 74,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(hw_host_ambient_temperature_celsius{site=~\"$site\"}) / sum(present_over_time(metricshub_host_configured{site=~\"$site\"}[1h])) * 100",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "Monitoring Confidence",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count(hw.host.ambient_temperature{site=~\"$site\"}) / sum(present_over_time(metricshub.host.configured{site=~\"$site\"}[1h])) * 100",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Monitoring Confidence",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Monitoring Confidence",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The lowest host's heating margin of all hosts in the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "max": 15,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "green",
+                "value": 5
+              },
+              {
+                "color": "light-yellow",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 9,
+        "x": 7,
+        "y": 33
+      },
+      "id": 76,
+      "interval": "1h",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "min(hw_host_heating_margin_celsius{site=\"$site\"})",
+          "interval": "",
+          "legendFormat": "Heating Margin",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "min(hw.host.heating_margin{site=\"$site\"})",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Heating Margin",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Site Heating Margin",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The estimation of the site's temperature based on the ambient temperature of all hosts in the site.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "decimals": 1,
+          "links": [],
+          "mappings": [],
+          "max": 30,
+          "min": 18,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "yellow",
+                "value": 26
+              },
+              {
+                "color": "dark-red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 33
+      },
+      "id": 4,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg(hw_host_ambient_temperature_celsius{site=~\"$site\"})",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Site Temperature",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg(hw.host.ambient_temperature{site=~\"$site\"})",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Site Temperature",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Current Site Temperature",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The estimated energy consumption cuts based on the current power consumption, heating margin, site temperature and recommended site temperature.\n\nIf the recommended site temperature is lower than the current site temperature, this number may be negative.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red"
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 33
+      },
+      "id": 82,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(hw_host_power_watts{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])) + min(min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d])) - 5 - ((avg(max_over_time(avg(hw_host_ambient_temperature_celsius{site=~\"$site\"})[1d:])) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d]))) * 0.05",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(hw.host.power{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw.site.pue{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])) + min(min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d])) - 5 - ((avg(max_over_time(avg(hw.host.ambient_temperature{site=~\"$site\"})[1d:])) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d]))) * 0.05",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "__auto",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Potential Yearly Energy Savings",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The number of hosts according to their heating margin.\n\nThe abscissa shows the heating margin.\nThe ordinate represents the number of hosts  for a given heating margin.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 0,
+        "y": 36
+      },
+      "id": 157,
+      "maxDataPoints": 1,
+      "options": {
+        "bucketOffset": 0,
+        "bucketSize": 1,
+        "combine": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by (host_name) (min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d]))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "min by (host.name) (min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d]))",
+            "format": "time_series",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "__auto",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Heating Margin Host Distribution",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The estimated yearly savings based on the current power consumption, heating margin, site temperature and recommended site temperature.\n\nIf the recommended site temperature is lower than the current site temperature, this number may be negative.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red"
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 36
+      },
+      "id": 83,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(hw_host_power_watts{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])) + min(min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d])) - 5 - ((max_over_time(avg(hw_host_ambient_temperature_celsius{site=~\"$site\"})[1d:]) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d]))) * 0.05 * avg(avg_over_time(hw_site_electricity_cost{site=~\"$site\"}[1d])) / 1000",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(hw.host.power{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw.site.pue{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])) + min(min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d])) - 5 - ((max_over_time(avg(hw.host.ambient_temperature{site=~\"$site\"})[1d:]) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d]))) * 0.05 * avg(avg_over_time(hw.site.electricity_cost{site=~\"$site\"}[1d])) / 1000",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "__auto",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Potential Yearly Savings",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The recommended site temperature based on the site's current heating margin, as well as the current and past site temperatures.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "transparent",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent"
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 38
+      },
+      "id": 81,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "clamp_min(clamp_max(avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])) * 2 + min(min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d])) - max_over_time(avg(hw_host_ambient_temperature_celsius{site=~\"$site\"})[1d:]) - 5, 29), 15)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "clamp_min(clamp_max(avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])) * 2 + min(min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d])) - max_over_time(avg(hw.host.ambient_temperature{site=~\"$site\"})[1d:]) - 5, 29), 15)",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "__auto",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Recommended Max Site Temperature",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The estimated CO₂ emissions reduction based on the current power consumption, heating margin, site temperature and recommended site temperature.\n\nIf the recommended site temperature is lower than the current site temperature, this number may be negative.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red"
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "masst"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 39
+      },
+      "id": 84,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(hw_host_power_watts{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw_site_pue_ratio{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])) + min(min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d])) - 5 - ((max_over_time(avg(hw_host_ambient_temperature_celsius{site=~\"$site\"})[1d:]) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d]))) * 0.05 * avg(avg_over_time(hw_site_carbon_intensity_grams{site=~\"$site\"}[1d])) / 1000 / 1000000",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(hw.host.power{site=~\"$site\"}[1d])) * (avg(avg_over_time(hw.site.pue{site=~\"$site\"}[1d])) - 1.15) * 24 * 365 * (clamp_max(avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])) + min(min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d])) - 5 - ((max_over_time(avg(hw.host.ambient_temperature{site=~\"$site\"})[1d:]) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])))), 29) - avg(avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d]))) * 0.05 * avg(avg_over_time(hw.site.carbon_intensity{site=~\"$site\"}[1d])) / 1000 / 1000000",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "__auto",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Potential Yearly CO₂ Reduction",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 63,
+      "panels": [],
+      "title": "Hosts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Show Host",
+              "url": "d/c2K8skm4k2/hardware-host-metricshub?var-site=${site}&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Power Consumption"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "unit",
+                "value": "watt"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Power Consumption"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.filterable"
+              },
+              {
+                "id": "fieldMinMax",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Heating Margin"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.filterable",
+                "value": false
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operating System"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "aix": {
+                        "index": 1,
+                        "text": "IBM AIX"
+                      },
+                      "hpux": {
+                        "index": 4,
+                        "text": "HP-UX"
+                      },
+                      "linux": {
+                        "index": 0,
+                        "text": "Linux"
+                      },
+                      "management": {
+                        "index": 6,
+                        "text": "Management"
+                      },
+                      "solaris": {
+                        "index": 2,
+                        "text": "Oracle Solaris"
+                      },
+                      "storage": {
+                        "index": 5,
+                        "text": "Storage"
+                      },
+                      "windows": {
+                        "index": 3,
+                        "text": "Microsoft Windows"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Seen"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeFromNow"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "match": "null+nan",
+                      "result": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Unknown"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "transparent",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host Temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "light-blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 20
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 28
+                    },
+                    {
+                      "color": "red",
+                      "value": 30
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Matching Connectors"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    },
+                    {
+                      "color": "transparent",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed Protocols"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed Connectors"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Major Events"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.9999
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minor Events"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent"
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 166,
+      "interval": "1h",
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Major Events"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "round(rate(hw_host_energy_joules_total{site=~\"$site\"}[1d]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "round(rate(hw.host.energy{site=~\"$site\"}[1d]))",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min_over_time(hw_host_heating_margin_celsius{site=~\"$site\"}[1d])",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "min_over_time(hw.host.heating_margin{site=~\"$site\"}[1d])",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "last_over_time(timestamp(metricshub_host_up{site=~\"$site\"})[6h:])",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "C",
+          "sourceQuery": {
+            "expr": "last_over_time(timestamp(metricshub.host.up{site=~\"$site\"})[6h:])",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg_over_time(hw_host_ambient_temperature_celsius{site=~\"$site\"}[1d])",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "range": false,
+          "refId": "D",
+          "sourceQuery": {
+            "expr": "avg_over_time(hw.host.ambient_temperature{site=~\"$site\"}[1d])",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "metricshub_host_configured{site=~\"$site\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "E",
+          "sourceQuery": {
+            "expr": "metricshub.host.configured{site=~\"$site\"}",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (host_name) (metricshub_connector_status{site=~\"$site\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "TotalConnectors",
+          "sourceQuery": {
+            "expr": "(\n  sum by (host.name) (metricshub.connector.status.ok{site=~\"$site\"})\n  or sum by (host.name) (metricshub.connector.status.failed{site=~\"$site\"}) * 0\n)\n+\n(\n  sum by (host.name) (metricshub.connector.status.failed{site=~\"$site\"})\n  or sum by (host.name) (metricshub.connector.status.ok{site=~\"$site\"}) * 0\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "(count by (host_name) (metricshub_host_up{site=~\"$site\"} == 0)) \r\nor \r\n(count by (host_name) (metricshub_host_up{site=~\"$site\"}) * 0)",
+          "format": "table",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "ProtocolErrors",
+          "sourceQuery": {
+            "expr": "(count by (host.name) (metricshub.host.up{site=~\"$site\"} == 0)) \r\nor \r\n(count by (host.name) (metricshub.host.up{site=~\"$site\"}) * 0)",
+            "format": "table",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (host_name) (metricshub_connector_status{site=~\"$site\", state=\"failed\"}) \r\nor \r\n(0 * count by (host_name) (hw_host_power_watts{site=~\"$site\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "FailedConnectors",
+          "sourceQuery": {
+            "expr": "sum by (host.name) (metricshub.connector.status.failed{site=~\"$site\"}) \nor \n(0 * count by (host.name) (hw.host.power{site=~\"$site\"}))",
+            "format": "table",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Events per Severity",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "1",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              },
+              {
+                "field": "severity",
+                "id": "3",
+                "settings": {
+                  "min_doc_count": "1",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND metric_name.keyword:hw.* AND entity_identifier:site=$site",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "transformations": [
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(?:Events per Severity)$/"
+          },
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "severity",
+            "emptyValue": "zero",
+            "rowField": "source_hostname.keyword",
+            "valueField": "Count"
+          },
+          "topic": "series"
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^source_hostname\\.keyword.*",
+            "renamePattern": "host.name"
+          }
+        },
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "host.name",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Last Seen",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #C"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "1000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "window": {
+              "reducer": "mean",
+              "windowAlignment": "trailing",
+              "windowSize": 0.1,
+              "windowSizeMode": "percentage"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Value #A": false,
+              "Value #C": true,
+              "Value #E": true,
+              "VictoriaMetrics_AccountID": true,
+              "VictoriaMetrics_AccountID 1": true,
+              "VictoriaMetrics_AccountID 2": true,
+              "VictoriaMetrics_AccountID 3": true,
+              "VictoriaMetrics_AccountID 4": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "__name__ 3": true,
+              "agent.host.name": true,
+              "agent.host.name 1": true,
+              "agent.host.name 2": true,
+              "agent.host.name 3": true,
+              "agent.host.name 4": true,
+              "agent.host.name 5": true,
+              "agent_host_name 1": true,
+              "agent_host_name 2": true,
+              "agent_host_name 3": true,
+              "agent_host_name 4": true,
+              "agent_host_name 5": true,
+              "entityId": true,
+              "entityId 1": true,
+              "entityId 2": true,
+              "entityId 3": true,
+              "entityName": true,
+              "entityName 1": true,
+              "entityName 2": true,
+              "entityName 3": true,
+              "entityName 4": true,
+              "entityName 5": true,
+              "entityTypeId": true,
+              "entityTypeId 1": true,
+              "entityTypeId 2": true,
+              "entityTypeId 3": true,
+              "entityTypeId 4": true,
+              "entityTypeId 5": true,
+              "fqdn": true,
+              "host.type": true,
+              "host.type 1": true,
+              "host.type 2": true,
+              "host.type 3": true,
+              "host.type 4": true,
+              "host.type 5": true,
+              "hostType": true,
+              "hostType 1": true,
+              "hostType 2": true,
+              "hostType 3": true,
+              "hostType 4": true,
+              "hostType 5": true,
+              "host_id": true,
+              "host_id 1": true,
+              "host_id 2": true,
+              "host_id 3": true,
+              "host_id 4": true,
+              "host_id 5": true,
+              "host_name 1": false,
+              "host_name 2": true,
+              "host_name 3": true,
+              "host_type": true,
+              "host_type 1": true,
+              "host_type 2": true,
+              "host_type 3": true,
+              "host_type 4": true,
+              "host_type 5": true,
+              "hostname": true,
+              "hostname 1": true,
+              "hostname 2": true,
+              "hostname 3": true,
+              "hostname 4": true,
+              "hostname 5": true,
+              "id": true,
+              "id 1": true,
+              "id 2": true,
+              "id 3": true,
+              "id 4": true,
+              "id 5": true,
+              "instance 1": true,
+              "instance 2": true,
+              "instance 3": true,
+              "instanceName": true,
+              "instanceName 1": true,
+              "instanceName 2": true,
+              "instanceName 3": true,
+              "instanceName 4": true,
+              "instanceName 5": true,
+              "isDeviceMappingEnabled": true,
+              "isDeviceMappingEnabled 1": true,
+              "isDeviceMappingEnabled 2": true,
+              "isDeviceMappingEnabled 3": true,
+              "isDeviceMappingEnabled 4": true,
+              "isDeviceMappingEnabled 5": true,
+              "is_endpoint 1": true,
+              "is_endpoint 2": true,
+              "is_endpoint 3": true,
+              "is_endpoint 4": true,
+              "is_endpoint 5": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "label": true,
+              "label 1": true,
+              "label 2": true,
+              "label 3": true,
+              "location": true,
+              "location 1": true,
+              "location 2": true,
+              "location 3": true,
+              "location 4": true,
+              "location 5": true,
+              "name 1": true,
+              "name 2": true,
+              "name 3": true,
+              "name 4": true,
+              "name 5": true,
+              "os.type 2": true,
+              "os.type 3": true,
+              "os.type 4": true,
+              "os.type 5": true,
+              "os_type 1": false,
+              "os_type 2": true,
+              "os_type 3": true,
+              "os_type 4": true,
+              "os_type 5": true,
+              "parentEntityName": true,
+              "parentEntityName 1": true,
+              "parentEntityName 2": true,
+              "parentEntityName 3": true,
+              "parentEntityName 4": true,
+              "parentEntityName 5": true,
+              "parentEntityTypeId": true,
+              "parentEntityTypeId 1": true,
+              "parentEntityTypeId 2": true,
+              "parentEntityTypeId 3": true,
+              "parentEntityTypeId 4": true,
+              "parentEntityTypeId 5": true,
+              "power_meter": true,
+              "power_meter 1": true,
+              "power_meter 2": true,
+              "power_meter 3": true,
+              "protocol": true,
+              "quality": true,
+              "site": true,
+              "site 1": false,
+              "site 2": true,
+              "site 3": true,
+              "site 4": true,
+              "site 5": true,
+              "source": true,
+              "source 1": true,
+              "source 2": true,
+              "source 3": true,
+              "source 4": true,
+              "source 5": true,
+              "unit": true,
+              "unit 1": true,
+              "unit 2": true,
+              "unit 3": true,
+              "zone": true,
+              "zone 1": true,
+              "zone 2": true,
+              "zone 3": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Last Seen": 11,
+              "MAJOR": 4,
+              "MINOR": 5,
+              "Time 1": 13,
+              "Time 2": 27,
+              "Time 3": 43,
+              "Time 4": 62,
+              "Time 5": 80,
+              "Time 6": 81,
+              "Time 7": 82,
+              "Time 8": 100,
+              "Value #A": 3,
+              "Value #B": 7,
+              "Value #C": 59,
+              "Value #D": 8,
+              "Value #E": 99,
+              "Value #FailedConnectors": 9,
+              "Value #ProtocolErrors": 6,
+              "Value #TotalConnectors": 10,
+              "VictoriaMetrics_AccountID 1": 14,
+              "VictoriaMetrics_AccountID 2": 28,
+              "VictoriaMetrics_AccountID 3": 44,
+              "VictoriaMetrics_AccountID 4": 63,
+              "VictoriaMetrics_AccountID 5": 83,
+              "__name__ 1": 60,
+              "__name__ 2": 64,
+              "__name__ 3": 84,
+              "agent.host.name 1": 15,
+              "agent.host.name 2": 29,
+              "agent.host.name 3": 45,
+              "agent.host.name 4": 65,
+              "agent.host.name 5": 85,
+              "entityId 1": 61,
+              "entityId 2": 66,
+              "entityId 3": 86,
+              "entityName 1": 16,
+              "entityName 2": 30,
+              "entityName 3": 46,
+              "entityName 4": 67,
+              "entityName 5": 87,
+              "entityTypeId 1": 17,
+              "entityTypeId 2": 31,
+              "entityTypeId 3": 47,
+              "entityTypeId 4": 68,
+              "entityTypeId 5": 88,
+              "host.name": 1,
+              "host.type 1": 18,
+              "host.type 2": 32,
+              "host.type 3": 48,
+              "host.type 4": 69,
+              "host.type 5": 89,
+              "hostType 1": 19,
+              "hostType 2": 33,
+              "hostType 3": 49,
+              "hostType 4": 70,
+              "hostType 5": 90,
+              "hostname 1": 20,
+              "hostname 2": 34,
+              "hostname 3": 50,
+              "hostname 4": 71,
+              "hostname 5": 91,
+              "instanceName 1": 21,
+              "instanceName 2": 35,
+              "instanceName 3": 51,
+              "instanceName 4": 72,
+              "instanceName 5": 92,
+              "isDeviceMappingEnabled 1": 22,
+              "isDeviceMappingEnabled 2": 36,
+              "isDeviceMappingEnabled 3": 52,
+              "isDeviceMappingEnabled 4": 73,
+              "isDeviceMappingEnabled 5": 93,
+              "os.type 1": 2,
+              "os.type 2": 37,
+              "os.type 3": 53,
+              "os.type 4": 74,
+              "os.type 5": 94,
+              "parentEntityName 1": 23,
+              "parentEntityName 2": 38,
+              "parentEntityName 3": 54,
+              "parentEntityName 4": 75,
+              "parentEntityName 5": 95,
+              "parentEntityTypeId 1": 24,
+              "parentEntityTypeId 2": 39,
+              "parentEntityTypeId 3": 55,
+              "parentEntityTypeId 4": 76,
+              "parentEntityTypeId 5": 96,
+              "protocol": 56,
+              "quality": 12,
+              "site 1": 0,
+              "site 2": 40,
+              "site 3": 57,
+              "site 4": 77,
+              "site 5": 97,
+              "source 1": 25,
+              "source 2": 41,
+              "source 3": 58,
+              "source 4": 78,
+              "source 5": 98,
+              "unit 1": 26,
+              "unit 2": 42,
+              "unit 3": 79
+            },
+            "renameByName": {
+              "Last Seen": "Last Seen",
+              "MAJOR": "Major Events",
+              "MINOR": "Minor Events",
+              "Time 1": "",
+              "Time 10": "",
+              "Time 7": "",
+              "Value #A": "Power Consumption",
+              "Value #B": "Heating Margin",
+              "Value #C": "",
+              "Value #C * 1000": "Last Seen",
+              "Value #CriticalAlerts": "Critical Alerts",
+              "Value #D": "Host Temperature",
+              "Value #F": "",
+              "Value #FailedConnectors": "Failed Connectors",
+              "Value #ProtocolErrors": "Failed Protocols",
+              "Value #TotalConnectors": "Matching Connectors",
+              "Value #Warnings": "Warnings",
+              "agent.host.name": "",
+              "agent_host_name 1": "",
+              "host.name": "Hostname",
+              "host.type": "",
+              "host_name": "Host",
+              "host_name 1": "Host",
+              "host_type 1": "",
+              "job 2": "",
+              "location 1": "",
+              "os.type": "Operating System",
+              "os.type 1": "Operating System",
+              "os_type 1": "Operating System",
+              "os_type 3": "",
+              "site 1": "Site"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 42,
+      "panels": [],
+      "title": "History",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "The site's daily energy consumption for the past 30 days, as reported.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "Daily Energy Consumption (last 30 days)",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:dddd DD/MM"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "hideTimeOverride": true,
+      "id": 156,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.95,
+        "fullHighlight": true,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "maxWidth": -1,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Time",
+        "xTickLabelMaxLength": 0,
+        "xTickLabelRotation": -45,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(avg_over_time(sum(hw_host_power_watts{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw_site_pue_ratio{site=~\"$site\"})[1d:5m])) * 24 + ignoring(year, month, day) group_right\r\n  count_values without() (\"year\", year(timestamp(\r\n    count_values without() (\"month\", month(timestamp(\r\n\t\t\tcount_values without() (\"day\", day_of_month(timestamp(\r\n        sum(increase(hw_host_energy_joules_total{site=~\"$site\"} [1d])) / avg(increase(timestamp(hw_host_energy_joules_total{site=~\"$site\"})[1d:1d])) * 24 * avg(hw_site_pue_ratio{site=~\"$site\"})\r\n\t\t\t\t)))\r\n    )))\r\n  ))) * 0",
+          "format": "table",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{unit}}",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(avg_over_time(sum(hw.host.power{site=~\"$site\"})[1d:5m]) * avg_over_time(avg(hw.site.pue{site=~\"$site\"})[1d:5m])) * 24 + ignoring(year, month, day) group_right\r\n  count_values without() (\"year\", year(timestamp(\r\n    count_values without() (\"month\", month(timestamp(\r\n\t\t\tcount_values without() (\"day\", day_of_month(timestamp(\r\n        sum(increase(hw.host.energy{site=~\"$site\"} [1d])) / avg(increase(timestamp(hw.host.energy{site=~\"$site\"})[1d:1d])) * 24 * avg(hw.site.pue{site=~\"$site\"})\r\n\t\t\t\t)))\r\n    )))\r\n  ))) * 0",
+            "format": "table",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{unit}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "timeFrom": "now-30d",
+      "timeShift": "1d",
+      "title": "Daily Energy Consumption (last 30 days)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "NaN"
+                  }
+                },
+                "fieldName": "Value"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Time"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": false,
+              "Value": false,
+              "day": true,
+              "month": true,
+              "year": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Time": "",
+              "day": ""
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 40,
+      "panels": [],
+      "title": "MetricsHub Agent Status",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Seen"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeFromNow"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 21,
+        "x": 0,
+        "y": 72
+      },
+      "id": 89,
+      "interval": "1h",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Site"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "last_over_time(timestamp(metricshub_agent_info{agent_host_name=\"$agent\"})[6h:])",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "last_over_time(timestamp(metricshub.agent.info{agent_host_name=\"$agent\"})[6h:])",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Last Seen",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "1000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "Last Seen"
+              ],
+              "reducer": "last"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "agent_host_name",
+                "build_date",
+                "build_number",
+                "version",
+                "Last Seen",
+                "cc_version"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Value": true,
+              "Value #A": true,
+              "__name__": true,
+              "agent_host_name": false,
+              "build_number": false,
+              "build_number 2": true,
+              "hc_version 2": true,
+              "host_id": true,
+              "host_id 1": true,
+              "host_id 2": true,
+              "host_name": true,
+              "host_name 1": true,
+              "host_name 2": true,
+              "host_type": true,
+              "host_type 1": true,
+              "host_type 2": true,
+              "job": true,
+              "name": true,
+              "os_type": true,
+              "os_type 1": true,
+              "os_type 2": true,
+              "otel_version": true,
+              "project_name": true,
+              "project_name 1": true,
+              "project_name 2": true,
+              "project_version": true,
+              "project_version 2": true,
+              "service_name": true,
+              "service_name 1": true,
+              "service_name 2": true,
+              "site": true,
+              "site 2": true,
+              "timestamp": true,
+              "timestamp 1": true,
+              "timestamp 2": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Last Seen": 5,
+              "agent_host_name": 0,
+              "build_date": 3,
+              "build_number": 4,
+              "cc_version": 2,
+              "version": 1
+            },
+            "renameByName": {
+              "Time": "",
+              "Value": "",
+              "agent_host_name": "Hostname",
+              "build_date": "Build Date",
+              "build_number": "Build Number",
+              "build_number 1": "Agent Build Number",
+              "cc_version": "Connectors Version",
+              "hc_version": "Connectors Version",
+              "hc_version 1": "Connectors Version",
+              "name": "",
+              "otel_version": "",
+              "project_version": "",
+              "project_version 1": "Agent Version",
+              "site": "",
+              "site 1": "Site",
+              "timestamp": "",
+              "version": "Version"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "2026.2",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 72
+      },
+      "id": 159,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "title": "Dashboard Version",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "hw_site"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "label_values(metricshub_host_configured,site)",
+        "includeAll": false,
+        "label": "Site",
+        "name": "site",
+        "options": [],
+        "query": "metric,label_values(metricshub.host.configured,site)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "label_values(metricshub_host_configured{site=\"$site\"},agent_host_name)",
+        "hide": 2,
+        "includeAll": false,
+        "name": "agent",
+        "options": [],
+        "query": "metric,label_values(metricshub.host.configured{site=\"$site\"},agent_host_name)",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "Europe/Paris",
+  "title": "Hardware Site (MetricsHub)",
+  "uid": "SHFBpSH7z2",
+  "version": 33,
+  "weekStart": ""
+}

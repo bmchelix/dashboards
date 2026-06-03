@@ -1,0 +1,6169 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_BMC_HELIX",
+      "label": "BMC Helix",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "bmchelix-ade-datasource",
+      "pluginName": "BMC Helix"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "bmchelix-ade-datasource",
+      "name": "BMC Helix",
+      "version": "3.0.1"
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.3.4"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "General OS performance metrics to assess the availability and performance of Linux and Windows systems. Leverages OpenTelemetry metrics collected with MetricsHub and stored in Prometheus.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "System Overview"
+      ],
+      "targetBlank": false,
+      "title": "Systems - Overview",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 54,
+      "panels": [],
+      "title": "Host Global Information",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "aix": {
+                  "index": 2,
+                  "text": "https://dl.sentrysoftware.com/public/ibmaix-logo-mh.svg"
+                },
+                "hpux": {
+                  "index": 3,
+                  "text": "https://dl.sentrysoftware.com/public/hpux-logo-mh.svg"
+                },
+                "linux": {
+                  "index": 1,
+                  "text": "https://dl.sentrysoftware.com/public/linux-logo-mh.svg"
+                },
+                "windows": {
+                  "index": 0,
+                  "text": "https://dl.sentrysoftware.com/public/windows-logo-mh.svg"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OS"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 10,
+        "x": 0,
+        "y": 1
+      },
+      "id": 96,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "label_join(system_uptime_seconds{host_name=\"$host_name\"}, \"joined_os\", \" \", \"name\", \"version\", \"os_version\") ",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "topk(1, label_join(system.uptime{host.name=\"$host_name\"}, \"joined_os\", \" \", \"entityName\", \"version\", \"os_version\") )",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD HH:mm:ss",
+            "timeField": "Uptime",
+            "timezone": "browser",
+            "useTimezone": true
+          }
+        },
+        {
+          "id": "concatenate",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Uptime": false,
+              "Value": true,
+              "VictoriaMetrics_AccountID": true,
+              "__name__": true,
+              "agent.host.name": true,
+              "agent_host_name": true,
+              "build_number": false,
+              "connector_id": true,
+              "entityId": true,
+              "entityName": true,
+              "entityTypeId": true,
+              "host.name": true,
+              "host.type": true,
+              "hostType": true,
+              "host_id": true,
+              "host_name": true,
+              "host_type": true,
+              "hostname": true,
+              "id": true,
+              "instanceName": true,
+              "isDeviceMappingEnabled": true,
+              "name": true,
+              "os_type": false,
+              "os_version": true,
+              "parentEntityName": true,
+              "parentEntityTypeId": true,
+              "serial_number": true,
+              "site": true,
+              "source": true,
+              "unit": true,
+              "version": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 5,
+              "Value": 10,
+              "VictoriaMetrics_AccountID": 11,
+              "__name__": 6,
+              "agent.host.name": 12,
+              "connector_id": 7,
+              "entityId": 13,
+              "entityName": 14,
+              "entityTypeId": 15,
+              "host.name": 16,
+              "host.type": 17,
+              "hostType": 18,
+              "hostname": 19,
+              "id": 8,
+              "instanceName": 20,
+              "isDeviceMappingEnabled": 21,
+              "joined_os": 1,
+              "name": 2,
+              "os.type": 0,
+              "os_version": 4,
+              "parentEntityName": 22,
+              "parentEntityTypeId": 23,
+              "site": 9,
+              "source": 24,
+              "unit": 25,
+              "version": 3
+            },
+            "renameByName": {
+              "Value": "",
+              "Value 2": "Uptime",
+              "agent_host_name": "",
+              "build_number": "Build Number",
+              "count(system_cpu_utilization_ratio{host_name=\"hegel\", system_cpu_state=\"idle\"})": "CPU Core",
+              "count(system_cpu_utilization_ratio{site=\"Sentry-Thésée\", host_name=\"dev-px-01\", system_cpu_state=\"idle\"})": "CPU Core",
+              "count(system_cpu_utilization_ratio{site=\"Sentry-Thésée\", host_name=\"ecs2-01\", system_cpu_state=\"idle\"})": "CPU Core",
+              "count(system_cpu_utilization_ratio{site=\"Sentry-Thésée\", host_name=\"scotus\", system_cpu_state=\"idle\"})": "CPU Core",
+              "host_name": "",
+              "joined_os": "Operating System",
+              "name": "",
+              "os.type": "OS",
+              "os_type": "OS",
+              "os_version": "",
+              "serial_number": "Serial Number",
+              "site": "",
+              "version": "",
+              "{__name__=\"system_memory_limit_bytes\", agent_host_name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Linux\", host_id=\"dev-px-01\", host_name=\"dev-px-01\", host_type=\"compute\", id=\"memory_usage\", os_type=\"linux\", site=\"Sentry-Thésée\"}": "Memory",
+              "{__name__=\"system_memory_limit_bytes\", agent_host_name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Linux\", host_id=\"ecs2-01-system\", host_name=\"ecs2-01\", host_type=\"compute\", id=\"memory_usage\", os_type=\"linux\", site=\"Sentry-Thésée\"}": "Memory",
+              "{__name__=\"system_memory_limit_bytes\", agent_host_name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Linux\", host_id=\"hegel\", host_name=\"hegel\", host_type=\"compute\", id=\"memory_usage\", os_type=\"linux\", site=\"Sentry-Thésée\"}": "Memory",
+              "{__name__=\"system_memory_limit_bytes\", agent_host_name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", host_id=\"scotus\", host_name=\"scotus\", host_type=\"compute\", id=\"memory_usage\", os_type=\"windows\", site=\"Sentry-Thésée\"}": "Memory"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event Severity"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "CRITICAL": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "MAJOR": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "MINOR": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "WARNING": {
+                        "index": 3
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "creation_time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 208
+              },
+              {
+                "id": "displayName",
+                "value": "Time"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Event Severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 128
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 10,
+        "y": 1
+      },
+      "id": 270,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [],
+            "metrics": [
+              {
+                "id": "1",
+                "settings": {
+                  "size": "5000"
+                },
+                "type": "raw_data"
+              }
+            ],
+            "query": "!status:BLACKOUT status:OPEN AND metric_name.keyword:system* AND source_hostname.keyword:$host_name",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Open  Events ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_arrival_time": true,
+              "_ci_id": true,
+              "_entropy": true,
+              "_errors": true,
+              "_id": true,
+              "_identifier": true,
+              "_impacted_service_key": true,
+              "_impacted_service_name": true,
+              "_index": true,
+              "_lifecycle_time": true,
+              "_model": true,
+              "_modified_time": true,
+              "_node_id": true,
+              "_node_impacted_service_key_mapping": true,
+              "_node_key": true,
+              "_node_service_key_mapping": true,
+              "_node_service_mapping": true,
+              "_notes": true,
+              "_operations": true,
+              "_relationships.mlsituation": true,
+              "_relationships.rstat": true,
+              "_repeat_count": true,
+              "_service_id": true,
+              "_service_key": true,
+              "_service_name": true,
+              "_signature": true,
+              "_tenant_id": true,
+              "_tenant_name": true,
+              "_type": true,
+              "_unmapped_data": true,
+              "_unmapped_data.al_baseline_type": true,
+              "_upsert_timestamp": true,
+              "agent_address": true,
+              "agent_name": true,
+              "agent_port": true,
+              "al_agent_name": true,
+              "al_agent_os": true,
+              "al_agent_port": true,
+              "al_agent_tags": true,
+              "al_alarm_id": true,
+              "al_algorithm_name": true,
+              "al_avg_value": true,
+              "al_baseline_daily_high": true,
+              "al_baseline_daily_low": true,
+              "al_baseline_high": true,
+              "al_baseline_hourly_high": true,
+              "al_baseline_hourly_low": true,
+              "al_baseline_low": true,
+              "al_baseline_monthly_high": true,
+              "al_baseline_monthly_low": true,
+              "al_baseline_weekly_high": true,
+              "al_baseline_weekly_low": true,
+              "al_device_ipaddress": true,
+              "al_end_time": true,
+              "al_event_score": true,
+              "al_extremeness": true,
+              "al_highest_severity": true,
+              "al_highest_severity_ordinal": true,
+              "al_is_predicted": true,
+              "al_is_predicted_ordinal": true,
+              "al_last_time": true,
+              "al_old_severity": true,
+              "al_old_severity_ordinal": true,
+              "al_parameter_name": true,
+              "al_parameter_threshold": true,
+              "al_parameter_unit": true,
+              "al_parameter_value": true,
+              "al_predict_to_occur_time": true,
+              "al_prediction_creation_time": true,
+              "al_prediction_id": true,
+              "al_prediction_severity": true,
+              "al_pts_exceeded": true,
+              "al_pts_total": true,
+              "al_thresh_above": true,
+              "al_thresh_above_ordinal": true,
+              "al_thresh_duration": true,
+              "al_thresh_id": true,
+              "al_thresh_type": true,
+              "alias": true,
+              "category": true,
+              "category_ordinal": true,
+              "cdmclass": true,
+              "change_id": true,
+              "class": true,
+              "componentalias": true,
+              "cross_launch_uri": true,
+              "details": true,
+              "entity_identifier": true,
+              "event_internal_tags": true,
+              "external_id": true,
+              "highlight": true,
+              "incident_category": true,
+              "incident_company": true,
+              "incident_id": true,
+              "incident_item": true,
+              "incident_operational_category1": true,
+              "incident_operational_category2": true,
+              "incident_operational_category3": true,
+              "incident_sysid": true,
+              "incident_type": true,
+              "instancename": true,
+              "is_updated": true,
+              "location": true,
+              "metric_name": true,
+              "metric_unit": true,
+              "metric_value": true,
+              "modelname": true,
+              "notificationService": true,
+              "object": true,
+              "object_class": true,
+              "object_id": true,
+              "pr_algorithm_name": true,
+              "pr_analysis_type": true,
+              "pr_attribution_metrics": true,
+              "pr_attribution_scores": true,
+              "pr_forecast_data_duration": true,
+              "pr_number_of_violations": true,
+              "pr_parameter_threshold": true,
+              "pr_prediction_id": true,
+              "pr_score": true,
+              "pr_service_name": true,
+              "pr_severity": true,
+              "pr_severity_ordinal": true,
+              "pr_timestamp": true,
+              "priority": true,
+              "priority_ordinal": true,
+              "severity_ordinal": true,
+              "significance": true,
+              "sort": true,
+              "sourceEntityType": true,
+              "source_address": true,
+              "source_hostname": true,
+              "source_identifier": true,
+              "source_port": true,
+              "status": true,
+              "status_ordinal": true,
+              "sub_category": true,
+              "sub_category_ordinal": true,
+              "tags": true,
+              "user_assigned": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "_arrival_time": 7,
+              "_ci_id": 8,
+              "_entropy": 9,
+              "_errors": 10,
+              "_id": 11,
+              "_identifier": 12,
+              "_impacted_service_key": 109,
+              "_impacted_service_name": 110,
+              "_index": 13,
+              "_lifecycle_time": 14,
+              "_model": 15,
+              "_modified_time": 16,
+              "_node_id": 17,
+              "_node_impacted_service_key_mapping": 111,
+              "_node_key": 112,
+              "_node_service_key_mapping": 18,
+              "_node_service_mapping": 19,
+              "_notes": 20,
+              "_operations": 21,
+              "_relationships.mlsituation": 113,
+              "_relationships.rstat": 22,
+              "_repeat_count": 23,
+              "_service_id": 24,
+              "_service_key": 114,
+              "_service_name": 25,
+              "_signature": 26,
+              "_tenant_id": 28,
+              "_tenant_name": 29,
+              "_type": 30,
+              "_unmapped_data.al_baseline_type": 31,
+              "_upsert_timestamp": 115,
+              "agent_address": 32,
+              "agent_name": 33,
+              "agent_port": 34,
+              "al_agent_name": 35,
+              "al_agent_os": 36,
+              "al_agent_port": 37,
+              "al_agent_tags": 116,
+              "al_alarm_id": 38,
+              "al_algorithm_name": 39,
+              "al_avg_value": 40,
+              "al_baseline_daily_high": 41,
+              "al_baseline_daily_low": 42,
+              "al_baseline_high": 117,
+              "al_baseline_hourly_high": 43,
+              "al_baseline_hourly_low": 44,
+              "al_baseline_low": 118,
+              "al_baseline_monthly_high": 119,
+              "al_baseline_monthly_low": 120,
+              "al_baseline_weekly_high": 45,
+              "al_baseline_weekly_low": 46,
+              "al_device_ipaddress": 47,
+              "al_end_time": 48,
+              "al_event_score": 49,
+              "al_extremeness": 50,
+              "al_highest_severity": 51,
+              "al_highest_severity_ordinal": 52,
+              "al_is_predicted": 53,
+              "al_is_predicted_ordinal": 54,
+              "al_last_time": 55,
+              "al_old_severity": 56,
+              "al_old_severity_ordinal": 57,
+              "al_parameter_name": 58,
+              "al_parameter_threshold": 59,
+              "al_parameter_unit": 60,
+              "al_parameter_value": 61,
+              "al_predict_to_occur_time": 62,
+              "al_prediction_creation_time": 121,
+              "al_prediction_id": 122,
+              "al_prediction_severity": 63,
+              "al_pts_exceeded": 64,
+              "al_pts_total": 65,
+              "al_thresh_above": 66,
+              "al_thresh_above_ordinal": 67,
+              "al_thresh_duration": 68,
+              "al_thresh_id": 69,
+              "al_thresh_type": 70,
+              "alias": 71,
+              "category": 72,
+              "category_ordinal": 73,
+              "cdmclass": 74,
+              "change_id": 123,
+              "class": 75,
+              "componentalias": 76,
+              "creation_time": 0,
+              "cross_launch_uri": 77,
+              "details": 78,
+              "entity_identifier": 79,
+              "event_internal_tags": 124,
+              "external_id": 80,
+              "highlight": 81,
+              "incident_category": 82,
+              "incident_company": 83,
+              "incident_id": 2,
+              "incident_item": 84,
+              "incident_operational_category1": 85,
+              "incident_operational_category2": 86,
+              "incident_operational_category3": 87,
+              "incident_sysid": 125,
+              "incident_type": 88,
+              "instancename": 89,
+              "location": 90,
+              "metric_name": 91,
+              "metric_unit": 92,
+              "metric_value": 93,
+              "modelname": 94,
+              "msg": 4,
+              "object": 95,
+              "object_class": 96,
+              "object_id": 97,
+              "priority": 5,
+              "priority_ordinal": 98,
+              "severity": 1,
+              "severity_ordinal": 99,
+              "significance": 100,
+              "sort": 101,
+              "sourceEntityType": 126,
+              "source_address": 27,
+              "source_hostname": 3,
+              "source_identifier": 102,
+              "source_port": 103,
+              "status": 6,
+              "status_ordinal": 104,
+              "sub_category": 105,
+              "sub_category_ordinal": 106,
+              "tags": 107,
+              "user_assigned": 108
+            },
+            "renameByName": {
+              "creation_time": "Time",
+              "incident_id": "",
+              "msg": "Message",
+              "severity": "Severity",
+              "source_hostname": "Hostname"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "2026.1",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 1
+      },
+      "id": 128,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "expr": "",
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {},
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Dashboard",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 4
+      },
+      "id": 91,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(system_cpu_utilization_ratio{host_name=\"$host_name\", system_cpu_state=\"idle\"})",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "Connector",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count(system.cpu.utilization.idle{host.name=\"$host_name\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CPU Cores",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 2,
+        "y": 4
+      },
+      "id": 93,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_memory_limit_bytes{host_name=\"$host_name\"}",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "Connector",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "max(system.memory.limit{host.name=\"$host_name\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Memory",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-purple",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 4,
+        "y": 4
+      },
+      "id": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(system_filesystem_usage_bytes{host_name=\"$host_name\", system_filesystem_type !~\"$filesystemFilter\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Total",
+          "range": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(\n  {__name__=~\"system.filesystem.usage.(free|used|reserved)\", host.name=\"$host_name\", system_filesystem_type!~\"$filesystemFilter\"}\n)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Capacity",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {}
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#62615b",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 6,
+        "y": 4
+      },
+      "id": 92,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_uptime_seconds{host_name=\"$host_name\"}",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "Connector",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "max(system.uptime{host.name=\"$host_name\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Failed"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 8,
+        "y": 4
+      },
+      "id": 86,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": false
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "metricshub_connector_status{host_name=\"$host_name\", connector_id=~\"Linux|Windows\", state=\"ok\"}",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "Connector",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "min(metricshub.connector.status.ok{host.name=\"$host_name\", connector_id=~\"Linux|Windows|Aix|HPUX\"})",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Connector",
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 4
+      },
+      "id": 117,
+      "links": [
+        {
+          "title": "Hardware Sentry OpenTelemetry Collector",
+          "url": "https://www.sentrysoftware.com/products/hardware-sentry-opentelemetry-collector.html"
+        }
+      ],
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<a href=\"https://metricshub.com/\" target=\"_blank\">\n  <div style=\"\n    display: block;\n    margin: 0 auto; \n    \n    background: transparent url(https://metricshub.com/images/logo-darkgrey.svg) no-repeat center center;\n    background-size: contain;\n    \n    width: 85px;   \n    height: 85px;\n    border-radius: 3px;\n  \">\n  </div>\n</a>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.4",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 116,
+      "panels": [],
+      "title": "Protocols",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "protocol"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "http": {
+                        "index": 4,
+                        "text": "HTTP"
+                      },
+                      "ping": {
+                        "index": 0,
+                        "text": "Ping"
+                      },
+                      "snmp": {
+                        "index": 1,
+                        "text": "SNMP"
+                      },
+                      "snmpv3": {
+                        "index": 6,
+                        "text": "SNMP v3"
+                      },
+                      "ssh": {
+                        "index": 2,
+                        "text": "SSH"
+                      },
+                      "wbem": {
+                        "index": 5,
+                        "text": "WBEM"
+                      },
+                      "wmi": {
+                        "index": 3,
+                        "text": "WMI"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Down"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 1,
+                        "text": "Up"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Up Percentage"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.8501
+                    },
+                    {
+                      "color": "green",
+                      "value": 0.99
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 143
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Lowest"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 0.5
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 212
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 220
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Highest"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "min",
+                "value": -2
+              },
+              {
+                "id": "max",
+                "value": 7
+              },
+              {
+                "id": "custom.width",
+                "value": 203
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Response Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "seconde"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "hideValue": true,
+                  "lineInterpolation": "stepBefore",
+                  "type": "sparkline"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocol"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 139,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Protocol"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "Status",
+          "sourceQuery": {
+            "expr": "label_replace(metricshub.host.up.ping{host.name=\"$host_name\"}, \"protocol\", \"ping\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.ssh{host.name=\"$host_name\"}, \"protocol\", \"ssh\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.http{host.name=\"$host_name\"}, \"protocol\", \"http\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.snmp{host.name=\"$host_name\"}, \"protocol\", \"snmp\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.snmpv3{host.name=\"$host_name\"}, \"protocol\", \"snmpv3\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.wmi{host.name=\"$host_name\"}, \"protocol\", \"wmi\", \"\", \"\")\nor\nlabel_replace(metricshub.host.up.wbem{host.name=\"$host_name\"}, \"protocol\", \"wbem\", \"\", \"\")",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Percentage",
+          "sourceQuery": {
+            "expr": "label_replace(\n  sum_over_time({__name__=~\"metricshub.host.up.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"}[$__range])\n  /\n  count_over_time({__name__=~\"metricshub.host.up.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"}[$__range]),\n  \"protocol\", \"$1\", \"__name__\", \"metricshub\\\\.host\\\\.up\\\\.(.+)\"\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Min",
+          "sourceQuery": {
+            "expr": "label_replace(\n  min_over_time(\n    (\n      ({__name__=~\"metricshub.host.response_time.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"} > 0) * 1 or\n      ({__name__=~\"metricshub.host.response_time.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"} <= 0) * +Inf\n    )[$__range:1m]\n  ),\n  \"protocol\", \"$1\", \"__name__\", \"metricshub.host.response_time.(.+)\"\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Average",
+          "sourceQuery": {
+            "expr": "label_replace(\n  avg_over_time(\n    {__name__=~\"metricshub.host.response_time.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"}[$__range]\n  ),\n  \"protocol\", \"$1\", \"__name__\", \"metricshub.host.response_time.(.+)\"\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Max",
+          "sourceQuery": {
+            "expr": "label_replace(\n  max_over_time(\n    {__name__=~\"metricshub.host.response_time.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"}[$__range]\n  ),\n  \"protocol\", \"$1\", \"__name__\", \"metricshub.host.response_time.(.+)\"\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Response Time",
+          "sourceQuery": {
+            "expr": "label_replace(\n  {__name__=~\"metricshub.host.response_time.(ping|ssh|snmp|snmpv3|wmi|wbem|http)\", host.name=\"$host_name\"},\n  \"protocol\", \"$1\", \"__name__\", \"metricshub.host.response_time.(.+)\"\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "timeSeriesTable",
+          "options": {
+            "A": {
+              "timeField": "Time"
+            },
+            "Average": {
+              "timeField": "Time"
+            },
+            "Max": {
+              "timeField": "Time"
+            },
+            "Min": {
+              "timeField": "Time"
+            },
+            "Percentage": {
+              "timeField": "Time"
+            },
+            "Response Time": {
+              "timeField": "Time"
+            },
+            "Status": {
+              "timeField": "Time"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "protocol",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Status",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Status"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Up Percentage",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Percentage"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Lowest",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Min"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Average",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Average"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Highest",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Max"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Trend #A": false,
+              "Trend #Average": true,
+              "Trend #Max": true,
+              "Trend #Min": true,
+              "Trend #Percentage": true,
+              "Trend #Status": true,
+              "VictoriaMetrics_AccountID 1": true,
+              "VictoriaMetrics_AccountID 2": true,
+              "VictoriaMetrics_AccountID 3": true,
+              "VictoriaMetrics_AccountID 4": true,
+              "VictoriaMetrics_AccountID 5": true,
+              "VictoriaMetrics_AccountID 6": true,
+              "agent.host.name 1": true,
+              "agent.host.name 2": true,
+              "agent.host.name 3": true,
+              "agent.host.name 4": true,
+              "agent.host.name 5": true,
+              "agent.host.name 6": true,
+              "entityId 1": true,
+              "entityId 2": true,
+              "entityId 3": true,
+              "entityId 4": true,
+              "entityId 5": true,
+              "entityId 6": true,
+              "entityName 1": true,
+              "entityName 2": true,
+              "entityName 3": true,
+              "entityName 4": true,
+              "entityName 5": true,
+              "entityName 6": true,
+              "entityTypeId 1": true,
+              "entityTypeId 2": true,
+              "entityTypeId 3": true,
+              "entityTypeId 4": true,
+              "entityTypeId 5": true,
+              "entityTypeId 6": true,
+              "host.name 1": true,
+              "host.name 2": true,
+              "host.name 3": true,
+              "host.name 4": true,
+              "host.name 5": true,
+              "host.name 6": true,
+              "host.type 1": true,
+              "host.type 2": true,
+              "host.type 3": true,
+              "host.type 4": true,
+              "host.type 5": true,
+              "host.type 6": true,
+              "hostType 1": true,
+              "hostType 2": true,
+              "hostType 3": true,
+              "hostType 4": true,
+              "hostType 5": true,
+              "hostType 6": true,
+              "hostname 1": true,
+              "hostname 2": true,
+              "hostname 3": true,
+              "hostname 4": true,
+              "hostname 5": true,
+              "hostname 6": true,
+              "instanceName 1": true,
+              "instanceName 2": true,
+              "instanceName 3": true,
+              "instanceName 4": true,
+              "instanceName 5": true,
+              "instanceName 6": true,
+              "isDeviceMappingEnabled 1": true,
+              "isDeviceMappingEnabled 2": true,
+              "isDeviceMappingEnabled 3": true,
+              "isDeviceMappingEnabled 4": true,
+              "isDeviceMappingEnabled 5": true,
+              "isDeviceMappingEnabled 6": true,
+              "os.type 1": true,
+              "os.type 2": true,
+              "os.type 3": true,
+              "os.type 4": true,
+              "os.type 5": true,
+              "os.type 6": true,
+              "parentEntityName 1": true,
+              "parentEntityName 2": true,
+              "parentEntityName 3": true,
+              "parentEntityName 4": true,
+              "parentEntityName 5": true,
+              "parentEntityName 6": true,
+              "parentEntityTypeId 1": true,
+              "parentEntityTypeId 2": true,
+              "parentEntityTypeId 3": true,
+              "parentEntityTypeId 4": true,
+              "parentEntityTypeId 5": true,
+              "parentEntityTypeId 6": true,
+              "site 1": true,
+              "site 2": true,
+              "site 3": true,
+              "site 4": true,
+              "site 5": true,
+              "site 6": true,
+              "source 1": true,
+              "source 2": true,
+              "source 3": true,
+              "source 4": true,
+              "source 5": true,
+              "source 6": true,
+              "unit": true,
+              "unit 1": true,
+              "unit 2": true,
+              "unit 3": true,
+              "unit 4": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Average": 4,
+              "Highest": 5,
+              "Lowest": 3,
+              "Status": 1,
+              "Trend #Average": 76,
+              "Trend #Max": 94,
+              "Trend #Min": 57,
+              "Trend #Percentage": 40,
+              "Trend #Response Time": 6,
+              "Trend #Status": 23,
+              "Up Percentage": 2,
+              "VictoriaMetrics_AccountID 1": 7,
+              "VictoriaMetrics_AccountID 2": 24,
+              "VictoriaMetrics_AccountID 3": 41,
+              "VictoriaMetrics_AccountID 4": 59,
+              "VictoriaMetrics_AccountID 5": 77,
+              "VictoriaMetrics_AccountID 6": 95,
+              "agent.host.name 1": 8,
+              "agent.host.name 2": 25,
+              "agent.host.name 3": 42,
+              "agent.host.name 4": 60,
+              "agent.host.name 5": 78,
+              "agent.host.name 6": 96,
+              "entityId 1": 9,
+              "entityId 2": 26,
+              "entityId 3": 43,
+              "entityId 4": 61,
+              "entityId 5": 79,
+              "entityId 6": 97,
+              "entityName 1": 10,
+              "entityName 2": 27,
+              "entityName 3": 44,
+              "entityName 4": 62,
+              "entityName 5": 80,
+              "entityName 6": 98,
+              "entityTypeId 1": 11,
+              "entityTypeId 2": 28,
+              "entityTypeId 3": 45,
+              "entityTypeId 4": 63,
+              "entityTypeId 5": 81,
+              "entityTypeId 6": 99,
+              "host.name 1": 12,
+              "host.name 2": 29,
+              "host.name 3": 46,
+              "host.name 4": 64,
+              "host.name 5": 82,
+              "host.name 6": 100,
+              "host.type 1": 13,
+              "host.type 2": 30,
+              "host.type 3": 47,
+              "host.type 4": 65,
+              "host.type 5": 83,
+              "host.type 6": 101,
+              "hostType 1": 14,
+              "hostType 2": 31,
+              "hostType 3": 48,
+              "hostType 4": 66,
+              "hostType 5": 84,
+              "hostType 6": 102,
+              "hostname 1": 15,
+              "hostname 2": 32,
+              "hostname 3": 49,
+              "hostname 4": 67,
+              "hostname 5": 85,
+              "hostname 6": 103,
+              "instanceName 1": 16,
+              "instanceName 2": 33,
+              "instanceName 3": 50,
+              "instanceName 4": 68,
+              "instanceName 5": 86,
+              "instanceName 6": 104,
+              "isDeviceMappingEnabled 1": 17,
+              "isDeviceMappingEnabled 2": 34,
+              "isDeviceMappingEnabled 3": 51,
+              "isDeviceMappingEnabled 4": 69,
+              "isDeviceMappingEnabled 5": 87,
+              "isDeviceMappingEnabled 6": 105,
+              "os.type 1": 18,
+              "os.type 2": 35,
+              "os.type 3": 52,
+              "os.type 4": 70,
+              "os.type 5": 88,
+              "os.type 6": 106,
+              "parentEntityName 1": 19,
+              "parentEntityName 2": 36,
+              "parentEntityName 3": 53,
+              "parentEntityName 4": 71,
+              "parentEntityName 5": 89,
+              "parentEntityName 6": 107,
+              "parentEntityTypeId 1": 20,
+              "parentEntityTypeId 2": 37,
+              "parentEntityTypeId 3": 54,
+              "parentEntityTypeId 4": 72,
+              "parentEntityTypeId 5": 90,
+              "parentEntityTypeId 6": 108,
+              "protocol": 0,
+              "site 1": 21,
+              "site 2": 38,
+              "site 3": 55,
+              "site 4": 73,
+              "site 5": 91,
+              "site 6": 109,
+              "source 1": 22,
+              "source 2": 39,
+              "source 3": 56,
+              "source 4": 74,
+              "source 5": 92,
+              "source 6": 110,
+              "unit 1": 58,
+              "unit 2": 75,
+              "unit 3": 93,
+              "unit 4": 111
+            },
+            "renameByName": {
+              "Trend #Response Time": "Response Time",
+              "protocol": "Protocol"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 118,
+      "panels": [],
+      "title": "Performance Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Utilization of the busiest core/processor, to identify CPU contention",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.8
+              },
+              {
+                "color": "red",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 14
+      },
+      "id": 119,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(1 - sum by (name) (delta(system_cpu_time_seconds_total{host_name=\"$host_name\", system_cpu_state=\"idle\"}[$__rate_interval])) / sum by (name) (delta(system_cpu_time_seconds_total{host_name=\"$host_name\"}[$__rate_interval])))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Max Core CPU Utilization",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "max(\n  1 -\n  sum by (name) (\n    delta(system.cpu.time.idle{host.name=\"$host_name\"}[$__rate_interval])\n  )\n  /\n  sum by (name) (\n    delta(\n      {__name__=~\"system\\\\.cpu\\\\.time\\\\.(idle|user|system|nice|io_wait)\", host.name=\"$host_name\"}[$__rate_interval]\n    )\n  )\n)",
+            "interval": "",
+            "legendFormat": "Max Core CPU Utilization",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Max CPU Utilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 41,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.75
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 14
+      },
+      "id": 120,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(system_memory_utilization_ratio{host_name=\"$host_name\", system_memory_state!=\"free\"})",
+          "legendFormat": "Memory Utilization",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(\n  {__name__=~\"system.memory.utilization.(buffer|cached|used)\", host.name=\"$host_name\"}\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Memory Utilization",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "{__name__=\"system_memory_utilization_ratio\", agent_host_name=\"mk-win.internal.sentrysoftware.net\", connector_id=\"Linux\", host_id=\"mk-deb2\", host_name=\"mk-deb2.internal.sentrysoftware.net\", host_type=\"compute\", id=\"memory_usage\", os_type=\"linux\", site=\"Paris\", system_memory_limit=\"2063106048\", system_memory_usage=\"used\"}": "Used memory"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Utilization of the busiest disk, to identify disk contention",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "io_wait": {
+                  "index": 0,
+                  "text": "IO Wait"
+                },
+                "nice": {
+                  "index": 3,
+                  "text": "Nice"
+                },
+                "system": {
+                  "index": 1,
+                  "text": "System"
+                },
+                "user": {
+                  "index": 2,
+                  "text": "User"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.6
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 14
+      },
+      "id": 121,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(rate(system_disk_io_time_seconds_total{host_name=\"$host_name\"}[$__rate_interval]))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Max Disk Time Utilization",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "max(rate(system.disk.io_time{host.name=\"$host_name\"}[$__rate_interval]))",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Max Disk Utilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": true,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 14
+      },
+      "id": 135,
+      "interval": "20m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": false,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "max(max by (network_interface_name) (rate(system_network_io_bytes_total{host_name=\"$host_name\"}[$__rate_interval])\r\n) / max by (network_interface_name) (system_network_bandwidth_limit_bytes{host_name=\"$host_name\"}))",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "Max Network Utilization",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum by (network.interface.name) (\n  rate(system.network.io.{host.name=\"$host_name\"}[$__rate_interval])\n  +\n  ignoring(network.io.direction)\n  rate(system.network.io.transmit{host.name=\"$host_name\"}[$__rate_interval])\n)\n\nmax(\n  (\n    sum by (network.interface.name) (\n\t\t\trate(system.network.io.receive{host.name=\"$host_name\"}[$__rate_interval])\n\t\t\t+\n\t\t\tignoring(network.io.direction)\n\t\t\trate(system.network.io.transmit{host.name=\"$host_name\"}[$__rate_interval])\n\t\t)\n  )\n  /\n  (\n    max by (network.interface.name) (\n      system.network.bandwidth.limit{host.name=\"$host_name\"}\n    )\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "max(\n  (\n    sum by (network.interface.name) (\n      rate(system.network.io.receive{host.name=\"$host_name\"}[$__rate_interval])\n      +\n      ignoring(network.io.direction)\n      rate(system.network.io.transmit{host.name=\"$host_name\"}[$__rate_interval])\n    )\n  )\n  /\n  (\n    max by (network.interface.name) (\n      system.network.bandwidth.limit{host.name=\"$host_name\"}\n    )\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Max Network Utilization",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 49,
+      "panels": [],
+      "title": "CPU",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "seconde"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "idle"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Idle"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "system"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "System"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "user"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "User"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "io_wait"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IO Wait"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nice"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Nice"
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityId=\"OTEL:anaxagore:system_cpu:0\", entityName=\"0\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", id=\"0\", instanceName=\"cpu 0\", isDeviceMappingEnabled=\"true\", name=\"cpu 0\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"user\", unit=\"s\"}",
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityId=\"OTEL:anaxagore:system_cpu:1\", entityName=\"1\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", id=\"1\", instanceName=\"cpu 1\", isDeviceMappingEnabled=\"true\", name=\"cpu 1\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"system\", unit=\"s\"}",
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityId=\"OTEL:anaxagore:system_cpu:1\", entityName=\"1\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", id=\"1\", instanceName=\"cpu 1\", isDeviceMappingEnabled=\"true\", name=\"cpu 1\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"user\", unit=\"s\"}",
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", isDeviceMappingEnabled=\"true\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"idle\", unit=\"s\"}",
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", isDeviceMappingEnabled=\"true\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"system\", unit=\"s\"}",
+                  "undefined{VictoriaMetrics_AccountID=\"965051025\", agent.host.name=\"lab-win-01.internal.sentrysoftware.net\", connector_id=\"Windows\", entityTypeId=\"system_cpu\", host.name=\"anaxagore\", host.type=\"compute\", hostType=\"server\", hostname=\"anaxagore\", isDeviceMappingEnabled=\"true\", os.type=\"windows\", parentEntityName=\"system_cpu_container\", parentEntityTypeId=\"system_cpu_container\", site=\"Sentry-Thésée\", source=\"OTEL\", system.cpu.state=\"user\", unit=\"s\"}",
+                  "undefined{system.cpu.state=\"system\"}",
+                  "undefined{system.cpu.state=\"user\"}",
+                  "undefined{system.cpu.state=\"idle\"}",
+                  "User",
+                  "System",
+                  "Idle",
+                  "IO Wait",
+                  "Nice"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 21
+      },
+      "id": 8,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (system_cpu_state) (delta(system_cpu_time_seconds_total{host_name=\"$host_name\"}[$__range]))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum by (system.cpu.state) (\n  delta(\n    {__name__=~\"system\\\\.cpu\\\\.time\\\\..+\", host.name=\"$host_name\"}[$__range]\n  )\n)\n",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{system.cpu.state}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CPU Time",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 5,
+        "y": 21
+      },
+      "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (name) (irate(system_cpu_time_seconds_total{host_name=\"$host_name\", system_cpu_state!=\"idle\"}[1h]))",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{name}}",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum by (name) (\n  irate(\n    {__name__=~\"system\\\\.cpu\\\\.time\\\\.(user|system|nice|io_wait)\", host.name=\"$host_name\"}[1h]\n  )\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{name}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CPU Core Utilization (Instant)",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "name"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "io_wait": {
+                  "index": 0,
+                  "text": "IO Wait"
+                },
+                "nice": {
+                  "index": 3,
+                  "text": "Nice"
+                },
+                "system": {
+                  "index": 1,
+                  "text": "System"
+                },
+                "user": {
+                  "index": 2,
+                  "text": "User"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 2
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "group": "A",
+                  "mode": "none"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 13,
+        "y": 21
+      },
+      "id": 110,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (host_name, system_cpu_state) (rate(system_cpu_time_seconds_total{host_name=\"$host_name\", system_cpu_state!=\"idle\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{system_cpu_state}}",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "avg by (host.name, cpu_state) (\n  label_replace(rate(system.cpu.time.user{host.name=\"$host_name\"}[$__rate_interval]), \"cpu_state\", \"user\", \".*\", \"\")\n  or\n  label_replace(rate(system.cpu.time.system{host.name=\"$host_name\"}[$__rate_interval]), \"cpu_state\", \"system\", \".*\", \"\")\n  or\n  label_replace(rate(system.cpu.time.io_wait{host.name=\"$host_name\"}[$__rate_interval]), \"cpu_state\", \"io_wait\", \".*\", \"\")\n  or\n  label_replace(rate(system.cpu.time.nice{host.name=\"$host_name\"}[$__rate_interval]), \"cpu_state\", \"nice\", \".*\", \"\")\n)",
+            "interval": "",
+            "legendFormat": "{{cpu_state}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (host_name) (1 - rate(system_cpu_time_seconds_total{host_name=\"$host_name\", system_cpu_state=\"idle\"}[$__rate_interval]))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Max Core CPU Utilization",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "max by (host.name) (\n  1 - rate(system.cpu.time.idle{host.name=\"$host_name\"}[$__rate_interval])\n)",
+            "interval": "",
+            "legendFormat": "Max Core CPU Utilization",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "CPU Utilization",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 42,
+      "panels": [],
+      "title": "Memory",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "free"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Free"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "used"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Used"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "buffers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Buffers"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cached"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Cached"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 30
+      },
+      "id": 25,
+      "options": {
+        "displayLabels": [
+          "value",
+          "percent",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_memory_usage_bytes{host_name=\"$host_name\"}",
+          "instant": true,
+          "legendFormat": "{{system_memory_state}}",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "label_replace(system.memory.usage.used{host.name=\"$host_name\"}, \"memory_state\", \"used\", \"\", \"\")\nor\nlabel_replace(system.memory.usage.free{host.name=\"$host_name\"}, \"memory_state\", \"free\", \"\", \"\")\nor\nlabel_replace(system.memory.usage.cached{host.name=\"$host_name\"}, \"memory_state\", \"cached\", \"\", \"\")\nor\nlabel_replace(system.memory.usage.buffers{host.name=\"$host_name\"}, \"memory_state\", \"buffers\", \"\", \"\")",
+            "interval": "",
+            "legendFormat": "{{memory_state}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Memory Usage",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 41,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.6
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 5,
+        "y": 30
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "system_memory_utilization_ratio{host_name=\"$host_name\", system_memory_state!=\"free\"}",
+          "legendFormat": "{{system_memory_state}}",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "label_replace(system.memory.utilization.used{host.name=\"$host_name\"}, \"memory_state\", \"used\", \"\", \"\")\nor\nlabel_replace(system.memory.utilization.cached{host.name=\"$host_name\"}, \"memory_state\", \"cached\", \"\", \"\")\nor\nlabel_replace(system.memory.utilization.buffers{host.name=\"$host_name\"}, \"memory_state\", \"buffers\", \"\", \"\")",
+            "interval": "",
+            "legendFormat": "{{memory_state}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Memory Utilization",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "{__name__=\"system_memory_utilization_ratio\", agent_host_name=\"mk-win.internal.sentrysoftware.net\", connector_id=\"Linux\", host_id=\"mk-deb2\", host_name=\"mk-deb2.internal.sentrysoftware.net\", host_type=\"compute\", id=\"memory_usage\", os_type=\"linux\", site=\"Paris\", system_memory_limit=\"2063106048\", system_memory_usage=\"used\"}": "Used memory"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minor"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Major"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 13,
+        "y": 30
+      },
+      "id": 134,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "rate(system_paging_faults_total{host_name=\"$host_name\", system_paging_type=\"minor\"}[$__rate_interval])",
+          "hide": false,
+          "legendFormat": "Minor",
+          "range": true,
+          "refId": "Minor",
+          "sourceQuery": {
+            "expr": "rate(system.paging.faults.minor{host.name=\"$host_name\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "Minor",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "rate(system_paging_faults_total{host_name=\"$host_name\", system_paging_type=\"major\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Major",
+          "range": true,
+          "refId": "Major",
+          "sourceQuery": {
+            "expr": "rate(system.paging.faults.major{host.name=\"$host_name\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "Major",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Memory Faults",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "free"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Free"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "used"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Used"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cached"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Cached"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 30
+      },
+      "id": 131,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_paging_usage_bytes{host_name=\"$host_name\"}",
+          "instant": true,
+          "legendFormat": "{{system_paging_state}}",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "label_replace(system.paging.usage.used{host.name=\"$host_name\"}, \"paging_state\", \"used\", \"\", \"\")\nor\nlabel_replace(system.paging.usage.free{host.name=\"$host_name\"}, \"paging_state\", \"free\", \"\", \"\")",
+            "interval": "",
+            "legendFormat": "{{paging_state}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Paging Utilization",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": true,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 13,
+        "y": 34
+      },
+      "id": 133,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": false,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "rate(system_paging_operations_total{host_name=\"$host_name\", system_paging_direction=\"out\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Out",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "rate(system.paging.operations.out{host.name=\"$host_name\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "rate(system_paging_operations_total{host_name=\"$host_name\", system_paging_direction=\"in\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "In",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "rate(system.paging.operations.in{host.name=\"$host_name\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Paging Activity",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 33,
+      "panels": [],
+      "title": "Filesystems",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Utilization"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Filesystem"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Change"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text",
+                  "wrapText": false
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.01
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trend"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "drawStyle": "line",
+                  "hideValue": true,
+                  "lineInterpolation": "linear",
+                  "type": "sparkline"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mountpoint"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Capacity"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Free"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time Until Saturation"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Growth Rate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "id": 130,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": [
+            "Capacity"
+          ],
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Capacity"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_filesystem_usage_bytes{host_name=\"$host_name\", system_filesystem_state=\"free\", system_filesystem_type !~\"$filesystemFilter\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Free",
+          "sourceQuery": {
+            "expr": "system.filesystem.usage.free{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"}",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "system_filesystem_usage_bytes{host_name=\"$host_name\", system_filesystem_state=\"used\", system_filesystem_type !~\"$filesystemFilter\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Used & Reserved",
+          "sourceQuery": {
+            "expr": "system.filesystem.usage.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"}",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(system_filesystem_utilization_ratio{host_name=\"$host_name\",system_filesystem_state=~\"used|reserved\", system_filesystem_type !~\"$filesystemFilter\"}) by (system_device) - sum(system_filesystem_utilization_ratio{host_name=\"$host_name\",system_filesystem_state=~\"used|reserved\", system_filesystem_type !~\"$filesystemFilter\"} offset $__range) by (system_device) ",
+          "format": "time_series",
+          "hide": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Change2",
+          "sourceQuery": {
+            "expr": "(\n  sum by (system.device) (\n    label_replace(system.filesystem.utilization.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"}, \"fs_state\", \"used\", \"\", \"\")\n    or\n    label_replace(system.filesystem.utilization.reserved{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"}, \"fs_state\", \"reserved\", \"\", \"\")\n  )\n)\n-\n(\n  sum by (system.device) (\n    label_replace(system.filesystem.utilization.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"} offset $__range, \"fs_state\", \"used\", \"\", \"\")\n    or\n    label_replace(system.filesystem.utilization.reserved{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"} offset $__range, \"fs_state\", \"reserved\", \"\", \"\")\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(system_filesystem_utilization_ratio{host_name=\"$host_name\",system_filesystem_state=~\"used|reserved\", system_filesystem_type !~\"$filesystemFilter\"}) by (system_device)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Usage",
+          "sourceQuery": {
+            "expr": "sum by (system.device) (\n  label_replace(\n    system.filesystem.utilization.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"used\", \"\", \"\"\n  )\n  or\n  label_replace(\n    system.filesystem.utilization.reserved{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"reserved\", \"\", \"\"\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(system_filesystem_usage_bytes{host_name=\"$host_name\",system_filesystem_state=~\"used|reserved|free\", system_filesystem_type !~\"$filesystemFilter\"}) by (system_device)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "Capacity",
+          "sourceQuery": {
+            "expr": "sum by (system.device) (\n  label_replace(\n    system.filesystem.usage.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"used\", \"\", \"\"\n  )\n  or\n  label_replace(\n    system.filesystem.usage.reserved{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"reserved\", \"\", \"\"\n  )\n  or\n  label_replace(\n    system.filesystem.usage.free{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"free\", \"\", \"\"\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(system_filesystem_utilization_ratio{host_name=\"$host_name\",system_filesystem_state=~\"used|reserved\", system_filesystem_type !~\"$filesystemFilter\"}) by (system_device)",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Main",
+          "sourceQuery": {
+            "expr": "sum by (system.device) (\n  label_replace(\n    system.filesystem.usage.used{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"used\", \"\", \"\"\n  )\n  or\n  label_replace(\n    system.filesystem.usage.reserved{host.name=\"$host_name\", system.filesystem.type !~\"$filesystemFilter\"},\n    \"fs_state\", \"reserved\", \"\", \"\"\n  )\n)",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "GrowthRate",
+          "sourceQuery": {
+            "expr": "delta(system.filesystem.usage{host.name=~\"$host_name\", system.filesystem.state=\"used\"}[$__range]) / $__range_s ",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "TimeUntilSaturation",
+          "sourceQuery": {
+            "expr": "(\n  system.filesystem.usage{host.name=~\"$host_name\", system.filesystem.state=\"free\"} \n  / ignoring(system.filesystem.state)\n  (delta(system.filesystem.usage{host.name=~\"$host_name\", system.filesystem.state=\"used\"}[$__range]) / $__range_s)\n) \nand ignoring(system.filesystem.state)\ndelta(system.filesystem.usage{host.name=~\"$host_name\", system.filesystem.state=\"used\"}[$__range]) > 0",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Change",
+          "sourceQuery": {
+            "expr": "sum(system.filesystem.utilization{host.name=\"$host_name\",system.filesystem.state=~\"used|reserved\", system.filesystem.type !~\"$filesystemFilter\"}) by (system.device)\n-\nsum(system.filesystem.utilization{host.name=\"$host_name\",system.filesystem.state=~\"used|reserved\", system.filesystem.type !~\"$filesystemFilter\"} offset $__range) by (system.device) ",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Filesystems",
+      "transformations": [
+        {
+          "id": "timeSeriesTable",
+          "options": {
+            "A": {
+              "timeField": "Time"
+            },
+            "B": {
+              "timeField": "Time"
+            },
+            "C": {
+              "timeField": "Time"
+            },
+            "Capacity": {
+              "timeField": "Time"
+            },
+            "Change": {
+              "timeField": "Time"
+            },
+            "D": {
+              "timeField": "Time"
+            },
+            "E": {
+              "timeField": "Time"
+            },
+            "Free": {
+              "timeField": "Time"
+            },
+            "Usage": {
+              "timeField": "Time"
+            },
+            "Used & Reserved": {
+              "timeField": "Time"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "system.device",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Capacity",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Capacity"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Used & Reserved",
+                "path": "value"
+              }
+            ],
+            "keepTime": false,
+            "replace": false,
+            "source": "Trend #Used & Reserved"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Utilization",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Usage"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Free",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Free"
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "Change",
+                "path": "value"
+              }
+            ],
+            "source": "Trend #Change"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Capacity": false,
+              "FreeAndUsedCapacity": true,
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Trend #A": true,
+              "Trend #Capacity": true,
+              "Trend #Change": true,
+              "Trend #D": true,
+              "Trend #Free": true,
+              "Trend #Used & Reserved": true,
+              "Value": true,
+              "Value #A": true,
+              "Value #B": false,
+              "Value #C": false,
+              "Value #E": true,
+              "VictoriaMetrics_AccountID 1": true,
+              "VictoriaMetrics_AccountID 2": true,
+              "VictoriaMetrics_AccountID 3": true,
+              "VictoriaMetrics_AccountID 4": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "__name__ 3": true,
+              "agent.host.name 1": true,
+              "agent.host.name 2": true,
+              "agent.host.name 3": true,
+              "agent.host.name 4": true,
+              "agent_host_name": true,
+              "agent_host_name 1": true,
+              "agent_host_name 2": true,
+              "agent_host_name 3": true,
+              "connector_id": true,
+              "connector_id 1": true,
+              "connector_id 2": true,
+              "connector_id 3": true,
+              "connector_id 4": true,
+              "entityId 1": true,
+              "entityId 2": true,
+              "entityName 1": true,
+              "entityName 2": true,
+              "entityName 3": true,
+              "entityName 4": true,
+              "entityTypeId 1": true,
+              "entityTypeId 2": true,
+              "entityTypeId 3": true,
+              "entityTypeId 4": true,
+              "host.name 1": true,
+              "host.name 2": true,
+              "host.name 3": true,
+              "host.name 4": true,
+              "host.type 1": true,
+              "host.type 2": true,
+              "host.type 3": true,
+              "host.type 4": true,
+              "hostType 1": true,
+              "hostType 2": true,
+              "hostType 3": true,
+              "hostType 4": true,
+              "host_id": true,
+              "host_id 1": true,
+              "host_id 2": true,
+              "host_id 3": true,
+              "host_name": true,
+              "host_name 1": true,
+              "host_name 2": true,
+              "host_name 3": true,
+              "host_type": true,
+              "host_type 1": true,
+              "host_type 2": true,
+              "host_type 3": true,
+              "hostname 1": true,
+              "hostname 2": true,
+              "hostname 3": true,
+              "hostname 4": true,
+              "id 1": true,
+              "id 2": true,
+              "id 3": true,
+              "id 4": true,
+              "instanceName 1": true,
+              "instanceName 2": true,
+              "instanceName 3": true,
+              "instanceName 4": true,
+              "isDeviceMappingEnabled 1": true,
+              "isDeviceMappingEnabled 2": true,
+              "isDeviceMappingEnabled 3": true,
+              "isDeviceMappingEnabled 4": true,
+              "name 1": true,
+              "name 2": true,
+              "os.type 1": true,
+              "os.type 2": true,
+              "os.type 3": true,
+              "os.type 4": true,
+              "os_type": true,
+              "os_type 1": true,
+              "os_type 2": true,
+              "os_type 3": true,
+              "parentEntityName 1": true,
+              "parentEntityName 2": true,
+              "parentEntityName 3": true,
+              "parentEntityName 4": true,
+              "parentEntityTypeId 1": true,
+              "parentEntityTypeId 2": true,
+              "parentEntityTypeId 3": true,
+              "parentEntityTypeId 4": true,
+              "site": true,
+              "site 1": true,
+              "site 2": true,
+              "site 3": true,
+              "site 4": true,
+              "source 1": true,
+              "source 2": true,
+              "source 3": true,
+              "source 4": true,
+              "system.device": false,
+              "system.filesystem.mode 1": true,
+              "system.filesystem.mode 2": true,
+              "system.filesystem.mountpoint 1": true,
+              "system.filesystem.mountpoint 2": true,
+              "system.filesystem.mountpoint 3": true,
+              "system.filesystem.mountpoint 4": true,
+              "system.filesystem.state 1": true,
+              "system.filesystem.state 2": true,
+              "system.filesystem.state 3": true,
+              "system.filesystem.state 4": true,
+              "system.filesystem.type 1": false,
+              "system.filesystem.type 2": true,
+              "system.filesystem.type 3": true,
+              "system.filesystem.type 4": true,
+              "system_device": false,
+              "system_device 1": true,
+              "system_device 2": true,
+              "system_device 3": true,
+              "system_filesystem_device": true,
+              "system_filesystem_device 1": true,
+              "system_filesystem_device 2": true,
+              "system_filesystem_device 3": true,
+              "system_filesystem_mountpoint 2": true,
+              "system_filesystem_mountpoint 3": true,
+              "system_filesystem_state": true,
+              "system_filesystem_state 1": true,
+              "system_filesystem_state 2": true,
+              "system_filesystem_state 3": true,
+              "system_filesystem_type 2": true,
+              "system_filesystem_type 3": true,
+              "system_filesystem_volumeName": true,
+              "system_filesystem_volumeName 2": true,
+              "system_filesystem_volumeName 3": true,
+              "unit 1": true,
+              "unit 2": true,
+              "unit 3": true,
+              "unit 4": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Capacity": 5,
+              "Free": 3,
+              "Time 1": 55,
+              "Time 2": 56,
+              "Trend #Capacity": 11,
+              "Trend #Free": 10,
+              "Trend #Usage": 8,
+              "Trend #Used & Reserved": 16,
+              "Used & Reserved": 4,
+              "Utilization": 6,
+              "Value #GrowthRate": 7,
+              "Value #TimeUntilSaturation": 9,
+              "VictoriaMetrics_AccountID 1": 19,
+              "VictoriaMetrics_AccountID 2": 36,
+              "VictoriaMetrics_AccountID 3": 57,
+              "VictoriaMetrics_AccountID 4": 78,
+              "agent.host.name 1": 20,
+              "agent.host.name 2": 37,
+              "agent.host.name 3": 58,
+              "agent.host.name 4": 79,
+              "connector_id 1": 12,
+              "connector_id 2": 14,
+              "connector_id 3": 59,
+              "connector_id 4": 80,
+              "entityId 1": 21,
+              "entityId 2": 38,
+              "entityName 1": 22,
+              "entityName 2": 39,
+              "entityName 3": 60,
+              "entityName 4": 81,
+              "entityTypeId 1": 23,
+              "entityTypeId 2": 40,
+              "entityTypeId 3": 61,
+              "entityTypeId 4": 82,
+              "host.name 1": 24,
+              "host.name 2": 41,
+              "host.name 3": 62,
+              "host.name 4": 83,
+              "host.type 1": 25,
+              "host.type 2": 42,
+              "host.type 3": 63,
+              "host.type 4": 84,
+              "hostType 1": 26,
+              "hostType 2": 43,
+              "hostType 3": 64,
+              "hostType 4": 85,
+              "hostname 1": 27,
+              "hostname 2": 44,
+              "hostname 3": 65,
+              "hostname 4": 86,
+              "id 1": 17,
+              "id 2": 18,
+              "id 3": 66,
+              "id 4": 87,
+              "instanceName 1": 28,
+              "instanceName 2": 45,
+              "instanceName 3": 67,
+              "instanceName 4": 88,
+              "isDeviceMappingEnabled 1": 29,
+              "isDeviceMappingEnabled 2": 46,
+              "isDeviceMappingEnabled 3": 68,
+              "isDeviceMappingEnabled 4": 89,
+              "os.type 1": 30,
+              "os.type 2": 47,
+              "os.type 3": 69,
+              "os.type 4": 90,
+              "parentEntityName 1": 31,
+              "parentEntityName 2": 48,
+              "parentEntityName 3": 70,
+              "parentEntityName 4": 91,
+              "parentEntityTypeId 1": 32,
+              "parentEntityTypeId 2": 49,
+              "parentEntityTypeId 3": 71,
+              "parentEntityTypeId 4": 92,
+              "site 1": 13,
+              "site 2": 15,
+              "site 3": 72,
+              "site 4": 93,
+              "source 1": 33,
+              "source 2": 50,
+              "source 3": 73,
+              "source 4": 94,
+              "system.device": 0,
+              "system.filesystem.mountpoint 1": 1,
+              "system.filesystem.mountpoint 2": 54,
+              "system.filesystem.mountpoint 3": 74,
+              "system.filesystem.mountpoint 4": 95,
+              "system.filesystem.state 1": 34,
+              "system.filesystem.state 2": 51,
+              "system.filesystem.state 3": 75,
+              "system.filesystem.type 1": 2,
+              "system.filesystem.type 2": 52,
+              "system.filesystem.type 3": 76,
+              "system.filesystem.type 4": 96,
+              "unit 1": 35,
+              "unit 2": 53,
+              "unit 3": 77,
+              "unit 4": 97
+            },
+            "renameByName": {
+              "Capacity": "Capacity",
+              "Change": "Change",
+              "Free": "Free",
+              "Time 1": "",
+              "Time 2": "",
+              "Time 5": "",
+              "Trend #A": "",
+              "Trend #Capacity": "",
+              "Trend #D": "",
+              "Trend #Free": "",
+              "Trend #Usage": "Trend",
+              "Usage": "Usage",
+              "Used & Reserved": "Used & Reserved",
+              "Utilization": "Utilization",
+              "Value": "",
+              "Value #A": "Usage",
+              "Value #B": "Free",
+              "Value #C": "Used & Reserved",
+              "Value #Capacity": "Capacity",
+              "Value #D": "Change",
+              "Value #F": "Capacity",
+              "Value #Free": "Free",
+              "Value #GrowthRate": "Growth Rate",
+              "Value #TimeUntilSaturation": "Time Until Saturation",
+              "Value #Used & Reserved": "Used & Reserved",
+              "__name__ 1": "",
+              "id": "Filesystem",
+              "system.device": "Filesystem",
+              "system.filesystem.mountpoint 1": "Mountpoint",
+              "system.filesystem.type 1": "Type",
+              "system_device": "Filesystem",
+              "system_device 1": "",
+              "system_filesystem_mountpoint": "Mountpoint",
+              "system_filesystem_mountpoint 1": "Mountpoint",
+              "system_filesystem_state 1": "",
+              "system_filesystem_type": "Type",
+              "system_filesystem_type 1": "Type",
+              "system_filesystem_type 3": "",
+              "system_filesystem_volumeName 1": "Name",
+              "unit 4": "",
+              "value": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 37,
+      "panels": [],
+      "title": "Network Traffic - Total",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": true,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 0,
+        "y": 50
+      },
+      "id": 80,
+      "interval": "5m",
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0+security-01",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(system_network_io_bytes_total{host_name=\"$host_name\", network_io_direction=\"transmit\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Received",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(rate(system.network.io.transmit{host.name=\"$host_name\"}[$__rate_interval]))",
+            "interval": "",
+            "legendFormat": "Transmitted",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(system_network_io_bytes_total{host_name=\"$host_name\", network_io_direction=\"receive\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Transmitted",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum(rate(system.network.io.receive{host.name=\"$host_name\"}[$__rate_interval]))",
+            "interval": "",
+            "legendFormat": "Received",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Network Total Traffic",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple"
+              },
+              {
+                "color": "orange",
+                "value": 0.000001
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 20,
+        "y": 50
+      },
+      "id": 124,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(system_network_errors_total{host_name=\"$host_name\", network_io_direction=\"transmit\"}[$__range]))\r\n/\r\nsum (delta(system_network_packets_total{host_name=\"$host_name\", network_io_direction=\"transmit\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(delta(system.network.errors.transmit{host.name=\"$host_name\"}[$__range]))\n/\nsum(delta(system.network.packets.transmit{host.name=\"$host_name\"}[$__range]))",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Tx Errors",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple"
+              },
+              {
+                "color": "orange",
+                "value": 0.000001
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 22,
+        "y": 50
+      },
+      "id": 126,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(system_network_dropped_total{host_name=\"$host_name\", network_io_direction=\"transmit\"}[$__range]))\r\n/\r\nsum (delta(system_network_packets_total{host_name=\"$host_name\", network_io_direction=\"transmit\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(delta(system.network.dropped.transmit{host.name=\"$host_name\"}[$__range]))\n/\nsum (delta(system.network.packets.transmit{host.name=\"$host_name\"}[$__range]))",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Tx Dropped",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "orange",
+                "value": 0.000001
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 20,
+        "y": 54
+      },
+      "id": 125,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(system_network_errors_total{host_name=\"$host_name\", network_io_direction=\"receive\"}[$__range]))\r\n/\r\nsum (delta(system_network_packets_total{host_name=\"$host_name\", network_io_direction=\"receive\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(delta(system.network.errors.receive{host.name=\"$host_name\"}[$__range]))\n/\nsum(delta(system.network.packets.receive{host.name=\"$host_name\"}[$__range]))",
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Rx Errors",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "orange",
+                "value": 1e-7
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 22,
+        "y": 54
+      },
+      "id": 127,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(system_network_dropped_total{host_name=\"$host_name\", network_io_direction=\"receive\"}[$__range]))\r\n/\r\nsum (delta(system_network_packets_total{host_name=\"$host_name\", network_io_direction=\"receive\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sum(delta(system.network.dropped.receive{host.name=\"$host_name\"}[$__range]))\n/\nsum (delta(system.network.packets.receive{host.name=\"$host_name\"}[$__range]))",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Rx Dropped",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "id": 111,
+      "panels": [],
+      "title": "Network Traffic - Individual",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": true,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Received"
+            },
+            "properties": [
+              {
+                "id": "custom.axisCenteredZero",
+                "value": true
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transmitted"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 59
+      },
+      "id": 106,
+      "interval": "5m",
+      "maxPerRow": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0",
+      "repeat": "network_id",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "rate(system_network_io_bytes_total{host_name=\"$host_name\", network_io_direction=\"transmit\", id=\"$network_id\"}[$__rate_interval])",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "Received",
+          "range": true,
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "rate(system.network.io.transmit{host.name=\"$host_name\", id=\"$network_id\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "Transmitted",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "rate(system_network_io_bytes_total{host_name=\"$host_name\", network_io_direction=\"receive\", id=\"$network_id\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Transmitted",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "rate(system.network.io.receive{host.name=\"$host_name\", id=\"$network_id\"}[$__rate_interval])",
+            "interval": "",
+            "legendFormat": "Received",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Traffic: $network_id",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 65
+      },
+      "id": 112,
+      "panels": [],
+      "title": "Disk Activity",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "read"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Read"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "write"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Write"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 66
+      },
+      "id": 107,
+      "interval": "5m",
+      "maxPerRow": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "repeat": "physical_disk_system_device",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (disk_io_direction) (rate(system_disk_io_bytes_total{host_name=\"$host_name\", system_device=\"$physical_disk_system_device\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{disk_io_direction}}",
+          "range": true,
+          "refId": "B",
+          "sourceQuery": {
+            "expr": "sum by (disk.io.direction) (\n  label_replace(\n    rate(system.disk.io.read{host.name=\"$host_name\", system.device=\"$physical_disk_system_device\"}[$__rate_interval]),\n    \"disk.io.direction\", \"read\", \"\", \"\"\n  )\n  or\n  label_replace(\n    rate(system.disk.io.write{host.name=\"$host_name\", system.device=\"$physical_disk_system_device\"}[$__rate_interval]),\n    \"disk.io.direction\", \"write\", \"\", \"\"\n  )\n)\n",
+            "interval": "",
+            "legendFormat": "{{disk.io.direction}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Disk Activity: $physical_disk_system_device",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 29,
+      "panels": [],
+      "title": "MetricsHub Agent Information",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OS"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "linux": {
+                        "index": 1,
+                        "text": "https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg"
+                      },
+                      "windows": {
+                        "index": 0,
+                        "text": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Windows_logo_and_wordmark_-_2021.svg"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 72
+      },
+      "id": 140,
+      "interval": "1h",
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Site"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "exemplar": false,
+          "expr": "last_over_time(timestamp(hardware_sentry_agent_info{site=~\"$site\", agent_host_name=\"$agent\"})[6h:])",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "last_over_time(timestamp(metricshub.agent.info{agent_host_name=\"$agent\"})[6h:])",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Last Collect",
+            "binary": {
+              "left": "Value",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "Last Seen"
+              ],
+              "reducer": "last"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Last Collect"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "MM-DD HH:mm:ss",
+            "timeField": "Last Collect",
+            "useTimezone": true
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "agent.host.name",
+                "build_date",
+                "build_number",
+                "cc_version",
+                "os.type",
+                "version",
+                "Last Collect"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Value": true,
+              "Value #A": true,
+              "VictoriaMetrics_AccountID": true,
+              "__name__": true,
+              "agent.host.name": false,
+              "agent_host_name": false,
+              "build_number": false,
+              "build_number 2": true,
+              "datadog.host.use_as_metadata": true,
+              "entityId": true,
+              "entityName": true,
+              "entityTypeId": true,
+              "hc_version 2": true,
+              "host.name": true,
+              "host.type": true,
+              "hostType": true,
+              "host_id": true,
+              "host_id 1": true,
+              "host_id 2": true,
+              "host_name": true,
+              "host_name 1": true,
+              "host_name 2": true,
+              "host_type": true,
+              "host_type 1": true,
+              "host_type 2": true,
+              "hostname": true,
+              "instanceName": true,
+              "isDeviceMappingEnabled": true,
+              "job": true,
+              "name": true,
+              "os.type": false,
+              "os_type": true,
+              "os_type 1": true,
+              "os_type 2": true,
+              "otel_version": true,
+              "parentEntityName": true,
+              "parentEntityTypeId": true,
+              "project_name": true,
+              "project_name 1": true,
+              "project_name 2": true,
+              "project_version": true,
+              "project_version 2": true,
+              "service.name": true,
+              "service_name": true,
+              "service_name 1": true,
+              "service_name 2": true,
+              "site": true,
+              "site 2": true,
+              "source": true,
+              "timestamp": true,
+              "timestamp 1": true,
+              "timestamp 2": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Last Collect": 6,
+              "agent.host.name": 0,
+              "build_date": 4,
+              "build_number": 5,
+              "cc_version": 3,
+              "os.type": 1,
+              "version": 2
+            },
+            "renameByName": {
+              "Time": "",
+              "Value": "",
+              "agent.host.name": "Hostname",
+              "agent_host_name": "Hostname",
+              "build_date": "Build Date",
+              "build_number": "Build Number",
+              "build_number 1": "Agent Build Number",
+              "cc_version": "Connector Version",
+              "hc_version": "Connectors Version",
+              "hc_version 1": "Connectors Version",
+              "os.type": "OS",
+              "project_version": "",
+              "project_version 1": "Agent Version",
+              "site": "",
+              "site 1": "Site",
+              "timestamp": "",
+              "version": "Version"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "System",
+    "Otel",
+    "MetricsHub"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "linux"
+          ],
+          "value": [
+            "linux"
+          ]
+        },
+        "includeAll": true,
+        "label": "System",
+        "multi": true,
+        "name": "system",
+        "options": [
+          {
+            "selected": false,
+            "text": "aix",
+            "value": "aix"
+          },
+          {
+            "selected": false,
+            "text": "hpux",
+            "value": "hpux"
+          },
+          {
+            "selected": true,
+            "text": "linux",
+            "value": "linux"
+          },
+          {
+            "selected": false,
+            "text": "windows",
+            "value": "windows"
+          }
+        ],
+        "query": "aix,hpux,linux,windows",
+        "type": "custom"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "metric,label_values(system.uptime{os.type=~\"$system\"}, hostname)",
+        "includeAll": false,
+        "label": "Hostname",
+        "name": "host_name",
+        "options": [],
+        "query": "metric,label_values(system.uptime{os.type=~\"$system\"}, hostname)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "metric,label_values(system.network.io.receive{host.name=\"$host_name\"}, id)",
+        "description": "",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "network_id",
+        "options": [],
+        "query": "metric,label_values(system.network.io.receive{host.name=\"$host_name\"}, id)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "metric,label_values(system.disk.io.read{host.name=\"$host_name\"}, id)",
+        "description": "",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "physical_disk_system_device",
+        "options": [],
+        "query": "metric,label_values(system.disk.io.read{host.name=\"$host_name\"}, id)",
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {},
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "${DS_BMC_HELIX}"
+        },
+        "definition": "metric,label_values(system.uptime{host.name=\"$host_name\"},agent_host_name)",
+        "description": "",
+        "hide": 2,
+        "includeAll": false,
+        "label": "agent",
+        "name": "agent",
+        "options": [],
+        "query": "metric,label_values(system.uptime{host.name=\"$host_name\"},agent_host_name)",
+        "refresh": 1,
+        "regex": ".*",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": ".*tmpfs|nfs.*|overlay",
+          "value": ".*tmpfs|nfs.*|overlay"
+        },
+        "description": "Excludes all filesystems whose type matches the specified regular expression",
+        "label": "Exclude Filesystem Types",
+        "name": "filesystemFilter",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*tmpfs|nfs.*|overlay",
+            "value": ".*tmpfs|nfs.*|overlay"
+          }
+        ],
+        "query": ".*tmpfs|nfs.*|overlay",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "System Performance Metrics (MetricsHub)",
+  "uid": "eWQoMUTIk",
+  "version": 22,
+  "weekStart": ""
+}

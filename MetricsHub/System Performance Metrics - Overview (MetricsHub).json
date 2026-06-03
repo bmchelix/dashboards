@@ -1,0 +1,4565 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_BMC_HELIX",
+      "label": "BMC Helix",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "bmchelix-ade-datasource",
+      "pluginName": "BMC Helix"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "bmchelix-ade-datasource",
+      "name": "BMC Helix",
+      "version": "3.0.1"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.3.4"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "General OS performance metrics to assess the availability and performance of Linux and Windows systems. Leverages OpenTelemetry metrics collected with MetricsHub and stored in Prometheus.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 54,
+      "panels": [],
+      "title": "Overview & Current Issues",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 184,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "Cr",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:CRITICAL AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Critical Events",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system-performance-metrics-metricshub?orgId=854314187&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operating System"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "aix": {
+                        "index": 2,
+                        "text": "https://dl.sentrysoftware.com/public/ibmaix-logo-mh.svg"
+                      },
+                      "hpux": {
+                        "index": 3,
+                        "text": "https://dl.sentrysoftware.com/public/hpux-logo-mh.svg"
+                      },
+                      "linux": {
+                        "index": 1,
+                        "text": "https://dl.sentrysoftware.com/public/linux-logo-mh.svg"
+                      },
+                      "windows": {
+                        "index": 0,
+                        "text": "https://dl.sentrysoftware.com/public/windows-logo-mh.svg"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Critical"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Major"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 124
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minor"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 118
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed Protocols"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 3,
+        "y": 1
+      },
+      "id": 191,
+      "maxPerRow": 2,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Critical"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "queryTypeOptions": [
+            {
+              "$$hashKey": "object:97",
+              "sourceType": "event",
+              "text": "Events",
+              "value": "event"
+            },
+            {
+              "$$hashKey": "object:98",
+              "sourceType": "metric",
+              "text": "Metric",
+              "value": "metric"
+            },
+            {
+              "$$hashKey": "object:99",
+              "sourceType": "cloudsecurity",
+              "text": "CloudSecurity",
+              "value": "cloudsecurity"
+            }
+          ],
+          "refId": "Critical",
+          "sourceQuery": {
+            "bucketAggs": [
+              {
+                "$$hashKey": "object:220",
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_count",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "$$hashKey": "object:218",
+                "field": "select field",
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:CRITICAL AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "queryTypeOptions": [
+            {
+              "$$hashKey": "object:97",
+              "sourceType": "event",
+              "text": "Events",
+              "value": "event"
+            },
+            {
+              "$$hashKey": "object:98",
+              "sourceType": "metric",
+              "text": "Metric",
+              "value": "metric"
+            },
+            {
+              "$$hashKey": "object:99",
+              "sourceType": "cloudsecurity",
+              "text": "CloudSecurity",
+              "value": "cloudsecurity"
+            }
+          ],
+          "refId": "Major",
+          "sourceQuery": {
+            "bucketAggs": [
+              {
+                "$$hashKey": "object:220",
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_count",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "$$hashKey": "object:218",
+                "field": "select field",
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:MAJOR AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "queryTypeOptions": [
+            {
+              "$$hashKey": "object:97",
+              "sourceType": "event",
+              "text": "Events",
+              "value": "event"
+            },
+            {
+              "$$hashKey": "object:98",
+              "sourceType": "metric",
+              "text": "Metric",
+              "value": "metric"
+            },
+            {
+              "$$hashKey": "object:99",
+              "sourceType": "cloudsecurity",
+              "text": "CloudSecurity",
+              "value": "cloudsecurity"
+            }
+          ],
+          "refId": "Minor",
+          "sourceQuery": {
+            "bucketAggs": [
+              {
+                "$$hashKey": "object:220",
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_count",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "$$hashKey": "object:218",
+                "field": "select field",
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:MINOR AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Systems",
+          "sourceQuery": {
+            "expr": "system.uptime",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "ProtocolsDown",
+          "sourceQuery": {
+            "expr": "(count by (host.name) (metricshub.host.up{os.type=~\"$system\"} == 0)) \nor \n(count by (host.name) (metricshub.host.up{os.type=~\"$system\"}) * 0)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Current Issues",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^host\\.name$",
+            "renamePattern": "source_hostname.keyword"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "source_hostname.keyword",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Count 1"
+              },
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Count 2"
+              },
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Count 3"
+              },
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Value #ProtocolsDown"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Value": true,
+              "Value #Systems": true,
+              "VictoriaMetrics_AccountID": true,
+              "__name__": true,
+              "agent.host.name": true,
+              "connector_id": true,
+              "entityId": true,
+              "entityName": true,
+              "entityTypeId": true,
+              "host.type": true,
+              "hostType": true,
+              "hostname": true,
+              "id": true,
+              "instanceName": true,
+              "isDeviceMappingEnabled": true,
+              "name": true,
+              "os_version": true,
+              "parentEntityName": true,
+              "parentEntityTypeId": true,
+              "serial_number": true,
+              "site": true,
+              "source": true,
+              "unit": true,
+              "version": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Count 1": 2,
+              "Count 2": 3,
+              "Count 3": 4,
+              "Time 1": 28,
+              "Time 2": 30,
+              "Value #ProtocolsDown": 5,
+              "Value #Systems": 29,
+              "VictoriaMetrics_AccountID": 6,
+              "__name__": 7,
+              "agent.host.name": 8,
+              "connector_id": 9,
+              "entityId": 10,
+              "entityName": 11,
+              "entityTypeId": 12,
+              "host.type": 13,
+              "hostType": 14,
+              "hostname": 15,
+              "id": 16,
+              "instanceName": 17,
+              "isDeviceMappingEnabled": 18,
+              "name": 19,
+              "os.type": 1,
+              "os_version": 20,
+              "parentEntityName": 21,
+              "parentEntityTypeId": 22,
+              "serial_number": 23,
+              "site": 24,
+              "source": 25,
+              "source_hostname.keyword": 0,
+              "unit": 26,
+              "version": 27
+            },
+            "renameByName": {
+              "Count": "Number of open events",
+              "Count 1": "Critical",
+              "Count 2": "Major",
+              "Count 3": "Minor",
+              "Time": "",
+              "Time 2": "",
+              "Value #ProtocolsDown": "Failed Protocols",
+              "Value #Systems": "",
+              "attributes.source_hostname": "Name",
+              "os.type": "Operating System",
+              "source_hostname.keyword": "Hostname"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "Total number of monitored hosts.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 16,
+        "y": 1
+      },
+      "id": 141,
+      "interval": "2m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "count(count by (host.name) (system.uptime))",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Hosts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 19,
+        "y": 1
+      },
+      "id": 181,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "source_hostname.keyword",
+                "id": "3",
+                "settings": {
+                  "min_doc_count": "1",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "(severity:CRITICAL OR severity:MAJOR OR severity:MINOR) AND status:OPEN AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Unhealthy Hosts",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "count"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 22,
+        "y": 1
+      },
+      "id": 117,
+      "links": [
+        {
+          "title": "Hardware Sentry OpenTelemetry Collector",
+          "url": "https://www.sentrysoftware.com/products/hardware-sentry-opentelemetry-collector.html"
+        }
+      ],
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<a href=\"https://metricshub.com/\" target=\"_blank\">\n  <div style=\"\n    display: block;\n    margin: 0 auto; \n    \n    background: transparent url(https://metricshub.com/images/logo-darkgrey.svg) no-repeat center center;\n    background-size: contain;\n    \n    width: 85px;   \n    height: 85px;\n    border-radius: 3px;\n  \">\n  </div>\n</a>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.3.4",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 4
+      },
+      "id": 185,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "Cr",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:MAJOR AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Major Events",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hosts Count"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.width",
+                "value": 122
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host Count (%)"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unhealthy Hosts"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unhealthy Hosts %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 50
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "aix": {
+                        "index": 2,
+                        "text": "https://dl.sentrysoftware.com/public/ibmaix-logo-mh.svg"
+                      },
+                      "hpux": {
+                        "index": 4,
+                        "text": "https://dl.sentrysoftware.com/public/hpux-logo-mh.svg"
+                      },
+                      "linux": {
+                        "index": 0,
+                        "text": "https://dl.sentrysoftware.com/public/windows-logo-mh.svg"
+                      },
+                      "windows": {
+                        "index": 1,
+                        "text": "https://dl.sentrysoftware.com/public/linux-logo-mh.svg"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "index": 3,
+                        "text": "https://dl.sentrysoftware.com/public/unknown-logo-mh.svg"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 4
+      },
+      "id": 150,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "System"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "OsList",
+          "sourceQuery": {
+            "expr": "count by (os.type) (system.uptime)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "HostCountPctByOs",
+          "sourceQuery": {
+            "expr": "100 * count by (os.type) (group by (host.name, os.type) (system.uptime)) / scalar(count(count by (host.name) (system.uptime)))",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "HostCountByOS",
+          "sourceQuery": {
+            "expr": "count by (os.type) (group by (host.name, os.type) (system.uptime))",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "os.type",
+            "mode": "outer"
+          }
+        },
+        {
+          "disabled": true,
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "^$"
+                  }
+                },
+                "fieldName": "os_type"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Value #B": true,
+              "Value #OsList": true,
+              "Value #UnhealthyHostsPctByOs": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 3,
+              "Time 2": 4,
+              "Time 3": 6,
+              "Value #HostCountByOS": 1,
+              "Value #HostCountPctByOs": 2,
+              "Value #OsList": 5,
+              "os.type": 0
+            },
+            "renameByName": {
+              "Time 1": "",
+              "Time 4": "",
+              "Value #HostCountByOS": "Hosts Count",
+              "Value #HostCountPctByOs": "Host Count (%)",
+              "Value #UnhealthyHostsByOs": "Unhealthy Hosts",
+              "Value #UnhealthyHostsPctByOS": "Unhealthy Hosts (%)",
+              "Value #UnhealthyHostsPctByOs": "Unhealthy Hosts %",
+              "os.type": "System",
+              "os_type": "System"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 7
+      },
+      "id": 186,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "Cr",
+            "bucketAggs": [
+              {
+                "field": "creation_time",
+                "id": "2",
+                "settings": {
+                  "interval": "auto",
+                  "min_doc_count": "0",
+                  "timeZone": "utc",
+                  "trimEdges": "0"
+                },
+                "type": "date_histogram"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "severity:MINOR AND status:OPEN AND !status:BLACKOUT AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Minor Events",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 176,
+      "panels": [],
+      "title": "Events",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system-performance-metrics-metricshub?orgId=854314187&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Event Severity"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "CRITICAL": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "MAJOR": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "MINOR": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "WARNING": {
+                        "index": 3
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "creation_time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 208
+              },
+              {
+                "id": "displayName",
+                "value": "Time"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Event Severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 166
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 188,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [],
+            "metrics": [
+              {
+                "id": "1",
+                "settings": {
+                  "size": "5000"
+                },
+                "type": "raw_data"
+              }
+            ],
+            "query": "!status:BLACKOUT status:OPEN AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "title": "Open  Events ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_arrival_time": true,
+              "_ci_id": true,
+              "_entropy": true,
+              "_errors": true,
+              "_id": true,
+              "_identifier": true,
+              "_impacted_service_key": true,
+              "_impacted_service_name": true,
+              "_index": true,
+              "_lifecycle_time": true,
+              "_model": true,
+              "_modified_time": true,
+              "_node_id": true,
+              "_node_impacted_service_key_mapping": true,
+              "_node_key": true,
+              "_node_service_key_mapping": true,
+              "_node_service_mapping": true,
+              "_notes": true,
+              "_operations": true,
+              "_relationships.mlsituation": true,
+              "_relationships.rstat": true,
+              "_repeat_count": true,
+              "_service_id": true,
+              "_service_key": true,
+              "_service_name": true,
+              "_signature": true,
+              "_tenant_id": true,
+              "_tenant_name": true,
+              "_type": true,
+              "_unmapped_data": true,
+              "_unmapped_data.al_baseline_type": true,
+              "_upsert_timestamp": true,
+              "agent_address": true,
+              "agent_name": true,
+              "agent_port": true,
+              "al_agent_name": true,
+              "al_agent_os": true,
+              "al_agent_port": true,
+              "al_agent_tags": true,
+              "al_alarm_id": true,
+              "al_algorithm_name": true,
+              "al_avg_value": true,
+              "al_baseline_daily_high": true,
+              "al_baseline_daily_low": true,
+              "al_baseline_high": true,
+              "al_baseline_hourly_high": true,
+              "al_baseline_hourly_low": true,
+              "al_baseline_low": true,
+              "al_baseline_monthly_high": true,
+              "al_baseline_monthly_low": true,
+              "al_baseline_weekly_high": true,
+              "al_baseline_weekly_low": true,
+              "al_device_ipaddress": true,
+              "al_end_time": true,
+              "al_event_score": true,
+              "al_extremeness": true,
+              "al_highest_severity": true,
+              "al_highest_severity_ordinal": true,
+              "al_is_predicted": true,
+              "al_is_predicted_ordinal": true,
+              "al_last_time": true,
+              "al_old_severity": true,
+              "al_old_severity_ordinal": true,
+              "al_parameter_name": true,
+              "al_parameter_threshold": true,
+              "al_parameter_unit": true,
+              "al_parameter_value": true,
+              "al_predict_to_occur_time": true,
+              "al_prediction_creation_time": true,
+              "al_prediction_id": true,
+              "al_prediction_severity": true,
+              "al_pts_exceeded": true,
+              "al_pts_total": true,
+              "al_thresh_above": true,
+              "al_thresh_above_ordinal": true,
+              "al_thresh_duration": true,
+              "al_thresh_id": true,
+              "al_thresh_type": true,
+              "alias": true,
+              "category": true,
+              "category_ordinal": true,
+              "cdmclass": true,
+              "change_id": true,
+              "class": true,
+              "componentalias": true,
+              "cross_launch_uri": true,
+              "details": true,
+              "entity_identifier": true,
+              "event_internal_tags": true,
+              "external_id": true,
+              "highlight": true,
+              "incident_category": true,
+              "incident_company": true,
+              "incident_id": true,
+              "incident_item": true,
+              "incident_operational_category1": true,
+              "incident_operational_category2": true,
+              "incident_operational_category3": true,
+              "incident_sysid": true,
+              "incident_type": true,
+              "instancename": true,
+              "is_updated": true,
+              "location": true,
+              "metric_name": true,
+              "metric_unit": true,
+              "metric_value": true,
+              "modelname": true,
+              "notificationService": true,
+              "object": true,
+              "object_class": true,
+              "object_id": true,
+              "pr_algorithm_name": true,
+              "pr_analysis_type": true,
+              "pr_attribution_metrics": true,
+              "pr_attribution_scores": true,
+              "pr_forecast_data_duration": true,
+              "pr_number_of_violations": true,
+              "pr_parameter_threshold": true,
+              "pr_prediction_id": true,
+              "pr_score": true,
+              "pr_service_name": true,
+              "pr_severity": true,
+              "pr_severity_ordinal": true,
+              "pr_timestamp": true,
+              "priority": true,
+              "priority_ordinal": true,
+              "severity_ordinal": true,
+              "significance": true,
+              "sort": true,
+              "sourceEntityType": true,
+              "source_address": true,
+              "source_identifier": true,
+              "source_port": true,
+              "status": true,
+              "status_ordinal": true,
+              "sub_category": true,
+              "sub_category_ordinal": true,
+              "tags": true,
+              "user_assigned": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "_arrival_time": 7,
+              "_ci_id": 8,
+              "_entropy": 9,
+              "_errors": 10,
+              "_id": 11,
+              "_identifier": 12,
+              "_impacted_service_key": 109,
+              "_impacted_service_name": 110,
+              "_index": 13,
+              "_lifecycle_time": 14,
+              "_model": 15,
+              "_modified_time": 16,
+              "_node_id": 17,
+              "_node_impacted_service_key_mapping": 111,
+              "_node_key": 112,
+              "_node_service_key_mapping": 18,
+              "_node_service_mapping": 19,
+              "_notes": 20,
+              "_operations": 21,
+              "_relationships.mlsituation": 113,
+              "_relationships.rstat": 22,
+              "_repeat_count": 23,
+              "_service_id": 24,
+              "_service_key": 114,
+              "_service_name": 25,
+              "_signature": 26,
+              "_tenant_id": 28,
+              "_tenant_name": 29,
+              "_type": 30,
+              "_unmapped_data.al_baseline_type": 31,
+              "_upsert_timestamp": 115,
+              "agent_address": 32,
+              "agent_name": 33,
+              "agent_port": 34,
+              "al_agent_name": 35,
+              "al_agent_os": 36,
+              "al_agent_port": 37,
+              "al_agent_tags": 116,
+              "al_alarm_id": 38,
+              "al_algorithm_name": 39,
+              "al_avg_value": 40,
+              "al_baseline_daily_high": 41,
+              "al_baseline_daily_low": 42,
+              "al_baseline_high": 117,
+              "al_baseline_hourly_high": 43,
+              "al_baseline_hourly_low": 44,
+              "al_baseline_low": 118,
+              "al_baseline_monthly_high": 119,
+              "al_baseline_monthly_low": 120,
+              "al_baseline_weekly_high": 45,
+              "al_baseline_weekly_low": 46,
+              "al_device_ipaddress": 47,
+              "al_end_time": 48,
+              "al_event_score": 49,
+              "al_extremeness": 50,
+              "al_highest_severity": 51,
+              "al_highest_severity_ordinal": 52,
+              "al_is_predicted": 53,
+              "al_is_predicted_ordinal": 54,
+              "al_last_time": 55,
+              "al_old_severity": 56,
+              "al_old_severity_ordinal": 57,
+              "al_parameter_name": 58,
+              "al_parameter_threshold": 59,
+              "al_parameter_unit": 60,
+              "al_parameter_value": 61,
+              "al_predict_to_occur_time": 62,
+              "al_prediction_creation_time": 121,
+              "al_prediction_id": 122,
+              "al_prediction_severity": 63,
+              "al_pts_exceeded": 64,
+              "al_pts_total": 65,
+              "al_thresh_above": 66,
+              "al_thresh_above_ordinal": 67,
+              "al_thresh_duration": 68,
+              "al_thresh_id": 69,
+              "al_thresh_type": 70,
+              "alias": 71,
+              "category": 72,
+              "category_ordinal": 73,
+              "cdmclass": 74,
+              "change_id": 123,
+              "class": 75,
+              "componentalias": 76,
+              "creation_time": 0,
+              "cross_launch_uri": 77,
+              "details": 78,
+              "entity_identifier": 79,
+              "event_internal_tags": 124,
+              "external_id": 80,
+              "highlight": 81,
+              "incident_category": 82,
+              "incident_company": 83,
+              "incident_id": 2,
+              "incident_item": 84,
+              "incident_operational_category1": 85,
+              "incident_operational_category2": 86,
+              "incident_operational_category3": 87,
+              "incident_sysid": 125,
+              "incident_type": 88,
+              "instancename": 89,
+              "location": 90,
+              "metric_name": 91,
+              "metric_unit": 92,
+              "metric_value": 93,
+              "modelname": 94,
+              "msg": 4,
+              "object": 95,
+              "object_class": 96,
+              "object_id": 97,
+              "priority": 5,
+              "priority_ordinal": 98,
+              "severity": 1,
+              "severity_ordinal": 99,
+              "significance": 100,
+              "sort": 101,
+              "sourceEntityType": 126,
+              "source_address": 27,
+              "source_hostname": 3,
+              "source_identifier": 102,
+              "source_port": 103,
+              "status": 6,
+              "status_ordinal": 104,
+              "sub_category": 105,
+              "sub_category_ordinal": 106,
+              "tags": 107,
+              "user_assigned": 108
+            },
+            "renameByName": {
+              "creation_time": "Time",
+              "incident_id": "",
+              "msg": "Message",
+              "severity": "Severity",
+              "source_hostname": "Hostname"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 116,
+      "panels": [],
+      "title": "Hosts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "targetBlank": false,
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system-performance-metrics-metricshub?orgId=854314187&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocols Up"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "transparent",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed Protocols"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Critical Alerts"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Warning Alerts"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Usage"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 0.75
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.9
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Usage"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.8
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trend #ProtocolUpPct"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "hideValue": true,
+                  "type": "sparkline"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "min",
+                "value": -2
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #ProtocolUpPctValue"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 100
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operating System"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "aix": {
+                        "index": 2,
+                        "text": "https://dl.sentrysoftware.com/public/ibmaix-logo-mh.svg"
+                      },
+                      "hpux": {
+                        "index": 4,
+                        "text": "https://dl.sentrysoftware.com/public/hpux-logo-mh.svg"
+                      },
+                      "linux": {
+                        "index": 1,
+                        "text": "https://dl.sentrysoftware.com/public/linux-logo-mh.svg"
+                      },
+                      "windows": {
+                        "index": 0,
+                        "text": "https://dl.sentrysoftware.com/public/windows-logo-mh.svg"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "index": 3,
+                        "text": "https://dl.sentrysoftware.com/public/unknown-logo-mh.svg"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "image"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              },
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              },
+              {
+                "id": "custom.width",
+                "value": 153
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #Ping"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "N/A"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "-1": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Down"
+                      },
+                      "0-1000000": {
+                        "index": 2,
+                        "text": "${__value} "
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "match": "null",
+                      "result": {
+                        "color": "transparent",
+                        "index": 1,
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 50
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Critical Events"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Major Events"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minor Events"
+            },
+            "properties": [
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ping"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 145,
+      "interval": "15min",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Hostname"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "ProtocolsUp",
+          "sourceQuery": {
+            "expr": "sum(metricshub.host.up) by (host.name)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "ProtocolsDown",
+          "sourceQuery": {
+            "expr": "count(metricshub.host.up == 0) by (host.name)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Generic",
+          "sourceQuery": {
+            "expr": "system.uptime",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Memory",
+          "sourceQuery": {
+            "expr": "sum(system.memory.utilization{system.memory.state!=\"free\"}) by (host.name)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "CPU",
+          "sourceQuery": {
+            "expr": "(\n  sum by (host.name) (\n    rate(system.cpu.time{system.cpu.state!=\"idle\"}[5m])\n  )\n/\n  sum by (host.name) (\n    rate(system.cpu.time[5m])\n  )\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Ping",
+          "sourceQuery": {
+            "expr": "(\n  # Case 1: Ping is down for the host\n  (max by (host.name) (metricshub.host.up{protocol=\"ping\"} == 0)) - 1\n  or\n  # Case 2: Ping is up → Show response time\n  (max by (host.name) (metricshub.host.up{protocol=\"ping\"} == 1))\n  * on(host.name)\n  (max by (host.name) (metricshub.host.response_time{protocol=\"ping\"}) * 1000)\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Critical Events",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:CRITICAL AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Major Events",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:MAJOR AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Minor Events",
+          "sourceQuery": {
+            "alias": "",
+            "bucketAggs": [
+              {
+                "field": "source_hostname.keyword",
+                "id": "2",
+                "settings": {
+                  "min_doc_count": "0",
+                  "order": "desc",
+                  "orderBy": "_term",
+                  "size": "0"
+                },
+                "type": "terms"
+              }
+            ],
+            "metrics": [
+              {
+                "id": "1",
+                "type": "count"
+              }
+            ],
+            "query": "status:OPEN AND !status:BLACKOUT AND severity:MINOR AND metric_name.keyword:system*",
+            "timeField": "creation_time"
+          },
+          "sourceType": "event"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^source_hostname\\.keyword$",
+            "renamePattern": "host.name"
+          }
+        },
+        {
+          "id": "timeSeriesTable",
+          "options": {
+            "Ping": {
+              "timeField": "Time"
+            },
+            "ProtocolUpPct": {
+              "timeField": "Time"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "host.name",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "os.type"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Value #A": false,
+              "Value #Generic": false,
+              "Value #ProtocolsUp": true,
+              "VictoriaMetrics_AccountID": true,
+              "__name__": true,
+              "agent.host.name": true,
+              "agent_host_name": true,
+              "connector_id": true,
+              "entityId": true,
+              "entityName": true,
+              "entityTypeId": true,
+              "host.type": true,
+              "hostType": true,
+              "host_type": true,
+              "hostname": true,
+              "id": true,
+              "instanceName": true,
+              "isDeviceMappingEnabled": true,
+              "name": true,
+              "os_version": true,
+              "parentEntityName": true,
+              "parentEntityTypeId": true,
+              "serial_number": true,
+              "site": true,
+              "source": true,
+              "system_memory_state": true,
+              "unit": true,
+              "version": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Count 1": 3,
+              "Count 2": 4,
+              "Count 3": 5,
+              "Time 1": 11,
+              "Time 2": 12,
+              "Time 3": 13,
+              "Time 4": 20,
+              "Time 5": 21,
+              "Time 6": 38,
+              "Value #CPU": 8,
+              "Value #Generic": 1,
+              "Value #Memory": 9,
+              "Value #Ping": 6,
+              "Value #ProtocolsDown": 7,
+              "Value #ProtocolsUp": 22,
+              "VictoriaMetrics_AccountID": 23,
+              "__name__": 14,
+              "agent.host.name": 24,
+              "connector_id": 15,
+              "entityId": 25,
+              "entityName": 26,
+              "entityTypeId": 27,
+              "host.name": 0,
+              "host.type": 28,
+              "hostType": 29,
+              "hostname": 31,
+              "id": 16,
+              "instanceName": 32,
+              "isDeviceMappingEnabled": 33,
+              "name": 10,
+              "os.type": 2,
+              "os_version": 17,
+              "parentEntityName": 34,
+              "parentEntityTypeId": 35,
+              "serial_number": 19,
+              "site": 30,
+              "source": 36,
+              "unit": 37,
+              "version": 18
+            },
+            "renameByName": {
+              "Count": "Critical ",
+              "Count 1": "Critical Events",
+              "Count 2": "Major Events",
+              "Count 3": "Minor Events",
+              "Time 6": "",
+              "Trend #ProtocolUpPct": "Protocols Availability (%)",
+              "Value #CPU": "CPU Usage",
+              "Value #CriticalAlerts": "Critical Alerts",
+              "Value #Generic": "Uptime",
+              "Value #Memory": "Memory Usage",
+              "Value #Ping": "Ping",
+              "Value #ProtocolUpPctValue": "Available Protocols",
+              "Value #ProtocolsDown": "Failed Protocols",
+              "Value #ProtocolsUp": "Protocols Up",
+              "Value #WarningAlerts": "Warning Alerts",
+              "host.name": "Hostname",
+              "host_name": "Hostname",
+              "id": "",
+              "name": "",
+              "os.type": "Operating System",
+              "os_type": "Operating System",
+              "site": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Hostname"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 33,
+      "panels": [],
+      "title": "Filesystems",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system-performance-metrics-metricshub?orgId=854314187&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Utilization"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Filesystem"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Change"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "light-green"
+                    },
+                    {
+                      "color": "light-blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-red",
+                      "value": 0.01
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 87
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Type"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trend"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "drawStyle": "line",
+                  "hideValue": true,
+                  "lineInterpolation": "linear",
+                  "type": "sparkline"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Capacity"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #UtilizationRatio"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Growth Rate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "light-green"
+                    },
+                    {
+                      "color": "light-blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #TimeUntilSaturation"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Free"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 15,
+        "x": 0,
+        "y": 37
+      },
+      "id": 143,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Utilization"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "UtilizationRatio",
+          "sourceQuery": {
+            "expr": "label_join(\n     sum(system.filesystem.utilization{system.filesystem.state=~\"used|reserved\"}) by (host.name, system.device),\n     \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Capacity",
+          "sourceQuery": {
+            "expr": "label_join(\n    sum(system.filesystem.usage{system.filesystem.state=~\"used|reserved|free\"}) by (host.name, system.device),\n    \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Free",
+          "sourceQuery": {
+            "expr": "label_join(\n    sum by (host.name, system.device) (\n        system.filesystem.usage{system.filesystem.state=~\"free\"}),\n    \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Change",
+          "sourceQuery": {
+            "expr": "label_join(\n  sum by (host.name, system.device) (\n    system.filesystem.utilization{system.filesystem.state=~\"used|reserved\", system.filesystem.type!~\"$filesystemFilter\"}),\n  \"id\", \":\", \"host.name\", \"system.device\"\n)\n-\nlabel_join(\n  sum by (host.name, system.device) (\n    system.filesystem.utilization{system.filesystem.state=~\"used|reserved\", system.filesystem.type!~\"$filesystemFilter\"} offset $__range\n  ),\n  \"id\", \":\", \"host.name\", \"system.device\"\n)\n",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "Usage",
+          "sourceQuery": {
+            "expr": "label_join(\n     sum by (host.name, system.device) (\n           system.filesystem.utilization{system.filesystem.state=~\"used|reserved\", system.filesystem.type !~\"$filesystemFilter\"}\n     ),\n     \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "time_series",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "GrowthRate",
+          "sourceQuery": {
+            "expr": "label_join(\n     sum by (host.name, system.device) (\n            delta(system.filesystem.usage{system.filesystem.state=\"used\"}[$__range]) / $__range_s \n            ),\n     \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "hide": false,
+          "refId": "TimeUntilSaturation",
+          "sourceQuery": {
+            "expr": "label_join(\n  (\n    sum by (host.name, system.device) (\n      system.filesystem.usage{system.filesystem.state=\"free\"}\n    )\n    / ignoring(system.filesystem.state)\n    sum by (host.name, system.device) (\n      delta(system.filesystem.usage{system.filesystem.state=\"used\"}[$__range]) / $__range_s\n    )\n  ) \n  and ignoring(system.filesystem.state)\n  sum by (host.name, system.device) (\n    delta(system.filesystem.usage{system.filesystem.state=\"used\"}[$__range])\n  ) > 0,\n  \"id\", \":\", \"host.name\", \"system.device\"\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Filesystems - Top 5 Utilization",
+      "transformations": [
+        {
+          "id": "timeSeriesTable",
+          "options": {
+            "B": {
+              "timeField": "Time"
+            },
+            "Usage": {
+              "timeField": "Time"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "id",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Value #UtilizationRatio"
+              }
+            ]
+          }
+        },
+        {
+          "id": "limit",
+          "options": {
+            "limitField": "5"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Capacity": false,
+              "FreeAndUsedCapacity": true,
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Trend #A": true,
+              "Trend #Capacity": true,
+              "Trend #Change": true,
+              "Trend #D": true,
+              "Trend #Free": true,
+              "Trend #Used & Reserved": true,
+              "Value": true,
+              "Value #B": false,
+              "Value #C": false,
+              "Value #E": true,
+              "Value #Usage": false,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "__name__ 3": true,
+              "agent_host_name": true,
+              "agent_host_name 1": true,
+              "agent_host_name 2": true,
+              "agent_host_name 3": true,
+              "connector_id": true,
+              "connector_id 1": true,
+              "connector_id 2": true,
+              "connector_id 3": true,
+              "host.name 1": false,
+              "host.name 2": true,
+              "host.name 3": true,
+              "host.name 4": true,
+              "host.name 5": true,
+              "host.name 6": true,
+              "host_id": true,
+              "host_id 1": true,
+              "host_id 2": true,
+              "host_id 3": true,
+              "host_name": false,
+              "host_name 1": false,
+              "host_name 2": true,
+              "host_name 3": true,
+              "host_name 4": true,
+              "host_name 5": true,
+              "host_name 6": true,
+              "host_name 7": true,
+              "host_type": true,
+              "host_type 1": true,
+              "host_type 2": true,
+              "host_type 3": true,
+              "id": true,
+              "id 1": true,
+              "id 2": true,
+              "name 1": true,
+              "name 2": true,
+              "os_type": true,
+              "os_type 1": true,
+              "os_type 2": true,
+              "os_type 3": true,
+              "site": true,
+              "site 1": false,
+              "site 2": true,
+              "site 3": true,
+              "site 4": true,
+              "site 5": true,
+              "site 6": true,
+              "site 7": true,
+              "system.device 1": false,
+              "system.device 2": true,
+              "system.device 3": true,
+              "system.device 4": true,
+              "system.device 5": true,
+              "system.device 6": true,
+              "system_device": false,
+              "system_device 1": false,
+              "system_device 2": true,
+              "system_device 3": true,
+              "system_device 4": true,
+              "system_device 5": true,
+              "system_device 6": true,
+              "system_device 7": true,
+              "system_filesystem_device": true,
+              "system_filesystem_device 1": true,
+              "system_filesystem_device 2": true,
+              "system_filesystem_device 3": true,
+              "system_filesystem_mountpoint 2": true,
+              "system_filesystem_mountpoint 3": true,
+              "system_filesystem_state": true,
+              "system_filesystem_state 1": true,
+              "system_filesystem_state 2": true,
+              "system_filesystem_state 3": true,
+              "system_filesystem_type 2": true,
+              "system_filesystem_type 3": true,
+              "system_filesystem_volumeName": true,
+              "system_filesystem_volumeName 2": true,
+              "system_filesystem_volumeName 3": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 9,
+              "Time 2": 10,
+              "Time 3": 12,
+              "Time 4": 13,
+              "Time 5": 14,
+              "Time 6": 25,
+              "Trend #Usage": 7,
+              "Value #Capacity": 3,
+              "Value #Change": 5,
+              "Value #Free": 2,
+              "Value #GrowthRate": 6,
+              "Value #TimeUntilSaturation": 8,
+              "Value #UtilizationRatio": 4,
+              "host.name 1": 0,
+              "host.name 2": 15,
+              "host.name 3": 17,
+              "host.name 4": 19,
+              "host.name 5": 21,
+              "host.name 6": 23,
+              "host.name 7": 26,
+              "id": 11,
+              "system.device 1": 1,
+              "system.device 2": 16,
+              "system.device 3": 18,
+              "system.device 4": 20,
+              "system.device 5": 22,
+              "system.device 6": 24,
+              "system.device 7": 27
+            },
+            "renameByName": {
+              "Capacity": "Capacity",
+              "Change": "Change",
+              "Free": "Free",
+              "Time 1": "",
+              "Time 2": "",
+              "Time 5": "",
+              "Trend #A": "",
+              "Trend #Capacity": "",
+              "Trend #D": "",
+              "Trend #Free": "",
+              "Trend #Usage": "Trend",
+              "Usage": "Usage",
+              "Used & Reserved": "Used & Reserved",
+              "Utilization": "Utilization",
+              "Value": "",
+              "Value #A": "Usage",
+              "Value #B": "Free",
+              "Value #C": "Used & Reserved",
+              "Value #Capacity": "Capacity",
+              "Value #Change": "Change",
+              "Value #D": "Change",
+              "Value #F": "Capacity",
+              "Value #Free": "Free",
+              "Value #GrowthRate": "Growth Rate",
+              "Value #TimeUntilSaturation": "Time Until Saturation",
+              "Value #Usage": "Trend",
+              "Value #Used & Reserved": "Used & Reserved",
+              "Value #UtilizationRatio": "Utilization",
+              "__name__ 1": "",
+              "connector_id 1": "",
+              "host.name 1": "Hostname",
+              "host_name 1": "Hostname",
+              "id": "",
+              "site 1": "Site",
+              "system.device 1": "Filesystem",
+              "system_device": "Filesystem",
+              "system_device 1": "Filesystem",
+              "system_filesystem_mountpoint": "Mountpoint",
+              "system_filesystem_mountpoint 1": "Mountpoint",
+              "system_filesystem_state 1": "",
+              "system_filesystem_type": "Type",
+              "system_filesystem_type 1": "Type",
+              "system_filesystem_type 3": "",
+              "system_filesystem_volumeName 1": "Name",
+              "value": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system-performance-metrics-metricshub?orgId=854314187&var-host_name=${__data.fields.Hostname}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Filesystem"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 166
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time to Saturation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 156
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 37
+      },
+      "id": 173,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "bottomk(5,\n  label_join(\n    (\n      sum by (host.name, system.device) (\n        system.filesystem.usage{system.filesystem.state=\"free\"}\n      )\n      / ignoring(system.filesystem.state)\n      sum by (host.name, system.device) (\n        delta(system.filesystem.usage{system.filesystem.state=\"used\"}[$__range]) / $__range_s\n      )\n    ) \n    and ignoring(system.filesystem.state)\n    sum by (host.name, system.device) (\n      delta(system.filesystem.usage{system.filesystem.state=\"used\"}[$__range])\n    ) > 0,\n    \"id\", \":\", \"host.name\", \"system.device\"\n  )\n)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Earliest Saturation Time",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "id": true,
+              "site": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 1,
+              "host.name": 2,
+              "id": 4,
+              "system.device": 3
+            },
+            "renameByName": {
+              "Time": "",
+              "Value": "Time to Saturation",
+              "host.name": "Hostname",
+              "host_name": "Hostname",
+              "id": "",
+              "system.device": "Filesystem",
+              "system_device": "Filesystem"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 153,
+      "panels": [],
+      "title": "Disk Activity",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-purple"
+              },
+              {
+                "color": "purple",
+                "value": 25000000
+              },
+              {
+                "color": "semi-dark-purple",
+                "value": 50000000
+              },
+              {
+                "color": "dark-purple",
+                "value": 75000000
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 45
+      },
+      "id": 168,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "topk(5, sum by (host.name, system.device) (rate(system.disk.io[$__range])))",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host.name}} - {{system.device}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Top Drives by Traffic",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 0.6
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 45
+      },
+      "id": 157,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "topk(5,\n  max by (host.name, system.device) (rate(system.disk.io_time[$__range]))\n)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host.name}} - {{system.device}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Top Drives by Utilization",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-purples"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 45
+      },
+      "id": 164,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sort_desc(sum by (host.name) (increase(system.disk.io[$__range])))",
+            "interval": "",
+            "legendFormat": "{{host.name}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Total Host Disk Activity - Heatmap",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 170,
+      "panels": [],
+      "title": "Network Activity",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-blue"
+              },
+              {
+                "color": "blue",
+                "value": 62500000
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": 87500000
+              },
+              {
+                "color": "dark-blue",
+                "value": 106250000
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 54
+      },
+      "id": 166,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "topk(5, sum by (host.name, network.interface.name) (rate(system.network.io[$__range])))",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host.name}} - {{network.interface.name}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Top Network Interfaces by Traffic",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 54
+      },
+      "id": 167,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": false,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "topk(5,\n  max by (host.name, network.interface.name) (rate(system.network.io[$__range])) / on(host.name, network.interface.name)\n  max by (host.name, network.interface.name) (system.network.bandwidth.limit)\n)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host.name}} - {{network.interface.name}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Top Network Interfaces by Utilization",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "${DS_BMC_HELIX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-blues"
+          },
+          "links": [
+            {
+              "title": "Host",
+              "url": "d/eWQoMUTIk/system?orgId=854314187&var-host_name=${__field.labels[\"host.name\"]}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 54
+      },
+      "id": 163,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "${DS_BMC_HELIX}"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "expr": "sort_desc(sum by (host.name) (increase(system.network.io[$__range])))",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{host.name}}",
+            "source": "Monitor"
+          },
+          "sourceType": "metric"
+        }
+      ],
+      "title": "Total Host Network Activity - Heatmap",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [
+    "System Overview"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": ".*tmpfs|nfs.*|overlay",
+          "value": ".*tmpfs|nfs.*|overlay"
+        },
+        "description": "Excludes all filesystems whose type matches the specified regular expression",
+        "hide": 2,
+        "label": "Exclude Filesystem Types",
+        "name": "filesystemFilter",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*tmpfs|nfs.*|overlay",
+            "value": ".*tmpfs|nfs.*|overlay"
+          }
+        ],
+        "query": ".*tmpfs|nfs.*|overlay",
+        "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "aix"
+          ],
+          "value": [
+            "aix"
+          ]
+        },
+        "hide": 2,
+        "includeAll": true,
+        "label": "System",
+        "multi": true,
+        "name": "system",
+        "options": [
+          {
+            "selected": true,
+            "text": "aix",
+            "value": "aix"
+          },
+          {
+            "selected": false,
+            "text": "hpux",
+            "value": "hpux"
+          },
+          {
+            "selected": false,
+            "text": "linux",
+            "value": "linux"
+          },
+          {
+            "selected": false,
+            "text": "windows",
+            "value": "windows"
+          }
+        ],
+        "query": "aix,hpux,linux,windows",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "System Performance Metrics - Overview (MetricsHub)",
+  "uid": "24bfe0f7-2bf6-4f08-ba13-e2134ae9039c",
+  "version": 67,
+  "weekStart": ""
+}
