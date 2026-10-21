@@ -1,0 +1,469 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 276339,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "panels": [],
+      "title": "ITOM Users by Group and Role",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "bftbwo4ml9erkc"
+      },
+      "description": "One row per returned Role or Group membership. Grant Date is blank because the tested IMS user search responses do not expose membership grant dates.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 220
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Login ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Email"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Profile Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Group / Role"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Grant Date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "User Name"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "body": "{\"filters\":[{\"field\":\"*\",\"values\":[\"\"]}]}",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "bftbwo4ml9erkc"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.records[*].full_name",
+              "language": "jsonpath",
+              "name": "User Name"
+            },
+            {
+              "jsonPath": "$.records[*].principal_id",
+              "language": "jsonpath",
+              "name": "Login ID"
+            },
+            {
+              "jsonPath": "$map($.records, function($r) { $exists($r.email) ? $r.email : '' })",
+              "language": "jsonata",
+              "name": "Email"
+            },
+            {
+              "jsonPath": "$.records[*].status",
+              "language": "jsonpath",
+              "name": "Profile Status"
+            },
+            {
+              "jsonPath": "$.records.(\"Role: ${Roles:text}\")",
+              "language": "jsonata",
+              "name": "Group / Role"
+            },
+            {
+              "jsonPath": "$.records.(\"\")",
+              "language": "jsonata",
+              "name": "Grant Date"
+            }
+          ],
+          "headers": [],
+          "method": "POST",
+          "params": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "queryParams": "",
+          "refId": "RoleUsers",
+          "urlPath": "/ims/api/v1/users/search?roleId=${RoleID}&orderBy=full_name&excludeApiKeyUsers=true&userTypes=PERSON,EXTERNAL_PERSON&page=0&size=10000"
+        },
+        {
+          "body": "{\"filters\":[{\"field\":\"*\",\"values\":[\"\"]}]}",
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "bftbwo4ml9erkc"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.records[*].full_name",
+              "language": "jsonpath",
+              "name": "User Name"
+            },
+            {
+              "jsonPath": "$.records[*].principal_id",
+              "language": "jsonpath",
+              "name": "Login ID"
+            },
+            {
+              "jsonPath": "$map($.records, function($r) { $exists($r.email) ? $r.email : '' })",
+              "language": "jsonata",
+              "name": "Email"
+            },
+            {
+              "jsonPath": "$.records[*].status",
+              "language": "jsonpath",
+              "name": "Profile Status"
+            },
+            {
+              "jsonPath": "$.records.(\"Group: ${Groups:text}\")",
+              "language": "jsonata",
+              "name": "Group / Role"
+            },
+            {
+              "jsonPath": "$.records.(\"\")",
+              "language": "jsonata",
+              "name": "Grant Date"
+            }
+          ],
+          "headers": [],
+          "method": "POST",
+          "params": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "queryParams": "",
+          "refId": "GroupUsers",
+          "urlPath": "/ims/api/v1/users/search?groupId=${GroupID}&orderBy=full_name&page=0&size=10000"
+        }
+      ],
+      "title": "ITOM User Group and Role Memberships",
+      "transformations": [
+        {
+          "id": "concatenate",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Email": 2,
+              "Grant Date": 5,
+              "Group / Role": 4,
+              "Login ID": 1,
+              "Profile Status": 3,
+              "User Name": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "ITOM",
+    "IMS",
+    "Access",
+    "Demo_9"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "json-datasource",
+          "uid": "bftbwo4ml9erkc"
+        },
+        "definition": "$.records[*].name",
+        "includeAll": true,
+        "label": "ITOM Roles",
+        "multi": true,
+        "name": "Roles",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.records[*].name",
+              "language": "jsonpath",
+              "name": "text"
+            },
+            {
+              "jsonPath": "$.records[*].role_id",
+              "language": "jsonpath",
+              "name": "value"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/ims/api/v1/roles"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "json-datasource",
+          "uid": "bftbwo4ml9erkc"
+        },
+        "definition": "$.records[*].name",
+        "includeAll": true,
+        "label": "ITOM Groups",
+        "multi": true,
+        "name": "Groups",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.records[*].name",
+              "language": "jsonpath",
+              "name": "text"
+            },
+            {
+              "jsonPath": "$.records[*].group_id",
+              "language": "jsonpath",
+              "name": "value"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/ims/api/v1/groups"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "json-datasource",
+          "uid": "bftbwo4ml9erkc"
+        },
+        "definition": "",
+        "name": "RoleID",
+        "options": [],
+        "query": {
+          "body": "{\r\n  \"filters\": [\r\n    {\r\n      \"field\": \"name\",\r\n      \"values\": [\r\n        \"${Roles}\"\r\n      ]\r\n    }\r\n  ]\r\n}",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.records[0].role_id"
+            }
+          ],
+          "headers": [],
+          "method": "POST",
+          "queryParams": "",
+          "urlPath": "/ims/api/v1/roles/search"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "json-datasource",
+          "uid": "bftbwo4ml9erkc"
+        },
+        "definition": "",
+        "name": "GroupID",
+        "options": [],
+        "query": {
+          "body": "{\r\n  \"filters\": [\r\n    {\r\n      \"field\": \"name\",\r\n      \"values\": [\r\n        \"${Groups}\"\r\n      ]\r\n    }\r\n  ]\r\n}",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.records[0].group_id"
+            }
+          ],
+          "headers": [],
+          "method": "POST",
+          "queryParams": "",
+          "urlPath": "/ims/api/v1/groups/search"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Helix User and Permission List",
+  "uid": "Rakeshv4",
+  "version": 3,
+  "weekStart": ""
+}

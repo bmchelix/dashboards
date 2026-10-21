@@ -1,0 +1,2819 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 276536,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 23,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "content": "<div style=\"\n    padding:20px;\n    border-left:6px solid #F56A00;\n    background:linear-gradient(90deg,#1F2937,#374151);\n    border-radius:8px;\n    color:white;\n\">\n\n  <div style=\"\n        font-size:28px;\n        font-weight:700;\n        margin-bottom:8px;\n    \">\n    🛠 Dashboard Developer Workbench\n  </div>\n\n  <div style=\"\n        font-size:18px;\n        margin-bottom:10px;\n    \">\n    Form: <span style=\"color:#FDBA74;font-weight:600;\">{{FormName}}</span>\n  </div>\n\n  <div style=\"\n        font-size:13px;\n        color:#D1D5DB;\n    \">\n    Explore schema metadata, indexes, field coverage, sample data and dashboard readiness for any Helix IS or AR System form.\n  </div>\n\n</div>",
+        "defaultContent": "The query didn't return any results.",
+        "editor": {
+          "format": "auto",
+          "height": 200,
+          "language": "html"
+        },
+        "editors": [
+          "default"
+        ],
+        "everyRow": true,
+        "helpers": "",
+        "styles": ""
+      },
+      "pluginVersion": "4.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "c4768e7b-59a4-b727-5a5c-e9867237e85a",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT name AS FormName FROM `AR System Metadata: arschema` where schemaType <> 4 and name = $FormList limit 1"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "b847c713-ac1c-9105-fb84-fdfad5986364",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT\r\n    COUNT(*) AS CustomFields\r\nFROM `AR System Metadata: arschema` S\r\nINNER JOIN `AR System Metadata: field` F\r\n    ON F.`schemaId` = S.`Schema ID`\r\nWHERE S.`name` = ${FormList}\r\nAND F.`fOption` = 2\r\nAND F.`overlayProp` > 0"
+          },
+          "sourceType": "remedy"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "8d08b04c-7335-ef45-f7fa-a94ee1b2d84d",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT\r\n    COUNT(*) AS IndexCount\r\nFROM `AR System Metadata: arschema` S\r\nINNER JOIN `AR System Metadata: schema_index` I\r\n    ON I.`schemaId` = S.`Schema ID`\r\nWHERE S.`name` = ${FormList}"
+          },
+          "sourceType": "remedy"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "hide": false,
+          "refId": "C",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "a21d69c2-1d98-488d-5c6d-2dbd018afd7d",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT COUNT(*) AS FieldCount\r\nFROM `AR System Metadata: arschema` SCM\r\nLEFT OUTER JOIN `AR System Metadata: field` F1\r\n    ON F1.`schemaId` = SCM.`Schema ID`\r\nWHERE F1.fOption = 2\r\nAND datatype IN (1,2,3,4,6,7,8,9,10)\r\nAND SCM.name = ${FormList}\r\nAND SCM.overlayGroup = '0'\r\n--AND (F1.overlayProp > 0 OR $FieldTypes = 'All')"
+          },
+          "sourceType": "remedy"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "hide": false,
+          "refId": "D",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "e3f3f306-1624-62bc-be95-e7514538c94b",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT COUNT(*)  As RowCount from `${FormList:raw}`"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": [
+                "count"
+              ]
+            },
+            "inspect": false,
+            "wrapText": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 6,
+        "y": 5
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "hide": false,
+          "refId": "B",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "bd22dfaf-e2d1-128e-395c-36cdcb9cc020",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT\r\n    S.`name`,\r\n    S.`Schema ID` AS FormID,\r\n    I.`numFields`,\r\n    I.`indexName`,\r\n    F1.`fieldName` AS field1_name,\r\n    F2.`fieldName` AS field2_name,\r\n    F3.`fieldName` AS field3_name,\r\n    F4.`fieldName` AS field4_name,\r\n    F5.`fieldName` AS field5_name,\r\n    F6.`fieldName` AS field6_name,\r\n    F1.`fieldName`\r\n        + CASE WHEN F2.`fieldName` IS NOT NULL THEN ':' + F2.`fieldName` ELSE '' END\r\n        + CASE WHEN F3.`fieldName` IS NOT NULL THEN ':' + F3.`fieldName` ELSE '' END\r\n        + CASE WHEN F4.`fieldName` IS NOT NULL THEN ':' + F4.`fieldName` ELSE '' END\r\n        + CASE WHEN F5.`fieldName` IS NOT NULL THEN ':' + F5.`fieldName` ELSE '' END\r\n        + CASE WHEN F6.`fieldName` IS NOT NULL THEN ':' + F6.`fieldName` ELSE '' END\r\n        AS Indexes\r\nFROM `AR System Metadata: arschema` S\r\nLEFT JOIN `AR System Metadata: schema_index` I\r\n    ON S.`Schema ID` = I.`schemaId`\r\nLEFT JOIN `AR System Metadata: field` F1\r\n    ON F1.`schemaId` = S.`Schema ID`\r\n    AND F1.`fieldId` = I.`f1`\r\nLEFT JOIN `AR System Metadata: field` F2\r\n    ON F2.`schemaId` = S.`Schema ID`\r\n    AND F2.`fieldId` = I.`f2`\r\nLEFT JOIN `AR System Metadata: field` F3\r\n    ON F3.`schemaId` = S.`Schema ID`\r\n    AND F3.`fieldId` = I.`f3`\r\nLEFT JOIN `AR System Metadata: field` F4\r\n    ON F4.`schemaId` = S.`Schema ID`\r\n    AND F4.`fieldId` = I.`f4`\r\nLEFT JOIN `AR System Metadata: field` F5\r\n    ON F5.`schemaId` = S.`Schema ID`\r\n    AND F5.`fieldId` = I.`f5`\r\nLEFT JOIN `AR System Metadata: field` F6\r\n    ON F6.`schemaId` = S.`Schema ID`\r\n    AND F6.`fieldId` = I.`f6`\r\n    WHERE S.`name` = $FormList\r\n"
+          },
+          "sourceType": "remedy"
+        },
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "hide": true,
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "bd22dfaf-e2d1-128e-395c-36cdcb9cc020",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT\r\n  SCM.`name`,\r\n  SCM.`Schema ID` AS FormID,\r\n  IDX.`numFields`,\r\n  IDX.`indexName`,\r\n  --IDX.`f1`,\r\n  F1.`fieldName` AS field1_name,\r\n  --IDX.`f2`,\r\n  F2.`fieldName` AS field2_name,\r\n  --IDX.`f3`,\r\n  F3.`fieldName` AS field3_name,\r\n  --IDX.`f4`,\r\n  F4.`fieldName` AS field4_name,\r\n  --IDX.`f5`,\r\n  F5.`fieldName` AS field5_name,\r\n  --IDX.`f6`,\r\n  F6.`fieldName` AS field6_name\r\nFROM `AR System Metadata: arschema` AS SCM\r\nLEFT JOIN `AR System Metadata: schema_index` AS IDX\r\n  ON SCM.`Schema ID` = IDX.`schemaId`\r\nLEFT JOIN `AR System Metadata: field` AS F1\r\n  ON F1.`schemaId` = SCM.`Schema ID` AND F1.`fieldId` = IDX.`f1`\r\nLEFT JOIN `AR System Metadata: field` AS F2\r\n  ON F2.`schemaId` = SCM.`Schema ID` AND F2.`fieldId` = IDX.`f2`\r\nLEFT JOIN `AR System Metadata: field` AS F3\r\n  ON F3.`schemaId` = SCM.`Schema ID` AND F3.`fieldId` = IDX.`f3`\r\nLEFT JOIN `AR System Metadata: field` AS F4\r\n  ON F4.`schemaId` = SCM.`Schema ID` AND F4.`fieldId` = IDX.`f4`\r\nLEFT JOIN `AR System Metadata: field` AS F5\r\n  ON F5.`schemaId` = SCM.`Schema ID` AND F5.`fieldId` = IDX.`f5`\r\nLEFT JOIN `AR System Metadata: field` AS F6\r\n  ON F6.`schemaId` = SCM.`Schema ID` AND F6.`fieldId` = IDX.`f6`\r\nWHERE SCM.`name` = $FormList  -- or use ? and bind parameter, or 'literal'\r\n"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "FormID": true,
+              "field1_name": true,
+              "field2_name": true,
+              "field3_name": true,
+              "field4_name": true,
+              "field5_name": true,
+              "field6_name": true,
+              "indexName": true,
+              "name": true,
+              "numFields": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Indexes": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Property Value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Property Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 247
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 446
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Submit Date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 217
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "viewName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 468
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Change Request Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 294
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVTTitle"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 292
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Notification Text"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 489
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 291
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 341
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ServiceAvailabilityStatus"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 210
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVT Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 463
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVT Title"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 459
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Request Form Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 296
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flag_Create_Request"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 280
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Enable HelixGPT Knowledge Curator"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 321
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HelixGPT Auto Resolution"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 286
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Infrastructure Change ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 312
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Field"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 364
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Field"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "59f82c20-ee47-9428-7723-3b81b696de5f",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "select * from `AR System Schema`.`${FormList:raw}` OurForm\r\nlimit $Rows Offset $Offset"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "$FormList first $Rows rows starting at row $Offset",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Property Value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Property Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 247
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 446
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Submit Date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 217
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "viewName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 468
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Change Request Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 294
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVTTitle"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 292
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Notification Text"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 489
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 291
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 341
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ServiceAvailabilityStatus"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 210
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVT Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 463
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SVT Title"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 459
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Request Form Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 296
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flag_Create_Request"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 280
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Enable HelixGPT Knowledge Curator"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 321
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HelixGPT Auto Resolution"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 286
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Infrastructure Change ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 312
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Field"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 364
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "DBFieldName"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "e33a208c-9fe3-a178-f667-ef929b3e9129",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "SELECT\r\n    F.`fieldId` AS FieldID,\r\n    F.`fieldName` AS DBFieldName,\r\n    DP.`label` AS FieldLabel,\r\n    V.`vuiName` AS ViewName,\r\n    F.`overlayGroup` AS FieldOverlayGroup,\r\n    F.`overlayProp` AS FieldOverlayProp,\r\n    DP.`overlayGroup` AS DispOverlayGroup,\r\n    V.`overlayGroup` AS VUIOverlayGroup,\r\n    F.`resolvedfieldId` AS ResolvedFieldID,\r\n    F.`resolvedName` AS ResolvedName\r\nFROM `AR System Metadata: arschema` AS SCM\r\nLEFT OUTER JOIN `AR System Metadata: field` AS F\r\n    ON F.`schemaId` = SCM.`Schema ID`\r\nLEFT OUTER JOIN `AR System Metadata: field_dispprop` AS DP\r\n    ON DP.`schemaId` = F.`schemaId`\r\n    AND DP.`fieldId` = F.`fieldId`\r\nLEFT OUTER JOIN `AR System Metadata: vui` AS V\r\n    ON V.`schemaId` = DP.`schemaId`\r\n    AND V.`vuiId` = DP.`vuiId`\r\nWHERE SCM.`name` = ${FormList}\r\nAND V.`vuiName` = ${View}\r\nAND F.`fOption` = 2\r\nAND F.`datatype` IN (1,2,3,4,6,7,8,9,10)\r\nAND SCM.`overlayGroup` = '0'\r\nand V.`overlayGroup` = '0'\r\norder by DBFieldName asc"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "Alphabetical List of fields in $FormList with Labels from view $View",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "transpose",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "DispOverlayGroup": true,
+              "FieldOverlayGroup": true,
+              "FieldOverlayProp": true,
+              "ResolvedFieldID": true,
+              "ResolvedName": true,
+              "VUIOverlayGroup": true,
+              "ViewName": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "DBFieldName": 0,
+              "DispOverlayGroup": 6,
+              "FieldID": 1,
+              "FieldLabel": 2,
+              "FieldOverlayGroup": 4,
+              "FieldOverlayProp": 5,
+              "ResolvedFieldID": 8,
+              "ResolvedName": 9,
+              "VUIOverlayGroup": 7,
+              "ViewName": 3
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 2,
+      "panels": [],
+      "title": "$FormList Data Coverage for each optional field",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "bmchelix-ade-datasource",
+        "uid": "fftbwo4izeosgf"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.00001
+              },
+              {
+                "color": "orange",
+                "value": 10
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 90
+              },
+              {
+                "color": "dark-green",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.4",
+      "repeat": "Fields",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "bmchelix-ade-datasource",
+            "uid": "fftbwo4izeosgf"
+          },
+          "refId": "A",
+          "sourceQuery": {
+            "dstType": "SERVER",
+            "form": {
+              "calculatedFieldList": [
+                {
+                  "hideCalculatedField": true,
+                  "selectionAggregation": false,
+                  "selectionAlias": "CF1",
+                  "selectionCalculatedFieldName": "",
+                  "selectionCalculatedFields": "Select Calculated Field",
+                  "selectionQuery": "Select Column Name"
+                }
+              ],
+              "dstType": "SERVER",
+              "groupByField": [
+                {
+                  "selectionAlias": "",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "havingQualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "hideGroupBy": true,
+              "hideHaving": true,
+              "hideQual": true,
+              "hideSort": true,
+              "maxEntries": 100,
+              "meta": {
+                "hideJson": false,
+                "hideSql": false,
+                "metaCalculatedFields": [],
+                "metaColumnNames": [],
+                "metaFullFormNames": [],
+                "metaGroupNames": [],
+                "rawJson": "",
+                "rawSql": "",
+                "syncToSql": false
+              },
+              "outputNumMatches": true,
+              "qualification": [
+                {
+                  "collapseGroup": true,
+                  "groupCounter": 1,
+                  "groupHierarchy": "G1",
+                  "leftOperand": {
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Field",
+                    "isCalcField": false
+                  },
+                  "logicalOperator": "",
+                  "qualificationType": "Relational",
+                  "relationalOperator": "Equal",
+                  "rightOperand": {
+                    "fieldDataType": "CHAR",
+                    "fieldName": "Select Column Name",
+                    "fieldSourceAlias": "",
+                    "fieldType": "Value",
+                    "fieldValue": ""
+                  },
+                  "showGroup": false,
+                  "splitGroup": false
+                }
+              ],
+              "selectionList": [
+                {
+                  "selectionAlias": "C1",
+                  "selectionColumnName": "Select Column Name",
+                  "selectionSrcAlias": "",
+                  "selectionType": "Field"
+                }
+              ],
+              "sortField": [
+                {
+                  "sortOperand": {
+                    "selectionAlias": "",
+                    "selectionColumnName": "Select Column Name",
+                    "selectionSrcAlias": "",
+                    "selectionType": "Field"
+                  },
+                  "sortOrder": "ASC"
+                }
+              ],
+              "sourceList": [
+                {
+                  "sourceAlias": "",
+                  "sourceFormName": "Select Form Name",
+                  "sourceHideClause": false,
+                  "sourceJoinClause": [
+                    {
+                      "collapseGroup": true,
+                      "groupCounter": 1,
+                      "groupHierarchy": "G1",
+                      "leftOperand": {
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "isCalcField": false
+                      },
+                      "logicalOperator": "",
+                      "qualificationType": "Relational",
+                      "relationalOperator": "Equal",
+                      "rightOperand": {
+                        "fieldDataType": "CHAR",
+                        "fieldName": "Select Column Name",
+                        "fieldSourceAlias": "",
+                        "fieldType": "Field",
+                        "fieldValue": ""
+                      },
+                      "showGroup": false,
+                      "splitGroup": false
+                    }
+                  ],
+                  "sourceType": "Form"
+                }
+              ],
+              "startEntry": 0,
+              "useAlias": true,
+              "useDistinct": true,
+              "useLocale": true,
+              "useOneEqualOne": false
+            },
+            "formatAs": "Table",
+            "guid": "2329d8fd-27f5-c4a5-91ab-112a77739d82",
+            "header": {
+              "headerList": [
+                {
+                  "arKey": "date_format",
+                  "arType": "body",
+                  "collapseHeader": false,
+                  "dataType": "string",
+                  "text": "Date Format",
+                  "value": "DD/MM/YYYY"
+                }
+              ],
+              "hideHeader": true
+            },
+            "queryType": "SQL",
+            "rawQuery": "select count(`${Fields:raw}`) * 100.0 / ${RowNumber:raw} as Coverage from `${FormList:raw}`"
+          },
+          "sourceType": "remedy"
+        }
+      ],
+      "title": "$Fields",
+      "transparent": true,
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "Demo_9"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "AAS:Activity",
+          "value": "AAS:Activity"
+        },
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "fftbwo4izeosgf"
+        },
+        "definition": "remedy,{\"sql\": \"SELECT `name` AS `FormList` FROM `AR System Metadata: arschema` where schemaType <> 4\"}",
+        "includeAll": false,
+        "name": "FormList",
+        "options": [],
+        "query": "remedy,{\"sql\": \"SELECT `name` AS `FormList` FROM `AR System Metadata: arschema` where schemaType <> 4\"}",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "20",
+          "value": "20"
+        },
+        "name": "Rows",
+        "options": [
+          {
+            "selected": true,
+            "text": "20",
+            "value": "20"
+          }
+        ],
+        "query": "20",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "200",
+          "value": "200"
+        },
+        "description": "Starting row",
+        "name": "Offset",
+        "options": [
+          {
+            "selected": true,
+            "text": "200",
+            "value": "200"
+          }
+        ],
+        "query": "200",
+        "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "Custom",
+          "value": "Custom"
+        },
+        "description": "Do you want to include custom fields only or all fields",
+        "includeAll": false,
+        "name": "FieldTypes",
+        "options": [
+          {
+            "selected": true,
+            "text": "Custom",
+            "value": "Custom"
+          },
+          {
+            "selected": false,
+            "text": "All",
+            "value": "All"
+          }
+        ],
+        "query": "Custom,All",
+        "type": "custom"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "bmchelix-ade-datasource",
+          "uid": "fftbwo4izeosgf"
+        },
+        "definition": "Remedy,{\"sql\":\"SELECT F1.fieldName FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: field` AS F1  ON F1.`schemaId` = SCM.`Schema ID` where F1.fOption = 2 and datatype in (1,2,3,4,6,7,8,9,10) and SCM.name = ${FormList} AND (F1.overlayProp > 0 OR $FieldTypes = 'All')\"}",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "Fields",
+        "options": [],
+        "query": "Remedy,{\"sql\":\"SELECT F1.fieldName FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: field` AS F1  ON F1.`schemaId` = SCM.`Schema ID` where F1.fOption = 2 and datatype in (1,2,3,4,6,7,8,9,10) and SCM.name = ${FormList} AND (F1.overlayProp > 0 OR $FieldTypes = 'All')\"}",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "10",
+          "value": "10"
+        },
+        "definition": "Remedy,{\"sql\":\"SELECT  COUNT(*)  FROM `${FormList:raw}`\"}",
+        "hide": 2,
+        "name": "RowNumber",
+        "options": [],
+        "query": "Remedy,{\"sql\":\"SELECT  COUNT(*)  FROM `${FormList:raw}`\"}",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "bmcVarCache": false,
+        "current": {
+          "text": "SV_Edit",
+          "value": "SV_Edit"
+        },
+        "definition": "Remedy,{\"sql\":\"SELECT  V.`vuiName` FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: vui` AS V  ON V.`schemaId` = SCM.`Schema ID` WHERE SCM.`name` = ${FormList}\"}",
+        "description": "",
+        "label": "View",
+        "name": "View",
+        "options": [],
+        "query": "Remedy,{\"sql\":\"SELECT  V.`vuiName` FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: vui` AS V  ON V.`schemaId` = SCM.`Schema ID` WHERE SCM.`name` = ${FormList}\"}",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "browser",
+  "title": "Dashboard Developer Workbench",
+  "uid": "sc2rwq4",
+  "version": 10,
+  "weekStart": ""
+}

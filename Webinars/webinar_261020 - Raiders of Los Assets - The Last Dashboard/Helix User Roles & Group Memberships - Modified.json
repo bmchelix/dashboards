@@ -1,0 +1,154 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Current console-user direct role assignments and group memberships. Each membership is a separate table entry. Group-inherited roles are excluded. Grant Date is Unknown. In-panel filters and filtered CSV export; complete source coverage is checked before displaying the report.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 276738,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "json-datasource",
+        "uid": "bftbwo4ml9erkc"
+      },
+      "description": "Live IMS user, role and group catalogues. Each list is bounded at 1,000 records; any incomplete response blocks the report. Client-side filters act only after completeness validation. Direct role links only. CSV is available from the panel.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 32,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "content": "{{{helixMemberships}}}",
+        "defaultContent": "Membership data is unavailable. Refresh and check the query error before relying on this report.",
+        "editor": {
+          "format": "none",
+          "height": 200,
+          "language": "html"
+        },
+        "editors": [],
+        "everyRow": false,
+        "helpers": "return (function () {\n  'use strict';\n  /* Pure membership model; shared by the dashboard and verification. */\nfunction buildMembershipModel(payloads) {\n  const result = {rows: [], catalogs: {}, errors: [], excluded: 0, humanUsers: 0};\n  const idKeys = {Users:'user_id', Roles:'role_id', Groups:'group_id'};\n  for (const name of Object.keys(idKeys)) {\n    const p = payloads[name], m = p?._metadata;\n    if (!p || !Array.isArray(p.records) || !m ||\n        !Number.isInteger(m.total_count) || m.page !== 0 ||\n        m.total_count !== p.records.length) {\n      result.errors.push(name + ': complete source data could not be verified. Refresh or ask an administrator to review source coverage.');\n      continue;\n    }\n    const ids = p.records.map(r=>r[idKeys[name]]);\n    if (ids.some(x=>!x) || new Set(ids).size !== ids.length)\n      result.errors.push(name + ': missing or duplicate identifiers.');\n    result.catalogs[name] = p.records;\n  }\n  if (result.errors.length) return result;\n  const users = new Map(result.catalogs.Users.map(u=>[u.user_id,u]));\n  result.humanUsers = result.catalogs.Users.filter(u=>['PERSON','EXTERNAL_PERSON'].includes(u.type)).length;\n  const seen = new Set();\n  for (const [source, kind, key] of [['Roles','Role','role_id'],['Groups','Group','group_id']]) {\n    for (const membership of result.catalogs[source]) {\n      if (!Array.isArray(membership.users)) {\n        result.errors.push(kind + ': user mappings are unavailable for ' + membership.name);\n        continue;\n      }\n      for (const ref of membership.users) {\n        const uid = typeof ref === 'string' ? ref : ref.user_id;\n        const u = users.get(uid);\n        if (!u) {\n          result.errors.push(kind + ': a membership references a user absent from the complete directory.');\n          continue;\n        }\n        if (!['PERSON','EXTERNAL_PERSON'].includes(u.type)) { result.excluded++; continue; }\n        const unique = JSON.stringify([uid,kind,membership[key]]);\n        if (seen.has(unique)) continue;\n        seen.add(unique);\n        result.rows.push({\n          userId:uid, membershipId:membership[key], kind,\n          userName:u.full_name || [u.first_name,u.last_name].filter(Boolean).join(' ') || u.principal_id || 'Unknown',\n          login:u.principal_id || 'Unknown', email:u.email || 'Unknown',\n          status:u.status || 'Unknown', membership:kind + ': ' + membership.name,\n          grantDate:'Unknown'\n        });\n      }\n    }\n  }\n  result.errors = [...new Set(result.errors)];\n  if (result.errors.length) result.rows = []; // Never publish an incomplete report as complete.\n  result.rows.sort((a,b)=>a.userName.localeCompare(b.userName)||a.login.localeCompare(b.login)||a.membership.localeCompare(b.membership));\n  return result;\n}\nfunction filterMembershipRows(rows, state) {\n  const q = (state.query || '').trim().toLowerCase();\n  return rows.filter(r =>\n    (state.kind === 'All' || state.kind === r.kind) &&\n    (state[r.kind] === null || state[r.kind].includes(r.membershipId)) &&\n    (!q || [r.userName,r.login,r.email,r.status,r.membership].some(v=>v.toLowerCase().includes(q))));\n}\nfunction membershipCsv(rows) {\n  const safe = v => '\"' + String(v ?? '').replace(/^[=+\\-@\\t\\r]/,\"'$&\").replace(/\"/g,'\"\"') + '\"';\n  return [\n    ['User Name','Login ID','Email','Profile Status','Group / Roles','Grant Date'],\n    ...rows.map(r=>[r.userName,r.login,r.email,r.status,r.membership,r.grantDate])\n  ].map(row=>row.map(safe).join(',')).join('\\r\\n');\n}\n\n  const esc = v => String(v ?? '').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));\n  const payloads = {};\n  const frameRows = Array.isArray(data) ? data : data && Array.isArray(data.data) ? data.data : [];\n  for (const row of frameRows) for (const name of ['Users','Roles','Groups']) {\n    const value=row[name] ?? row[name+' · '+name];\n    if (value) { try { payloads[name] = JSON.parse(value); } catch (_) {} }\n  }\n  const model = buildMembershipModel(payloads);\n  const signature = JSON.stringify(payloads);\n  const key = '__helixItomMembershipState';\n  const state = window[key] || (window[key] = {Role:null,Group:null,kind:'All',query:'',page:0});\n  const header = `<header class=\"im-header\"><div><div class=\"im-eyebrow\">HELIX / ACCESS REVIEW</div><h1>Roles &amp; group memberships</h1><p>One entry per direct role assignment or group membership.</p></div><div class=\"im-logo\"><img alt=\"BMC Helix\" width=\"155\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ijg0IDY5IDMwOCA3MyIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9ImJtYy1oZWxpeC1sb2dvLXRpdGxlIj4KICA8dGl0bGUgaWQ9ImJtYy1oZWxpeC1sb2dvLXRpdGxlIj5CTUMgSGVsaXg8L3RpdGxlPgogIDwhLS0gT2ZmaWNpYWwgdGhyZWUtY29sb3VyIHJldmVyc2VkIGxvY2t1cCBmb3IgZGFyayBiYWNrZ3JvdW5kcy4gU291cmNlOiBCTUMgSGVsaXggQnJhbmQgR3VpZGUsIEphbnVhcnkgMjAyNi4gLS0+CiAgPHBhdGggdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgOTEuMzgxNTkgNzYuOTg4MykiIGQ9Ik0wIDBWLTkuMjgyQzAtMTAuODQ2IDEuMzE5LTEzLjE2MiAyLjY1OS0xMy45NjNMMjAuMzgtMjQuNDYgMzAuNzY5LTE4LjMwMlpNMjAuMzgtMzIuNzI4IDIuNjM3LTQzLjI0N0MxLjI5Mi00NC4wNDctLjAyOC00Ni4zNTktLjAyOC00Ny45M1YtNTcuMTI1TDMwLjc0OS0zOC44NzlaTS0xLjE2Ny02NC45NDFDLTQuMTM3LTY0Ljk0MS03LjE0Ny02Mi42NDQtNy4xNDctNTguMjQ1Vi00Ny45M0MtNy4xNDctNDMuODQ3LTQuNDk3LTM5LjIwOS0uOTg3LTM3LjEyNkwxMy4zOTctMjguNTk2LS45Ny0yMC4wODNDLTQuNDc1LTE4LjAwMy03LjExNi0xMy4zNjItNy4xMTYtOS4yODJWMS4xMjlDLTcuMTE2IDUuNTI2LTQuMTE4IDcuODI0LTEuMTUgNy44MjQgLjEyNSA3LjgyNCAxLjQwNSA3LjQ0OCAyLjY1OSA2LjY5M0wzNS4xNTEtMTIuNjNDMzcuNDE0LTEzLjk3MyAzOC43MDctMTYuMDUgMzguNzA3LTE4LjMwNCAzOC43MDctMjAuNTc1IDM3LjQwOC0yMi42NDMgMzUuMTQ2LTIzLjk4N0wyNy4zNTctMjguNTk2IDM1LjEzOC0zMy4yMDFDMzcuNDA4LTM0LjU0OCAzOC43MDctMzYuNjE4IDM4LjcwNy0zOC44NzkgMzguNzA3LTQxLjE0MSAzNy40MDgtNDMuMjE1IDM1LjEzOC00NC41NTRMMi42MzctNjMuODE5QzEuMzgyLTY0LjU2NyAuMTA1LTY0Ljk0MS0xLjE2Ny02NC45NDEiIGZpbGw9IiNmZjVhNGQiLz4KICA8cGF0aCB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAxNTQuMTA3NDIgMTE3LjYxNTcxKSIgZD0iTTAgMEMuOTktMi4xOTcgMy4zNDItMy42OTEgNS45NjQtMy42OTEgMTAuNzE5LTMuNjkxIDEzLjU1Ni4xNDUgMTMuNTU2IDUuMTggMTMuNTU2IDEwLjI4OSAxMC43MTkgMTQuMTIzIDUuOTY0IDE0LjEyMyAzLjQxMiAxNC4xMjMuOTkgMTIuNTU5IDAgMTAuNDMyWk0wLTEwLjY0NUgtOC44N1YzNS40ODVIMFYxOC40NTJDMS40MjMgMjAuMTU0IDQuNTQ2IDIxLjc5NSA3Ljk1IDIxLjc5NSAxNy4xNzUgMjEuNzk1IDIyLjM1MyAxNC4yNjUgMjIuMzUzIDUuMTggMjIuMzUzLTMuOTAxIDE3LjE3NS0xMS4zNTQgNy45NS0xMS4zNTQgNC41NDYtMTEuMzU0IDEuNDIzLTkuNzE5IDAtOC4wMjJaIiBmaWxsPSIjZmZmIi8+CiAgPHBhdGggdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMjE1LjAzMTk5IDk1LjgyMTMwOCkiIGQ9Ik0wIDBDNi41MyAwIDEwLjQzMy00LjU0NiAxMC40MzMtMTEuNzExVi0zMi40MzlIMS42M1YtMTMuNTYzQzEuNjMtMTAuMTUyLjE0LTcuODg2LTIuOTEtNy44ODYtNS4xNzktNy44ODYtNy4yMzktOS4zMDEtNy44MTItMTJWLTMyLjQzOUgtMTYuNjc5Vi0xMy41NjNDLTE2LjY3OS0xMC4xNTItMTguMDkxLTcuODg2LTIxLjE0NC03Ljg4Ni0yMy40MTUtNy44ODYtMjUuNTQ3LTkuMzAxLTI2LjEyMy0xMlYtMzIuNDM5SC0zNC45MTVWLS43MTdILTI2LjEyM1YtMy4zNDJDLTI0LjU1NC0xLjM1OS0yMS42NDIgMC0xOC4wOTEgMC0xNC4zMzcgMC0xMS4zNDktMS43MS05LjU4My00LjA0Ni03LjUyOC0xLjc3Ni00LjQ3MSAwIDAgMCIgZmlsbD0iI2ZmZiIvPgogIDxwYXRoIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIDI0NC4yMTcyOSA5NS44MjEzMDgpIiBkPSJNMCAwQzcuOTU4IDAgMTIuOTkzLTQuNjg3IDEzLjkxLTExLjQyOEg1LjI2QzQuNzU2LTkuMDIgMi44NDktNy41MjggMC03LjUyOC00LjAzMi03LjUyOC02LjUxOC0xMS4yMTktNi41MTgtMTYuNjE1LTYuNTE4LTIxLjkzMS00LjAzMi0yNS42MyAwLTI1LjYzIDIuODQ5LTI1LjYzIDQuNzU2LTI0LjEzMiA1LjI2LTIxLjczMkgxMy45MUMxMi45OTMtMjguNTM0IDcuOTU4LTMzLjE1IDAtMzMuMTUtOS4wMDUtMzMuMTUtMTUuMjYtMjYuNDAxLTE1LjI2LTE2LjYxNS0xNS4yNi02Ljc0Ny05LjAwNSAwIDAgMCIgZmlsbD0iI2ZmZiIvPgogIDxwYXRoIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIDI3Ny4zNDM3IDEwMC4yMTk2OTkpIiBkPSJNMCAwQzIuMjY1IDIuOTgyIDUuNDEyIDQuNDA3IDguODExIDQuNDA3IDE1Ljk4NiA0LjQwNyAyMC41OC0uMTI4IDIwLjU4LTkuMDczVi0yNy45NDRIMTEuNzY5Vi05Ljk4MkMxMS43NjktNC45OSA5LjYyOS0yLjcyMiA2LjE2OC0yLjcyMiAyLjUxOC0yLjcyMi0uMTI2LTUuNjM4LS4xMjYtMTEuNjY3Vi0yNy45NDRILTguOTM3VjE4LjIwNUgtLjEyNlYwWk01Ni43NDEgMTguMjA1SDY1LjU1M1YtMjcuOTQ0SDU2Ljc0MVpNNjkuOTIyIDE4LjA2Mkg3OC43MzRWOS42ODdINjkuOTIyWk02OS45MjIgNC4zNDdINzguNzM0Vi0yNy45NDVINjkuOTIyWk0xMTMuNDY4LTI3Ljk0NEgxMDMuMDk5TDk2Ljk5MS0xNy4wMDJIOTYuODY0TDkwLjc1Ni0yNy45NDRIODAuMzg3TDkxLjQ1Ni0xMS4zNDEgODEuMDg3IDQuMzc0SDkxLjMyOUw5Ni44NjQtNS4xMDVIOTYuOTkxTDEwMi41MjYgNC4zNzRIMTEyLjc2OEwxMDIuMzk5LTExLjM0MVpNNTMuMjc0LTcuMDYxQzUxLjgxNi4xOTYgNDYuMTAyIDQuMzk5IDM4Ljc2MyA0LjM5OSAyOS4yMTkgNC4zOTkgMjMuNjM3LTIuNzI0IDIzLjYzNy0xMS45MzIgMjMuNjM3LTIxLjg3OSAyOS4yMTktMjguNzU2IDM4LjgyMy0yOC43NTYgNDYuOTI3LTI4Ljc1NiA1MS44NjYtMjQuMDQ1IDUzLjM4OC0xNy4yNjdMNDUuMTktMTcuMjQ5QzQ0LjIzOC0yMC42NjcgNDEuOTI2LTIyLjA1MSAzOC41NjQtMjIuMDUxIDM0Ljk2Mi0yMi4wNTEgMzEuNTgxLTE5LjE0NiAzMS41ODEtMTMuNTQ2TDUzLjYxNi0xMy41NjNDNTMuODExLTEwLjQ2NCA1My41OS04LjYzNiA1My4yNzQtNy4wNjFNMzguNTY0LTIuMzI3SDM4LjcwNkM0MS44MjItMi4zMjcgNDQuMjk0LTQuNjA2IDQ0Ljk3OS03Ljg4IDQ1LjAyMy04LjA4NyA0NS4wNDktOC4yODggNDUuMDc5LTguNDkxSDMxLjczOEMzMS43NjktOC4yODggMzEuNzk4LTguMDg3IDMxLjg0NC03Ljg4IDMyLjU3OC00LjYwNiAzNS4yMjYtMi4zMjcgMzguNTY0LTIuMzI3IiBmaWxsPSIjOGQ4YzljIi8+Cjwvc3ZnPgo=\"></div></header>`;\n  function catalog(kind) {\n    const source = kind === 'Role' ? 'Roles' : 'Groups', id = kind === 'Role' ? 'role_id':'group_id';\n    const entries = [...model.catalogs[source]].sort((a,b)=>a.name.localeCompare(b.name));\n    return `<details class=\"im-picker\" data-kind=\"${kind}\"><summary>Helix ${source} · <span data-selection=\"${kind}\">All</span></summary>\n      <div class=\"im-dropdown\"><input type=\"search\" data-search=\"${kind}\" aria-label=\"Find ${source.toLowerCase()}\" placeholder=\"Find ${source.toLowerCase()}…\">\n      <label class=\"im-choice\"><input type=\"checkbox\" data-kind=\"${kind}\" value=\"__all\" ${state[kind]===null?'checked':''}>All ${source.toLowerCase()}</label>\n      <div class=\"im-choices\">${entries.map(m=>`<label class=\"im-choice\" data-name=\"${esc(m.name.toLowerCase())}\"><input type=\"checkbox\" data-kind=\"${kind}\" value=\"${esc(m[id])}\" ${state[kind]?.includes(m[id])?'checked':''}>${esc(m.name)}</label>`).join('')}</div></div></details>`;\n  }\n  function markup() {\n    if (model.errors.length) return `<section class=\"im-root im-shell\">${header}<div class=\"im-error\" role=\"alert\"><h2>Membership report unavailable</h2>${model.errors.map(e=>`<p>${esc(e)}</p>`).join('')}<p>No partial membership list is shown.</p></div></section>`;\n    return `<section class=\"im-root im-shell\">${header}<div class=\"im-content\">\n      <div class=\"im-summary\"><div><strong>${new Set(model.rows.map(r=>r.userId)).size}</strong><span>Users with memberships</span></div>\n      <div><strong>${model.rows.length}</strong><span>Direct membership entries</span></div>\n      <div><strong>${model.catalogs.Roles.length} / ${model.catalogs.Groups.length}</strong><span>Roles / groups available</span></div>\n      <div class=\"im-coverage\"><b>Complete source lists</b><span>${model.humanUsers} console user profiles checked</span></div></div>\n      <div class=\"im-filters\">${catalog('Group')}${catalog('Role')}\n      <label class=\"im-mode\">Show<select aria-label=\"Membership type\"><option>All</option><option>Role</option><option>Group</option></select></label>\n      <label class=\"im-search\">Find a user or membership<input type=\"search\" aria-label=\"Find a user or membership\" placeholder=\"Name, login, email, status or membership…\" value=\"${esc(state.query)}\"></label>\n      <button type=\"button\" data-action=\"reset\">Reset to All</button></div>\n      <p class=\"im-note\">All lists every direct membership. Roles inherited through groups are excluded. Console users only; API identities are excluded. Grant Date is Unknown because assignment dates are not supplied by these sources.</p>\n      <div class=\"im-table-heading\"><h2>Membership entries</h2><span class=\"im-result\" aria-live=\"polite\"></span><button type=\"button\" data-action=\"csv\">Download filtered CSV</button></div>\n      <div class=\"im-table-wrap\"><table aria-label=\"Helix user memberships\"><thead><tr>${['User Name','Login ID','Email','Profile Status','Group / Roles','Grant Date'].map(x=>`<th scope=\"col\">${x}</th>`).join('')}</tr></thead><tbody></tbody></table></div>\n      <div class=\"im-pagination\"><button type=\"button\" data-action=\"prev\">Previous</button><span class=\"im-page\"></span><button type=\"button\" data-action=\"next\">Next</button></div>\n      <details class=\"im-about\"><summary>How to read this report</summary><p>Role selections filter role rows; group selections filter group rows. Their matching entries are combined. Use Show to view only roles or only groups. Users without direct memberships have no entry.</p><p>Current membership snapshot; the dashboard time range does not apply. Refresh reloads all three source lists. Completeness is checked against each source's reported total before displaying results. CSV includes all filtered entries, across every display page.</p></details>\n      </div></section>`;\n  }\n  handlebars.registerHelper('helixMemberships',()=>new handlebars.SafeString(markup()));\n  const timers=[];\n  function bind() {\n    const root=document.querySelector('.im-root');\n    if(!root || model.errors.length || root.__imSignature===signature) return;\n    root.__imSignature=signature;\n    if(root.__imAbort) root.__imAbort.abort();\n    // Dynamic Text sanitises form inputs in Handlebars output. Mount the\n    // authored, escaped interactive UI in its supported JavaScript lifecycle.\n    const mounted=document.createElement('div');\n    mounted.innerHTML=markup();\n    root.innerHTML=mounted.firstElementChild.innerHTML;\n    const abort=new AbortController(); root.__imAbort=abort;\n    const opts={signal:abort.signal};\n    const size=50;\n    function render() {\n      const rows=filterMembershipRows(model.rows,state);\n      const pages=Math.max(1,Math.ceil(rows.length/size));\n      state.page=Math.max(0,Math.min(state.page,pages-1));\n      root.querySelector('tbody').innerHTML=rows.length?rows.slice(state.page*size,(state.page+1)*size).map(r=>`<tr><td>${esc(r.userName)}</td><td>${esc(r.login)}</td><td>${esc(r.email)}</td><td><span class=\"im-status\">${esc(r.status)}</span></td><td>${esc(r.membership)}</td><td class=\"im-unknown\">Unknown</td></tr>`).join(''):'<tr><td colspan=\"6\" class=\"im-empty\">No memberships match these filters.</td></tr>';\n      root.querySelector('.im-result').textContent=`${rows.length} entries · ${new Set(rows.map(r=>r.userId)).size} users`;\n      root.querySelector('.im-page').textContent=`Page ${state.page+1} of ${pages}`;\n      root.querySelector('[data-action=\"prev\"]').disabled=state.page===0;\n      root.querySelector('[data-action=\"next\"]').disabled=state.page===pages-1;\n      root.querySelector('[data-action=\"csv\"]').disabled=!rows.length;\n      root.querySelector('select').value=state.kind;\n      for(const kind of ['Role','Group']) {\n        root.querySelector(`[data-selection=\"${kind}\"]`).textContent=state[kind]===null?'All':`${state[kind].length} selected`;\n        root.querySelectorAll(`input[type=\"checkbox\"][data-kind=\"${kind}\"]`).forEach(el=>el.checked=el.value==='__all'?state[kind]===null:!!state[kind]?.includes(el.value));\n      }\n    }\n    root.addEventListener('change',e=>{\n      const el=e.target;\n      if(el.matches('input[type=\"checkbox\"]')) {\n        const k=el.dataset.kind;\n        if(el.value==='__all') state[k]=el.checked?null:[];\n        else {const set=new Set(state[k]||[]);el.checked?set.add(el.value):set.delete(el.value);state[k]=[...set];}\n      } else if(el.matches('select')) state.kind=el.value;\n      else return;\n      state.page=0;render();\n    },opts);\n    root.addEventListener('input',e=>{\n      const el=e.target;\n      if(el.dataset.search) {\n        const q=el.value.trim().toLowerCase();\n        el.closest('.im-dropdown').querySelectorAll('[data-name]').forEach(x=>x.hidden=!x.dataset.name.includes(q));\n      } else if(el.matches('.im-search input')) {state.query=el.value;state.page=0;render();}\n    },opts);\n    root.addEventListener('click',e=>{\n      const action=e.target.closest('[data-action]')?.dataset.action;\n      if(!action)return;\n      if(action==='reset') {\n        Object.assign(state,{Role:null,Group:null,kind:'All',query:'',page:0});\n        root.querySelectorAll('input[type=\"search\"]').forEach(el=>el.value='');\n        root.querySelectorAll('[data-name]').forEach(el=>el.hidden=false);\n      }\n      if(action==='prev')state.page--;\n      if(action==='next')state.page++;\n      if(action==='csv') {\n        const url=URL.createObjectURL(new Blob(['\\ufeff'+membershipCsv(filterMembershipRows(model.rows,state))],{type:'text/csv;charset=utf-8'}));\n        const a=document.createElement('a');a.href=url;a.download='helix-user-memberships.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);\n      }\n      render();\n    },opts);\n    render();\n  }\n  [0,80,250,700,1600].forEach(ms=>timers.push(setTimeout(bind,ms)));\n  return ()=>{timers.forEach(clearTimeout);handlebars.unregisterHelper('helixMemberships');};\n})();\n",
+        "styles": ".im-shell{color:#fff;background:#071827;border:1px solid #21415f;border-radius:10px;font:13px Inter,\"Segoe UI\",Arial,sans-serif;color-scheme:dark}\n.im-header{display:flex;align-items:center;justify-content:space-between;gap:24px;background:#052140;padding:22px 26px;border-bottom:1px solid #21415f;border-radius:10px 10px 0 0}\n.im-eyebrow{font-size:11px;letter-spacing:2px;color:#ff5a4d;font-weight:700}.im-header h1{font-size:26px;margin:6px 0}.im-header p{margin:0;color:#9fb1c2}.im-logo svg{width:155px;height:auto}\n.im-content{padding:20px 26px}.im-summary{display:flex;gap:38px;flex-wrap:wrap;align-items:center;padding-bottom:22px}.im-summary>div{display:flex;flex-direction:column;gap:4px}.im-summary strong{font-size:25px;color:#6bd4da}.im-summary span{color:#9fb1c2;font-size:12px}.im-summary .im-coverage{margin-left:auto;border-left:2px solid #6bd4da;padding-left:14px}.im-coverage b{font-weight:500}\n.im-filters{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.im-picker{position:relative;min-width:210px}.im-picker summary{padding:10px 12px;background:#0b223a;border:1px solid #21415f;border-radius:5px;cursor:pointer}.im-picker[open]{z-index:10}.im-dropdown{position:absolute;top:42px;left:0;width:300px;background:#0b223a;border:1px solid #21415f;padding:12px;border-radius:5px}.im-dropdown>input{width:100%;margin-bottom:8px}.im-choices{max-height:240px;overflow:auto}.im-choice{display:flex;gap:8px;align-items:center;padding:7px 2px;font-size:12px}.im-choice[hidden]{display:none}\n.im-search,.im-mode{display:flex;flex-direction:column;gap:5px;color:#9fb1c2;font-size:11px}.im-search{flex:1;min-width:230px}.im-shell input[type=\"search\"],.im-shell select,.im-shell button{background:#0b223a;border:1px solid #21415f;border-radius:5px;color:#fff;padding:9px 11px;font:inherit}.im-shell input:focus,.im-shell select:focus,.im-shell button:focus-visible,.im-picker summary:focus-visible{outline:2px solid #6bd4da;outline-offset:2px}.im-shell button{cursor:pointer}.im-shell button:hover{border-color:#6bd4da}.im-shell button:disabled{opacity:.4;cursor:default}.im-note{font-size:12px;color:#9fb1c2;line-height:1.6;margin:14px 0 20px}\n.im-table-heading{display:flex;align-items:center;gap:18px;margin-bottom:10px}.im-table-heading h2{font-size:17px;margin:0}.im-result{color:#6bd4da}.im-table-heading button{margin-left:auto}.im-table-wrap{overflow:auto;max-height:610px;border:1px solid #21415f;border-radius:5px}.im-shell table{width:100%;border-collapse:collapse;text-align:left;font-size:12px}.im-shell th{background:#052140;position:sticky;top:0;z-index:1;font-weight:600;color:#9fb1c2;white-space:nowrap}.im-shell th,.im-shell td{padding:11px 13px;border-bottom:1px solid #21415f;vertical-align:top}.im-shell tbody tr:nth-child(even){background:#0b223a}.im-shell tbody tr:hover{background:#0e2946}.im-status{font-size:11px;color:#6bd4da}.im-unknown{color:#9fb1c2}.im-pagination{display:flex;justify-content:flex-end;align-items:center;gap:14px;padding:14px 0}.im-empty{text-align:center;color:#9fb1c2;padding:30px!important}.im-about{color:#9fb1c2;line-height:1.6;font-size:12px;border-top:1px solid #21415f;padding-top:12px}.im-about summary{cursor:pointer;color:#6bd4da}.im-error{padding:25px;color:#f4b740}.im-error h2{font-size:18px}\n.im-shell select{min-height:36px;line-height:normal;box-sizing:border-box}\n@media(max-width:800px){.im-header,.im-content{padding:16px}.im-logo{display:none}.im-summary{gap:18px}.im-summary .im-coverage{margin-left:0}.im-picker{flex:1}.im-table-heading{flex-wrap:wrap}.im-table-heading button{margin-left:0}.im-header h1{font-size:22px}}\n"
+      },
+      "pluginVersion": "4.0.0",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "bftbwo4ml9erkc"
+          },
+          "fields": [
+            {
+              "jsonPath": "($assert($exists(_metadata.total_count) and _metadata.page = 0 and _metadata.total_count = $count(records), \"Incomplete Users source: report withheld\"); $string({\"records\": [records.($u := $; type in [\"PERSON\",\"EXTERNAL_PERSON\"] ? {\"user_id\":user_id,\"type\":type,\"full_name\":full_name,\"first_name\":first_name,\"last_name\":last_name,\"principal_id\":principal_id,\"email\":email,\"status\":status} : {\"user_id\":user_id,\"type\":type})], \"_metadata\": _metadata}))",
+              "language": "jsonata",
+              "name": "Users",
+              "type": "string"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "queryParams": "",
+          "refId": "Users",
+          "urlPath": "/ims/api/v1/users?userTypes=PERSON,EXTERNAL_PERSON,API&excludeApiKeyUsers=false&page=0&size=1000&orderBy=principal_id&sortOrder=asc"
+        },
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "bftbwo4ml9erkc"
+          },
+          "fields": [
+            {
+              "jsonPath": "($assert($exists(_metadata.total_count) and _metadata.page = 0 and _metadata.total_count = $count(records), \"Incomplete Roles source: report withheld\"); $string({\"records\": [records.{\"role_id\":role_id,\"name\":name,\"users\":users}], \"_metadata\":_metadata}))",
+              "language": "jsonata",
+              "name": "Roles",
+              "type": "string"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "queryParams": "",
+          "refId": "Roles",
+          "urlPath": "/ims/api/v1/roles?includeMappings=true&fetchAllRBAC=false&page=0&size=1000&orderBy=name&sortOrder=asc"
+        },
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "json-datasource",
+            "uid": "bftbwo4ml9erkc"
+          },
+          "fields": [
+            {
+              "jsonPath": "($assert($exists(_metadata.total_count) and _metadata.page = 0 and _metadata.total_count = $count(records), \"Incomplete Groups source: report withheld\"); $string({\"records\": [records.{\"group_id\":group_id,\"name\":name,\"users\":users}], \"_metadata\":_metadata}))",
+              "language": "jsonata",
+              "name": "Groups",
+              "type": "string"
+            }
+          ],
+          "headers": [],
+          "method": "GET",
+          "queryParams": "",
+          "refId": "Groups",
+          "urlPath": "/ims/api/v1/groups?includeMappings=true&fetchAllRBAC=false&page=0&size=1000&orderBy=name&sortOrder=asc"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "concatenate",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 42,
+  "tags": [
+    "HelixOps",
+    "ITOM",
+    "IMS",
+    "Access",
+    "Demo_9"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "browser",
+  "title": "Helix User Roles & Group Memberships - Modified",
+  "uid": "lipzlqg",
+  "version": 6,
+  "weekStart": ""
+}
