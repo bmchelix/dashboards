@@ -240,7 +240,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "mappings": [],
           "thresholds": {
@@ -258,7 +258,15 @@
           },
           "unit": "locale"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": ""
+            },
+            "properties": []
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -291,7 +299,7 @@
             "type": "bmchelix-ade-datasource",
             "uid": "fftbwo4izeosgf"
           },
-          "refId": "A",
+          "refId": "CustomFields",
           "sourceQuery": {
             "dstType": "SERVER",
             "form": {
@@ -465,7 +473,7 @@
             "uid": "fftbwo4izeosgf"
           },
           "hide": false,
-          "refId": "B",
+          "refId": "Index Count",
           "sourceQuery": {
             "dstType": "SERVER",
             "form": {
@@ -629,7 +637,7 @@
               "hideHeader": true
             },
             "queryType": "SQL",
-            "rawQuery": "SELECT\r\n    COUNT(*) AS IndexCount\r\nFROM `AR System Metadata: arschema` S\r\nINNER JOIN `AR System Metadata: schema_index` I\r\n    ON I.`schemaId` = S.`Schema ID`\r\nWHERE S.`name` = ${FormList}"
+            "rawQuery": "SELECT\r\n    COUNT(DISTINCT indexName) AS IndexCount\r\nFROM `AR System Metadata: arschema` S\r\nINNER JOIN `AR System Metadata: schema_index` I\r\n    ON I.`schemaId` = S.`Schema ID`\r\nWHERE S.`name` = ${FormList}\r\nand I.overlayGroup = '0'"
           },
           "sourceType": "remedy"
         },
@@ -1000,12 +1008,13 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "semi-dark-orange",
+            "mode": "fixed"
           },
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "color-background"
             },
             "filterable": false,
             "footer": {
@@ -1031,11 +1040,36 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "indexName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 235
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "numFields"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 142
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
-        "w": 11,
+        "w": 17,
         "x": 6,
         "y": 5
       },
@@ -1217,7 +1251,7 @@
               "hideHeader": true
             },
             "queryType": "SQL",
-            "rawQuery": "SELECT\r\n    S.`name`,\r\n    S.`Schema ID` AS FormID,\r\n    I.`numFields`,\r\n    I.`indexName`,\r\n    F1.`fieldName` AS field1_name,\r\n    F2.`fieldName` AS field2_name,\r\n    F3.`fieldName` AS field3_name,\r\n    F4.`fieldName` AS field4_name,\r\n    F5.`fieldName` AS field5_name,\r\n    F6.`fieldName` AS field6_name,\r\n    F1.`fieldName`\r\n        + CASE WHEN F2.`fieldName` IS NOT NULL THEN ':' + F2.`fieldName` ELSE '' END\r\n        + CASE WHEN F3.`fieldName` IS NOT NULL THEN ':' + F3.`fieldName` ELSE '' END\r\n        + CASE WHEN F4.`fieldName` IS NOT NULL THEN ':' + F4.`fieldName` ELSE '' END\r\n        + CASE WHEN F5.`fieldName` IS NOT NULL THEN ':' + F5.`fieldName` ELSE '' END\r\n        + CASE WHEN F6.`fieldName` IS NOT NULL THEN ':' + F6.`fieldName` ELSE '' END\r\n        AS Indexes\r\nFROM `AR System Metadata: arschema` S\r\nLEFT JOIN `AR System Metadata: schema_index` I\r\n    ON S.`Schema ID` = I.`schemaId`\r\nLEFT JOIN `AR System Metadata: field` F1\r\n    ON F1.`schemaId` = S.`Schema ID`\r\n    AND F1.`fieldId` = I.`f1`\r\nLEFT JOIN `AR System Metadata: field` F2\r\n    ON F2.`schemaId` = S.`Schema ID`\r\n    AND F2.`fieldId` = I.`f2`\r\nLEFT JOIN `AR System Metadata: field` F3\r\n    ON F3.`schemaId` = S.`Schema ID`\r\n    AND F3.`fieldId` = I.`f3`\r\nLEFT JOIN `AR System Metadata: field` F4\r\n    ON F4.`schemaId` = S.`Schema ID`\r\n    AND F4.`fieldId` = I.`f4`\r\nLEFT JOIN `AR System Metadata: field` F5\r\n    ON F5.`schemaId` = S.`Schema ID`\r\n    AND F5.`fieldId` = I.`f5`\r\nLEFT JOIN `AR System Metadata: field` F6\r\n    ON F6.`schemaId` = S.`Schema ID`\r\n    AND F6.`fieldId` = I.`f6`\r\n    WHERE S.`name` = $FormList\r\n"
+            "rawQuery": "SELECT\r\n    S.`name`,\r\n    S.`Schema ID` AS FormID,\r\n    I.`numFields`,\r\n    I.`indexName`,\r\n    F1.`fieldName` AS field1_name,\r\n    F2.`fieldName` AS field2_name,\r\n    F3.`fieldName` AS field3_name,\r\n    F4.`fieldName` AS field4_name,\r\n    F5.`fieldName` AS field5_name,\r\n    F6.`fieldName` AS field6_name,\r\n    F1.`fieldName`\r\n        + CASE WHEN F2.`fieldName` IS NOT NULL THEN ':' + F2.`fieldName` ELSE '' END\r\n        + CASE WHEN F3.`fieldName` IS NOT NULL THEN ':' + F3.`fieldName` ELSE '' END\r\n        + CASE WHEN F4.`fieldName` IS NOT NULL THEN ':' + F4.`fieldName` ELSE '' END\r\n        + CASE WHEN F5.`fieldName` IS NOT NULL THEN ':' + F5.`fieldName` ELSE '' END\r\n        + CASE WHEN F6.`fieldName` IS NOT NULL THEN ':' + F6.`fieldName` ELSE '' END\r\n        AS Indexes\r\nFROM `AR System Metadata: arschema` S\r\nLEFT JOIN `AR System Metadata: schema_index` I\r\n    ON S.`Schema ID` = I.`schemaId`\r\nLEFT JOIN `AR System Metadata: field` F1\r\n    ON F1.`schemaId` = S.`Schema ID`\r\n    AND F1.`fieldId` = I.`f1`\r\nLEFT JOIN `AR System Metadata: field` F2\r\n    ON F2.`schemaId` = S.`Schema ID`\r\n    AND F2.`fieldId` = I.`f2`\r\nLEFT JOIN `AR System Metadata: field` F3\r\n    ON F3.`schemaId` = S.`Schema ID`\r\n    AND F3.`fieldId` = I.`f3`\r\nLEFT JOIN `AR System Metadata: field` F4\r\n    ON F4.`schemaId` = S.`Schema ID`\r\n    AND F4.`fieldId` = I.`f4`\r\nLEFT JOIN `AR System Metadata: field` F5\r\n    ON F5.`schemaId` = S.`Schema ID`\r\n    AND F5.`fieldId` = I.`f5`\r\nLEFT JOIN `AR System Metadata: field` F6\r\n    ON F6.`schemaId` = S.`Schema ID`\r\n    AND F6.`fieldId` = I.`f6`\r\nWHERE S.`name` = $FormList\r\n"
           },
           "sourceType": "remedy"
         },
@@ -1409,12 +1443,24 @@
               "field4_name": true,
               "field5_name": true,
               "field6_name": true,
-              "indexName": true,
+              "indexName": false,
               "name": true,
-              "numFields": true
+              "numFields": false
             },
             "includeByName": {},
-            "indexByName": {},
+            "indexByName": {
+              "FormID": 1,
+              "Indexes": 10,
+              "field1_name": 4,
+              "field2_name": 5,
+              "field3_name": 6,
+              "field4_name": 7,
+              "field5_name": 8,
+              "field6_name": 9,
+              "indexName": 2,
+              "name": 0,
+              "numFields": 3
+            },
             "renameByName": {}
           }
         },
@@ -1423,6 +1469,18 @@
           "options": {
             "fields": {
               "Indexes": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "indexName": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "numFields": {
                 "aggregations": [],
                 "operation": "groupby"
               }
@@ -1712,8 +1770,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Field"
+            "desc": true,
+            "displayName": "datatype"
           }
         ]
       },
@@ -1905,20 +1963,32 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "semi-dark-blue",
+            "mode": "fixed"
           },
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "color-background"
             },
-            "filterable": false,
+            "filterable": true,
             "footer": {
               "reducers": []
             },
             "inspect": false
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "7": {
+                  "color": "orange",
+                  "index": 0,
+                  "text": "DateTime"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1937,30 +2007,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Property Value"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 194
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Property Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 247
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "name"
             },
             "properties": [
@@ -1973,192 +2019,87 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Submit Date"
+              "options": "DataType"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 217
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "2": {
+                        "color": "semi-dark-blue",
+                        "index": 3,
+                        "text": "Integer"
+                      },
+                      "3": {
+                        "color": "semi-dark-yellow",
+                        "index": 5,
+                        "text": "Real"
+                      },
+                      "4": {
+                        "color": "semi-dark-green",
+                        "index": 1,
+                        "text": "Character"
+                      },
+                      "6": {
+                        "color": "semi-dark-purple",
+                        "index": 2,
+                        "text": "Enumurated "
+                      },
+                      "7": {
+                        "color": "orange",
+                        "index": 0,
+                        "text": "DateTime"
+                      },
+                      "10": {
+                        "color": "semi-dark-red",
+                        "index": 4,
+                        "text": "Decimal"
+                      },
+                      "12": {
+                        "color": "super-light-green",
+                        "index": 6,
+                        "text": "Currency"
+                      },
+                      "13": {
+                        "color": "light-orange",
+                        "index": 7,
+                        "text": "Date"
+                      },
+                      "14": {
+                        "color": "light-red",
+                        "index": 8,
+                        "text": "Time"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "viewName"
+              "options": "FieldLabel"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 468
+                "value": 242
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Change Request Status"
+              "options": "FieldID"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 294
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SVTTitle"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 292
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Notification Text"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 489
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Description"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 291
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 341
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ServiceAvailabilityStatus"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 210
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SVT Description"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 463
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SVT Title"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 459
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Request Form Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 296
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Flag_Create_Request"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 280
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Enable HelixGPT Knowledge Curator"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 321
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "HelixGPT Auto Resolution"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 286
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Infrastructure Change ID"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 312
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Field"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 364
+                "value": 153
               }
             ]
           }
@@ -2166,7 +2107,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 12,
+        "w": 11,
         "x": 12,
         "y": 14
       },
@@ -2353,7 +2294,7 @@
               "hideHeader": true
             },
             "queryType": "SQL",
-            "rawQuery": "SELECT\r\n    F.`fieldId` AS FieldID,\r\n    F.`fieldName` AS DBFieldName,\r\n    DP.`label` AS FieldLabel,\r\n    V.`vuiName` AS ViewName,\r\n    F.`overlayGroup` AS FieldOverlayGroup,\r\n    F.`overlayProp` AS FieldOverlayProp,\r\n    DP.`overlayGroup` AS DispOverlayGroup,\r\n    V.`overlayGroup` AS VUIOverlayGroup,\r\n    F.`resolvedfieldId` AS ResolvedFieldID,\r\n    F.`resolvedName` AS ResolvedName\r\nFROM `AR System Metadata: arschema` AS SCM\r\nLEFT OUTER JOIN `AR System Metadata: field` AS F\r\n    ON F.`schemaId` = SCM.`Schema ID`\r\nLEFT OUTER JOIN `AR System Metadata: field_dispprop` AS DP\r\n    ON DP.`schemaId` = F.`schemaId`\r\n    AND DP.`fieldId` = F.`fieldId`\r\nLEFT OUTER JOIN `AR System Metadata: vui` AS V\r\n    ON V.`schemaId` = DP.`schemaId`\r\n    AND V.`vuiId` = DP.`vuiId`\r\nWHERE SCM.`name` = ${FormList}\r\nAND V.`vuiName` = ${View}\r\nAND F.`fOption` = 2\r\nAND F.`datatype` IN (1,2,3,4,6,7,8,9,10)\r\nAND SCM.`overlayGroup` = '0'\r\nand V.`overlayGroup` = '0'\r\norder by DBFieldName asc"
+            "rawQuery": "SELECT \r\n    F.`fieldId` AS FieldID,\r\n    F.`datatype` AS DataType,\r\n    F.`fieldName` AS DBFieldName,\r\n    DP.`label` AS FieldLabel,\r\n    V.`vuiName` AS ViewName,\r\n    F.`overlayGroup` AS FieldOverlayGroup,\r\n    F.`overlayProp` AS FieldOverlayProp,\r\n    DP.`overlayGroup` AS DispOverlayGroup,\r\n    V.`overlayGroup` AS VUIOverlayGroup,\r\n    F.`resolvedfieldId` AS ResolvedFieldID,\r\n    F.`resolvedName` AS ResolvedName\r\nFROM `AR System Metadata: arschema` AS SCM\r\nLEFT OUTER JOIN `AR System Metadata: field` AS F\r\n    ON F.`schemaId` = SCM.`Schema ID`\r\nLEFT OUTER JOIN `AR System Metadata: field_dispprop` AS DP\r\n    ON DP.`schemaId` = F.`schemaId`\r\n    AND DP.`fieldId` = F.`fieldId`\r\nLEFT OUTER JOIN `AR System Metadata: vui` AS V\r\n    ON V.`schemaId` = DP.`schemaId`\r\n    AND V.`vuiId` = DP.`vuiId`\r\nWHERE SCM.`name` = ${FormList}\r\nAND V.`vuiName` = ${View:singlequote}\r\nAND F.`fOption` = 2\r\nAND F.`datatype` IN (1,2,3,4,6,7,8,9,10,12,13,14)\r\nAND SCM.`overlayGroup` = '0'\r\nand V.`overlayGroup` = '0'\r\nAND DP.overlayGroup = '0'\r\norder by DBFieldName asc"
           },
           "sourceType": "remedy"
         }
@@ -2407,7 +2348,7 @@
       },
       "id": 2,
       "panels": [],
-      "title": "$FormList Data Coverage for each optional field",
+      "title": "$FormList  - Data Coverage for $FieldTypes optional fields",
       "type": "row"
     },
     {
@@ -2462,6 +2403,7 @@
         "y": 27
       },
       "id": 7,
+      "maxPerRow": 6,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -2652,7 +2594,7 @@
               "hideHeader": true
             },
             "queryType": "SQL",
-            "rawQuery": "select count(`${Fields:raw}`) * 100.0 / ${RowNumber:raw} as Coverage from `${FormList:raw}`"
+            "rawQuery": "select case when ${RowNumber:raw} > 0 then count(`${Fields:raw}`) * 100.0 / ${RowNumber:raw} else 0 end as Coverage from `${FormList:raw}`"
           },
           "sourceType": "remedy"
         }
@@ -2674,15 +2616,17 @@
         "allowCustomValue": false,
         "bmcVarCache": false,
         "current": {
-          "text": "AAS:Activity",
-          "value": "AAS:Activity"
+          "text": "CHG:Infrastructure Change",
+          "value": "CHG:Infrastructure Change"
         },
         "datasource": {
           "type": "bmchelix-ade-datasource",
           "uid": "fftbwo4izeosgf"
         },
         "definition": "remedy,{\"sql\": \"SELECT `name` AS `FormList` FROM `AR System Metadata: arschema` where schemaType <> 4\"}",
+        "description": "",
         "includeAll": false,
+        "label": "AR or IS Form Name",
         "name": "FormList",
         "options": [],
         "query": "remedy,{\"sql\": \"SELECT `name` AS `FormList` FROM `AR System Metadata: arschema` where schemaType <> 4\"}",
@@ -2692,27 +2636,11 @@
       },
       {
         "current": {
-          "text": "20",
-          "value": "20"
-        },
-        "name": "Rows",
-        "options": [
-          {
-            "selected": true,
-            "text": "20",
-            "value": "20"
-          }
-        ],
-        "query": "20",
-        "type": "textbox"
-      },
-      {
-        "current": {
           "text": "200",
           "value": "200"
         },
-        "description": "Starting row",
-        "name": "Offset",
+        "label": "Preview Rows",
+        "name": "Rows",
         "options": [
           {
             "selected": true,
@@ -2724,22 +2652,40 @@
         "type": "textbox"
       },
       {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "description": "Starting row",
+        "label": "Starting Row",
+        "name": "Offset",
+        "options": [
+          {
+            "selected": true,
+            "text": "0",
+            "value": "0"
+          }
+        ],
+        "query": "0",
+        "type": "textbox"
+      },
+      {
         "allowCustomValue": false,
         "current": {
-          "text": "Custom",
-          "value": "Custom"
+          "text": "All",
+          "value": "All"
         },
         "description": "Do you want to include custom fields only or all fields",
         "includeAll": false,
         "name": "FieldTypes",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Custom",
             "value": "Custom"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "All"
           }
@@ -2773,8 +2719,8 @@
         "allowCustomValue": false,
         "bmcVarCache": false,
         "current": {
-          "text": "10",
-          "value": "10"
+          "text": "150",
+          "value": "150"
         },
         "definition": "Remedy,{\"sql\":\"SELECT  COUNT(*)  FROM `${FormList:raw}`\"}",
         "hide": 2,
@@ -2789,12 +2735,12 @@
         "allowCustomValue": false,
         "bmcVarCache": false,
         "current": {
-          "text": "SV_Edit",
-          "value": "SV_Edit"
+          "text": "399990367",
+          "value": "399990367"
         },
         "definition": "Remedy,{\"sql\":\"SELECT  V.`vuiName` FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: vui` AS V  ON V.`schemaId` = SCM.`Schema ID` WHERE SCM.`name` = ${FormList}\"}",
-        "description": "",
-        "label": "View",
+        "description": "Use this to filter the field labels. ",
+        "label": "View Name",
         "name": "View",
         "options": [],
         "query": "Remedy,{\"sql\":\"SELECT  V.`vuiName` FROM `AR System Metadata: arschema` AS SCM LEFT OUTER JOIN `AR System Metadata: vui` AS V  ON V.`schemaId` = SCM.`Schema ID` WHERE SCM.`name` = ${FormList}\"}",
@@ -2814,6 +2760,6 @@
   "timezone": "browser",
   "title": "Dashboard Developer Workbench",
   "uid": "sc2rwq4",
-  "version": 10,
+  "version": 23,
   "weekStart": ""
 }
